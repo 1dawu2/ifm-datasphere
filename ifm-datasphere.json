@@ -1,0 +1,76 @@
+{
+  "eula": "",
+  "vendor": "IFM",
+  "icon": "https://1dawu2.github.io/ifm-datasphere/icon.png",
+  "license": "MIT",
+  "id": "com.ifm.datasphere",
+  "version": "0.0.1",
+  "name": "IFM DataSphere",
+  "newInstancePrefix": "IFM",
+  "description": "IFM DataSphere",
+  "imports": [],
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "com-ifm-datasphere",
+      "url": "https://1dawu2.github.io/ifm-datasphere/main.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    }
+  ],
+  "properties": {
+    "metadata": {
+      "type": "string",
+      "description": "For internal use",
+      "default": ""
+    },
+    "restapiurl": {
+      "type": "string",
+      "description": "The REST API URL",
+      "default": "https://infomotion1.eu10.hanacloudservices.cloud.sap/api/v1/stories?include=models"
+    },
+    "DWC_clientID": {
+      "type": "string",
+      "description": "DWC CLIENT ID",
+      "default": "sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343|client!b3650"
+    },
+    "DWC_apiSecret": {
+      "type": "string",
+      "description": "DWC API SECRET",
+      "default": "7766ac4a-51a3-4dae-af24-2c9b98186e05$iLTXoCJWynbj7jwynlPCSq_X0v9zzaOYxh6-hk_jUjo="
+    },
+    "DWC_oAuthURL": {
+      "type": "string",
+      "description": "DWC oAuth URL",
+      "default": "https://bocauth.us1.sapbusinessobjects.cloud:443"
+    }
+  },
+  "dataBindings": {},
+  "methods": {
+    "getRestAPIUrl": {
+      "returnType": "string",
+      "description": "Get the REST API URL",
+      "parameters": [],
+      "body": "return this.restapiurl;"
+    },
+    "setRestAPIUrl": {
+      "description": "Set the REST API URL",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "string",
+          "description": "The new REST API URL"
+        }
+      ],
+      "body": "this.restapiurl = value;"
+    }
+  },
+  "events": {
+    "onStart": {
+      "description": "onStart events trigger"
+    },
+    "onClick": {
+      "description": "onClick events trigger"
+    }
+  }
+}
