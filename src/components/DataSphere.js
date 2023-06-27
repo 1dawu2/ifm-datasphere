@@ -135,7 +135,7 @@ class IFMDataSphere extends HTMLElement {
       function (Controller) {
         "use strict";
 
-        return Controller.extend("ifm.hack.initial", {
+        return Controller.extend("ifm.datasphere.initial", {
 
           onInit: function (oEvent) {
 
