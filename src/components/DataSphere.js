@@ -56,6 +56,9 @@
 
       _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
+      this._export_settings = {};
+      this._export_settings.restapiurl = "";
+
       // this.executeTaskChain();
 
     }
