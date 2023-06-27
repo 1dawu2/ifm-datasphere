@@ -108,8 +108,6 @@ const commands = await dwc.getCommands(MY_HOST);
       sap.ui.define(
         [
           "sap/ui/core/mvc/Controller",
-          "sap/ui/export/Spreadsheet",
-          "sap/f/dnd/GridDropInfo",
           "sap/ui/core/library",
         ],
         function (Controller) {
