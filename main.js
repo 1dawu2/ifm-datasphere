@@ -1,6 +1,3 @@
-const dwc = require("@sap/dwc-cli");
-const MY_HOST = "https://dwc-infomotion.eu10.hcs.cloud.sap/";
-const commands = await dwc.getCommands(MY_HOST);
 (function () {
   let _shadowRoot;
   let _oAuthURL;
@@ -49,6 +46,9 @@ const commands = await dwc.getCommands(MY_HOST);
     constructor() {
       super();
 
+      const dwc = require("@sap/dwc-cli");
+      const MY_HOST = "https://dwc-infomotion.eu10.hcs.cloud.sap/";
+      const commands = dwc.getCommands(MY_HOST);
       console.log(commands);
 
       _shadowRoot = this.attachShadow({
