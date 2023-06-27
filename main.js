@@ -1,5 +1,5 @@
 const dwc = require("@sap/dwc-cli");
-const MY_HOST = "https://roechling-q-1.eu10.hcs.cloud.sap/";
+const MY_HOST = "https://dwc-infomotion.eu10.hcs.cloud.sap/";
 const commands = await dwc.getCommands(MY_HOST);
 (function () {
   let _shadowRoot;
