@@ -11,12 +11,12 @@ const commands = await dwc.getCommands(MY_HOST);
   tmpl.innerHTML = `
     <style>
     </style>
-    <div id="ifm_hack_content" name="ifm_hack_content">
+    <div id="ifm_datasphere" name="ifm_datasphere">
       <slot name="content"></slot>
     </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
     <mvc:View
-      controllerName="ifm.hack.initial"
+      controllerName="ifm.datasphere.initial"
       xmlns:core="sap.ui.core"
       xmlns:t="sap.ui.table"
       xmlns:m="sap.m"
@@ -25,7 +25,22 @@ const commands = await dwc.getCommands(MY_HOST);
       xmlns:mvc="sap.ui.core.mvc"
       xmlns:tnt="sap.tnt">
       <m:content></m:content>
-    </mvc:View>
+        <m:Page
+          title="Page"
+          class="sapUiContentPadding">
+          <m:content>
+            <m:HBox>
+              <m:Button text="Default"
+                  press="onPress"
+                  ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+                <layoutData>
+                  <FlexItemData growFactor="1" />
+                </layoutData>
+              </m:Button>
+            </m:HBox>
+          </m:content>
+        </m:Page>
+      </mvc:View>
     </script>
   `;
 
@@ -81,6 +96,41 @@ const commands = await dwc.getCommands(MY_HOST);
       if (oldValue != newValue) {
         this[name] = newValue;
       }
+    }
+
+    buildUI(changedProperties, that) {
+      var that_ = that;
+
+      let content = document.createElement('div');
+      content.slot = "content";
+      that_.appendChild(content);
+
+      sap.ui.define(
+        [
+          "sap/ui/core/mvc/Controller",
+          "sap/ui/export/Spreadsheet",
+          "sap/f/dnd/GridDropInfo",
+          "sap/ui/core/library",
+        ],
+        function (Controller) {
+          "use strict";
+
+          return Controller.extend("ifm.hack.initial", {
+
+            onInit: function (oEvent) {
+
+            },
+
+          });
+
+        });
+
+      //### THE APP: place the XMLView somewhere into DOM ###
+      var oView = new sap.ui.core.mvc.XMLView({
+        viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
+      });
+      oView.placeAt(content);
+
     }
 
   }
