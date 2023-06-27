@@ -56,7 +56,7 @@
 
       _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
-      this.executeTaskChain();
+      // this.executeTaskChain();
 
     }
 
@@ -222,7 +222,6 @@
       oView.placeAt(content);
 
     }
-
   }
   customElements.define("com-ifm-datasphere", IFMDataSphere);
 
