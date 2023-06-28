@@ -135,7 +135,7 @@
     getCSRFToken() {
 
       var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+      xhr.withCredentials = false;
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
           console.log(this.responseText);
@@ -148,7 +148,7 @@
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.setRequestHeader("x-csrf-token", "fetch");
       //sending request
-      xhr.send('grant_type=client_credentials');
+      xhr.send(); // 'grant_type=client_credentials'
 
     }
 
