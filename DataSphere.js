@@ -169,7 +169,7 @@
 
           return Controller.extend("ifm.datasphere.initial", {
 
-            onButtonPress: function (oEvent) {
+            onPress: function (oEvent) {
               var this_ = this;
 
               var CLIENT_ID_str = this._export_settings.DWC_clientID;
