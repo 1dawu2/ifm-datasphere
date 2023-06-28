@@ -136,8 +136,21 @@
 
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = false;
-      xhr.open("GET", this._export_settings.DWC_tokenURL);
-      xhr.send();
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+          console.log(this.responseText);
+        }
+      });
+      xhr.open("POST", this._export_settings.DWC_taskChain);
+
+      //adding request headers
+      xhr.setRequestHeader("DataServiceVersion", "2.0");
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+
+      //sending request
+      xhr.send(data);
 
     }
 
