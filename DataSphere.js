@@ -135,19 +135,20 @@
     getCSRFToken() {
 
       var xhr = new XMLHttpRequest();
-      xhr.withCredentials = false;
+      xhr.withCredentials = true;
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
           console.log(this.getResponseHeader("x-csrf-token"));
         }
       });
-      xhr.open("GET", this._export_settings.DWC_tokenURL);
+
+      xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo");
 
       //adding request headers
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.setRequestHeader("x-csrf-token", "fetch");
-      xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+      // xhr.setRequestHeader("Accept", "application/json");
+      // xhr.setRequestHeader("Content-Type", "application/json");     
+
+      xhr.setRequestHeader("X-Csrf-Token", "Fetch");
       //sending request
       xhr.send(); // 'grant_type=client_credentials'
 
