@@ -151,6 +151,24 @@
       //sending request
       xhr.send(); // 'grant_type=client_credentials'
 
+      jQuery.ajax(this._export_settings.DWC_tokenURL, {
+        type: "GET",
+        contentType: 'application/json',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', 'fetch');
+        },
+        complete: function (response) {
+          jQuery.ajaxSetup({
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader("X-CSRF-Token", response.getResponseHeader('X-CSRF-Token'));
+            }
+          });
+        }
+      });
+
+
+
     }
 
     executeTaskChain() {
@@ -169,6 +187,7 @@
       xhr.setRequestHeader("Cookie", "JSESSIONID=s%3A_EvTAY82EYX4VjpkDv0enuqPGJ9ucLLg.ni2gKCxZCFc2GQ%2B9dOIB3EJCF%2B5q0G15gj0w8KvuT%2B4; __VCAP_ID__=eb6a6391-93e0-4a14-5225-796d");
 
       xhr.send();
+
 
     }
 
