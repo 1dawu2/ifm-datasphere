@@ -147,6 +147,7 @@
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.setRequestHeader("x-csrf-token", "fetch");
+      xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
       //sending request
       xhr.send(); // 'grant_type=client_credentials'
 
