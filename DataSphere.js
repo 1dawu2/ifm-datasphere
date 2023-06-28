@@ -72,7 +72,7 @@
     }
 
     onCustomWidgetAfterUpdate(changedProperties) {
-      this.buildUI(changedProperties, this);
+      // this.buildUI(changedProperties, this);
     }
 
     // SETTINGS
