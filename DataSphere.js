@@ -137,9 +137,12 @@
       var response = null;
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
-      // xhr.addEventListener("readystatechange", function () {
-
-      // });
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+          var csrfToken = xhr.getResponseHeader("x-csrf-token");
+          console.log(csrfToken);
+        }
+      });
 
       xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo", false);
 
@@ -149,10 +152,6 @@
       xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
       //sending request
       xhr.send(null);
-      if (this.readyState === 4) {
-        var csrfToken = xhr.getResponseHeader("x-csrf-token");
-        console.log(csrfToken);
-      };
 
     }
 
