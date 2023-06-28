@@ -134,41 +134,25 @@
 
     getCSRFToken() {
 
+      var response = null;
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === this.DONE) {
-          console.log(this.getResponseHeader("x-csrf-token"));
-        }
-      });
+      // xhr.addEventListener("readystatechange", function () {
 
-      xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo");
+      // });
+
+      xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo", false);
 
       //adding request headers
-      // xhr.setRequestHeader("Accept", "application/json");
-      // xhr.setRequestHeader("Content-Type", "application/json");     
-
-      xhr.setRequestHeader("X-Csrf-Token", "Fetch");
+      xhr.setRequestHeader("x-csrf-token", "Fetch");
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
       //sending request
-      xhr.send(); // 'grant_type=client_credentials'
-
-      jQuery.ajax(this._export_settings.DWC_tokenURL, {
-        type: "GET",
-        contentType: 'application/json',
-        dataType: 'json',
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', 'fetch');
-        },
-        complete: function (response) {
-          jQuery.ajaxSetup({
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader("X-CSRF-Token", response.getResponseHeader('X-CSRF-Token'));
-            }
-          });
-        }
-      });
-
-
+      xhr.send(null);
+      if (this.readyState === 4) {
+        var csrfToken = xhr.getResponseHeader("x-csrf-token");
+        console.log(csrfToken);
+      };
 
     }
 
