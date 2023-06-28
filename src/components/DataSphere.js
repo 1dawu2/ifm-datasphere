@@ -1,8 +1,4 @@
 let _shadowRoot;
-let _oAuthURL;
-let _clientID;
-let _apiSecret;
-
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
     <style>
@@ -29,9 +25,6 @@ tmpl.innerHTML = `
               <m:Button text="Default"
                   press="onPress"
                   ariaDescribedBy="defaultButtonDescription genericButtonDescription">
-                <layoutData>
-                  <FlexItemData growFactor="1" />
-                </layoutData>
               </m:Button>
             </m:HBox>
           </m:content>
@@ -78,7 +71,7 @@ class IFMDataSphere extends HTMLElement {
   }
 
   onCustomWidgetAfterUpdate(changedProperties) {
-    // this.buildUI(changedProperties, this);
+    this.buildUI(changedProperties, this);
   }
 
   // SETTINGS
