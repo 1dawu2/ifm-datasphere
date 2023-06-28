@@ -138,7 +138,7 @@
       xhr.withCredentials = false;
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
-          console.log(this.responseText);
+          console.log(this.getResponseHeader("x-csrf-token"));
         }
       });
       xhr.open("GET", this.DWC_tokenURL);
