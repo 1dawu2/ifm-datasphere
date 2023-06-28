@@ -8,23 +8,18 @@
       <slot name="content"></slot>
     </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
-    <mvc:View
-      controllerName="ifm.datasphere.initial"
-      xmlns:core="sap.ui.core"
-      xmlns:m="sap.m"      
-      xmlns:mvc="sap.ui.core.mvc">
-      <m:content></m:content>
+      <mvc:View
+        controllerName="ifm.datasphere.initial"
+        xmlns:core="sap.ui.core"
+        xmlns:m="sap.m"
+        xmlns:mvc="sap.ui.core.mvc">
         <m:Page
           title="Page"
           class="sapUiContentPadding">
-          <m:content>
-            <m:HBox>
-              <m:Button text="Default"
-                  press="onPress"
-                  ariaDescribedBy="defaultButtonDescription genericButtonDescription">
-              </m:Button>
-            </m:HBox>
-          </m:content>
+            <m:Button text="Default"
+                press="onPress"
+                ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+            </m:Button>
         </m:Page>
       </mvc:View>
     </script>
