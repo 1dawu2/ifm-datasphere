@@ -145,7 +145,7 @@
         }
       });
 
-      xhr.open("GET", this._export_settings.DWC_tokenURL, false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
+      xhr.open("GET", this._export_settings.DWC_oAuthURL, false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
 
       //adding request headers
       xhr.setRequestHeader("x-csrf-token", "Fetch");
