@@ -47,6 +47,12 @@
 
       this._export_settings = {};
       this._export_settings.restapiurl = "";
+      this._export_settings.DWC_clientID = "";
+      this._export_settings.DWC_apiSecret = "";
+      this._export_settings.DWC_oAuthURL = "";
+      this._export_settings.DWC_tokenURL = "";
+      this._export_settings.DWC_taskChain = "";
+
 
       // this.executeTaskChain();
 
@@ -79,9 +85,50 @@
       this._export_settings.restapiurl = value;
     }
 
+    get DWC_clientID() {
+      return this._export_settings.DWC_clientID;
+    }
+    set DWC_clientID(value) {
+      this._export_settings.DWC_clientID = value;
+    }
+
+    get DWC_apiSecret() {
+      return this._export_settings.DWC_apiSecret;
+    }
+    set DWC_apiSecret(value) {
+      this._export_settings.DWC_apiSecret = value;
+    }
+
+    get DWC_oAuthURL() {
+      return this._export_settings.DWC_oAuthURL;
+    }
+    set DWC_oAuthURL(value) {
+      this._export_settings.DWC_oAuthURL = value;
+    }
+
+    get DWC_tokenURL() {
+      return this._export_settings.DWC_tokenURL;
+    }
+    set DWC_tokenURL(value) {
+      this._export_settings.DWC_tokenURL = value;
+    }
+
+    get DWC_taskChain() {
+      return this._export_settings.DWC_taskChain;
+    }
+    set DWC_taskChain(value) {
+      this._export_settings.DWC_taskChain = value;
+    }
+
+
     static get observedAttributes() {
       return [
         "restapiurl",
+        "DWC_clientID",
+        "DWC_apiSecret",
+        "DWC_oAuthURL",
+        "DWC_tokenURL",
+        "DWC_taskChain"
       ];
     }
 
@@ -130,16 +177,14 @@
             onButtonPress: function (oEvent) {
               var this_ = this;
 
-              var partnernumber = oView.byId("input").getValue();
-              console.log(partnernumber);
-              this_.wasteTime();
-
-              var CLIENT_ID_str = 'REPLACE_WITH_CLIENT_ID';
-              var CLIENT_SECRET_str = 'REPLACE_WITH_CLIENT_SECRET';
+              var CLIENT_ID_str = this._export_settings.DWC_clientID;
+              var CLIENT_SECRET_str = this._export_settings.DWC_apiSecret;
+              var OAUTH_URL = this._export_settings.DWC_oAuthURL;
+              var POST_URL = this._export_settings.DWC_taskChain;
 
               $.ajax({
                 type: 'POST',
-                url: "https://REPLACE_WITH_TOKEN_URL/uaa-security/oauth/token",
+                url: OAUTH_URL,
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 crossDomain: true,
                 cache: true,
@@ -156,36 +201,36 @@
                   var access_token = data.access_token;
 
                   $.ajax({
-                    url: restAPIURL,
+                    url: POST_URL,
                     type: 'POST',
                     headers: {
                       "Authorization": "Bearer " + access_token,
                       "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    data: $.param({
-                      "partnernumber": partnernumber
-                    }),
+                    // data: $.param({
+                    //   "partnernumber": partnernumber
+                    // }),
                     async: true,
                     timeout: 0,
                     contentType: 'application/x-www-form-urlencoded',
                     success: function (data) {
-                      this_.runNext();
+                      // this_.runNext();
                       console.log(data);
                       _score = data;
 
-                      that._firePropertiesChanged();
-                      this.settings = {};
-                      this.settings.score = "";
+                      // that._firePropertiesChanged();
+                      // this.settings = {};
+                      // this.settings.score = "";
 
-                      that.dispatchEvent(new CustomEvent("onStart", {
-                        detail: {
-                          settings: this.settings
-                        }
-                      }));
+                      // that.dispatchEvent(new CustomEvent("onStart", {
+                      //   detail: {
+                      //     settings: this.settings
+                      //   }
+                      // }));
 
                     },
                     error: function (e) {
-                      this_.runNext();
+                      // this_.runNext();
                       console.log("error: " + e);
                       console.log(e);
                     }
@@ -193,7 +238,7 @@
 
                 },
                 error: function (e) {
-                  this_.runNext();
+                  // this_.runNext();
                   console.log(e.responseText);
                 }
               });
