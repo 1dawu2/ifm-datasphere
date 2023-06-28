@@ -150,7 +150,7 @@
 
 
       //sending request
-      xhr.send(data);
+      xhr.send();
 
     }
 
