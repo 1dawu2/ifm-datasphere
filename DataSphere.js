@@ -177,10 +177,10 @@
             onPress: function (oEvent) {
               var this_ = this;
 
-              var CLIENT_ID_str = this._export_settings.DWC_clientID;
-              var CLIENT_SECRET_str = this._export_settings.DWC_apiSecret;
-              var OAUTH_URL = this._export_settings.DWC_oAuthURL;
-              var POST_URL = this._export_settings.DWC_taskChain;
+              var CLIENT_ID_str = that_._export_settings.DWC_clientID;
+              var CLIENT_SECRET_str = that_._export_settings.DWC_apiSecret;
+              var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
+              var POST_URL = that_._export_settings.DWC_taskChain;
 
               $.ajax({
                 type: 'POST',
