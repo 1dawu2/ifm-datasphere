@@ -135,11 +135,12 @@
     getCSRFToken() {
 
       var response = null;
+      var csrfToken = null;
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-          var csrfToken = xhr.getResponseHeader("x-csrf-token");
+          csrfToken = xhr.getResponseHeader("x-csrf-token");
           console.log(csrfToken);
         }
       });
