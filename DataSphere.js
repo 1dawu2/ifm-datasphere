@@ -141,7 +141,7 @@
           console.log(this.getResponseHeader("x-csrf-token"));
         }
       });
-      xhr.open("GET", this.DWC_tokenURL);
+      xhr.open("GET", this._export_settings.DWC_tokenURL);
 
       //adding request headers
       xhr.setRequestHeader("Accept", "application/json");
