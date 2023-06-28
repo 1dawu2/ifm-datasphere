@@ -141,7 +141,7 @@
           console.log(this.responseText);
         }
       });
-      xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/oauthservice/api/v1/oauthclient");
+      xhr.open("GET", this.DWC_tokenURL);
 
       //adding request headers
       xhr.setRequestHeader("Accept", "application/json");
