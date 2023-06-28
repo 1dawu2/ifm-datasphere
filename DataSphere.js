@@ -16,7 +16,7 @@
         <m:VBox>
           <m:Panel headerText="Trigger DataSphere Task Chain">            
             <m:FlexBox
-              height="250px"
+              height="100%"
               alignItems="Start"
               justifyContent="Center">
                 <m:Button text="Execute Task Chain"
