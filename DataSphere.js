@@ -132,6 +132,15 @@
       ];
     }
 
+    getCSRFToken() {
+
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = false;
+      xhr.open("GET", this._export_settings.DWC_tokenURL);
+      xhr.send();
+
+    }
+
     executeTaskChain() {
 
       var xhr = new XMLHttpRequest();
@@ -182,7 +191,7 @@
               var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
               var POST_URL = that_._export_settings.DWC_taskChain;
 
-              that_.executeTaskChain();
+              that_.getCSRFToken();
 
               // $.ajax({
               //   type: 'POST',
