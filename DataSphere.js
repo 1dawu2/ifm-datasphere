@@ -13,14 +13,19 @@
         xmlns:core="sap.ui.core"
         xmlns:m="sap.m"
         xmlns:mvc="sap.ui.core.mvc">
-        <m:Page
-          title="Page"
-          class="sapUiContentPadding">
-            <m:Button text="Default"
-                press="onPress"
-                ariaDescribedBy="defaultButtonDescription genericButtonDescription">
-            </m:Button>
-        </m:Page>
+        <m:VBox>
+          <m:Panel headerText="Trigger DataSphere Task Chain">            
+            <m:FlexBox
+              height="250px"
+              alignItems="Start"
+              justifyContent="Center">
+                <m:Button text="Execute Task Chain"
+                    press="onPress"
+                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+                </m:Button>
+            </m:FlexBox>
+          </m:Panel>
+        </m:VBox>
       </mvc:View>
     </script>
   `;
