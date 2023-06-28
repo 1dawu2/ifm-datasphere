@@ -151,7 +151,7 @@
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
       //sending request
-      xhr.send(null);
+      xhr.send();
 
     }
 
