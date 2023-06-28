@@ -134,27 +134,42 @@
 
     getCSRFToken() {
 
-      var response = null;
-      var csrfToken = null;
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-      xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-          csrfToken = xhr.getResponseHeader("x-csrf-token");
-          console.log(csrfToken);
-        }
-      });
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZHdjLWluZm9tb3Rpb24uYXV0aGVudGljYXRpb24uZXUxMC5oYW5hLm9uZGVtYW5kLmNvbS90b2tlbl9rZXlzIiwia2lkIjoiZGVmYXVsdC1qd3Qta2V5LTI4Njg5MjQxMyIsInR5cCI6IkpXVCIsImppZCI6ICJRTnRNRGVET01ibGlYVk0yeXFIU0gvTFBNN0VPM3ZSbFlTck9lRmFZSUt3PSJ9.eyJqdGkiOiI4OWMwNDRjNzdiNGI0M2M2YTJkMWE3NWIyOGFhNjhiOSIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJzdWJhY2NvdW50aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJ6ZG4iOiJkd2MtaW5mb21vdGlvbiIsInNlcnZpY2VpbnN0YW5jZWlkIjoiNTc0NzcwNTItNDI0Yi00ZmZmLWFmYjctY2MwNTA4OTUzNDVjIn0sInhzLnVzZXIuYXR0cmlidXRlcyI6e30sInhzLnN5c3RlbS5hdHRyaWJ1dGVzIjp7InhzLnNhbWwuZ3JvdXBzIjpbInNhYyJdLCJ4cy5yb2xlY29sbGVjdGlvbnMiOlsic2FjLnVzZXJzIl19LCJnaXZlbl9uYW1lIjoiZGF2aWQud3VybSIsImZhbWlseV9uYW1lIjoiaW5mb21vdGlvbi5kZSIsInN1YiI6IjJlMzU0ZDU2LThhZmQtNDEwYS05Y2RlLWU2ODAyYTk5Yzc0MyIsInNjb3BlIjpbIm9wZW5pZCIsImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhLnVzZXIiLCJ1YWEudXNlciJdLCJjbGllbnRfaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJjaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJhenAiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJyZXZvY2FibGUiOnRydWUsImdyYW50X3R5cGUiOiJhdXRob3JpemF0aW9uX2NvZGUiLCJ1c2VyX2lkIjoiMmUzNTRkNTYtOGFmZC00MTBhLTljZGUtZTY4MDJhOTljNzQzIiwib3JpZ2luIjoiaGFuYWNsb3Vkc2VydmljZXMtZXUuYWNjb3VudHMub25kZW1hIiwidXNlcl9uYW1lIjoiZGF2aWQud3VybUBpbmZvbW90aW9uLmRlIiwiZW1haWwiOiJkYXZpZC53dXJtQGluZm9tb3Rpb24uZGUiLCJhdXRoX3RpbWUiOjE2ODc4Nzk0NjcsInJldl9zaWciOiIxNjEzMzY4NiIsImlhdCI6MTY4Nzk1ODYzMCwiZXhwIjoxNjg3OTYyMjMwLCJpc3MiOiJodHRwczovL2R3Yy1pbmZvbW90aW9uLmF1dGhlbnRpY2F0aW9uLmV1MTAuaGFuYS5vbmRlbWFuZC5jb20vb2F1dGgvdG9rZW4iLCJ6aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJhdWQiOlsiYXBwcm91dGVyLXNhYy1zYWNldTEwIXQzNjUwLnNhcC5mcGEiLCJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJ1YWEiLCJvcGVuaWQiXX0.LpHJj2bgm_ZtnnUkiXj-vSv2KbOYHklOG57DoHYHI1JoCvlmE87KoevdkOBCrNy7_XWb_oZAqFyHb6IZlgDtFbq1wo1uDAOfaWoY6vJZck4sgrW2uMkqthoGjoCO5iLaLTQDquDBwx7MGCOLEvkaD7VhfaYdl3XMT4mX-TXDQI8rjPtXa_nEbbcqTHJeJTHqhE7NlZ4nvt1GFFB0_X0U1o5LIRixNM80I9GoUFcnPTh1H2mxSdNTPBQL0rfu5rMYrlxOe4uyRlgetOAb_gqUt-YuYpz62Lg1KDLASHnSkDc0ls-Uk2poZGxj8QZN1JRcutyeLXaNZrL3FKxy2JpB6w");
+      myHeaders.append("Cookie", "JSESSIONID=s%3AJ6m4TtBVE6f-DaWPQ5tcEDZmSi1CkCkC.JkToNz8v7v8esCEheGCj1jNOZ3E6MCkN5Z9Sor0DxEk; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
 
-      xhr.open("GET", this._export_settings.DWC_oAuthURL, false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
 
-      //adding request headers
-      xhr.setRequestHeader("x-csrf-token", "Fetch");
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-      //sending request
-      xhr.send();
+      fetch("https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
 
-      return csrfToken;
+      // var response = null;
+      // var csrfToken = null;
+      // var xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
+      // xhr.addEventListener("readystatechange", function () {
+      //   if (this.readyState === 4) {
+      //     csrfToken = xhr.getResponseHeader("x-csrf-token");
+      //     console.log(csrfToken);
+      //   }
+      // });
+
+      // xhr.open("GET", this._export_settings.DWC_oAuthURL, false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
+
+      // //adding request headers
+      // xhr.setRequestHeader("x-csrf-token", "Fetch");
+      // xhr.setRequestHeader("Accept", "application/json");
+      // xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+      // //sending request
+      // xhr.send();
+
+      // return csrfToken;
 
     }
 
