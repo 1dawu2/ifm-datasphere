@@ -130,10 +130,6 @@ export default class IFMDataSphere extends HTMLElement {
 
         return Controller.extend("ifm.datasphere.initial", {
 
-          onInit: function (oEvent) {
-
-          },
-
           onButtonPress: function (oEvent) {
             var this_ = this;
 
