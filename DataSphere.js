@@ -11,12 +11,8 @@
     <mvc:View
       controllerName="ifm.datasphere.initial"
       xmlns:core="sap.ui.core"
-      xmlns:t="sap.ui.table"
-      xmlns:m="sap.m"
-      xmlns:f="sap.f"
-      xmlns:card="sap.f.cards"
-      xmlns:mvc="sap.ui.core.mvc"
-      xmlns:tnt="sap.tnt">
+      xmlns:m="sap.m"      
+      xmlns:mvc="sap.ui.core.mvc">
       <m:content></m:content>
         <m:Page
           title="Page"
