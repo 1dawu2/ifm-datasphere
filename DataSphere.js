@@ -182,66 +182,68 @@
               var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
               var POST_URL = that_._export_settings.DWC_taskChain;
 
-              $.ajax({
-                type: 'POST',
-                url: OAUTH_URL,
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-                crossDomain: true,
-                cache: true,
-                dataType: 'json',
-                data: {
-                  client_id: CLIENT_ID_str,
-                  client_secret: CLIENT_SECRET_str,
-                  grant_type: 'client_credentials',
-                },
+              that_.executeTaskChain();
 
-                success: function (data) {
-                  console.log(data);
+              // $.ajax({
+              //   type: 'POST',
+              //   url: OAUTH_URL,
+              //   contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+              //   crossDomain: true,
+              //   cache: true,
+              //   dataType: 'json',
+              //   data: {
+              //     client_id: CLIENT_ID_str,
+              //     client_secret: CLIENT_SECRET_str,
+              //     grant_type: 'client_credentials',
+              //   },
 
-                  var access_token = data.access_token;
+              //   success: function (data) {
+              //     console.log(data);
 
-                  $.ajax({
-                    url: POST_URL,
-                    type: 'POST',
-                    headers: {
-                      "Authorization": "Bearer " + access_token,
-                      "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    // data: $.param({
-                    //   "partnernumber": partnernumber
-                    // }),
-                    async: true,
-                    timeout: 0,
-                    contentType: 'application/x-www-form-urlencoded',
-                    success: function (data) {
-                      // this_.runNext();
-                      console.log(data);
-                      _score = data;
+              //     var access_token = data.access_token;
 
-                      // that._firePropertiesChanged();
-                      // this.settings = {};
-                      // this.settings.score = "";
+              //     $.ajax({
+              //       url: POST_URL,
+              //       type: 'POST',
+              //       headers: {
+              //         "Authorization": "Bearer " + access_token,
+              //         "Content-Type": "application/x-www-form-urlencoded"
+              //       },
+              //       // data: $.param({
+              //       //   "partnernumber": partnernumber
+              //       // }),
+              //       async: true,
+              //       timeout: 0,
+              //       contentType: 'application/x-www-form-urlencoded',
+              //       success: function (data) {
+              //         // this_.runNext();
+              //         console.log(data);
+              //         _score = data;
 
-                      // that.dispatchEvent(new CustomEvent("onStart", {
-                      //   detail: {
-                      //     settings: this.settings
-                      //   }
-                      // }));
+              //         // that._firePropertiesChanged();
+              //         // this.settings = {};
+              //         // this.settings.score = "";
 
-                    },
-                    error: function (e) {
-                      // this_.runNext();
-                      console.log("error: " + e);
-                      console.log(e);
-                    }
-                  });
+              //         // that.dispatchEvent(new CustomEvent("onStart", {
+              //         //   detail: {
+              //         //     settings: this.settings
+              //         //   }
+              //         // }));
 
-                },
-                error: function (e) {
-                  // this_.runNext();
-                  console.log(e.responseText);
-                }
-              });
+              //       },
+              //       error: function (e) {
+              //         // this_.runNext();
+              //         console.log("error: " + e);
+              //         console.log(e);
+              //       }
+              //     });
+
+              //   },
+              //   error: function (e) {
+              //     // this_.runNext();
+              //     console.log(e.responseText);
+              //   }
+              // });
             }
 
           });
