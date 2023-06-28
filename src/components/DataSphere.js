@@ -33,7 +33,7 @@ tmpl.innerHTML = `
     </script>
   `;
 
-class IFMDataSphere extends HTMLElement {
+export default class IFMDataSphere extends HTMLElement {
 
   constructor() {
     super();
