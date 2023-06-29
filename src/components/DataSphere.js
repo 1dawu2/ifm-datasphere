@@ -212,7 +212,7 @@ export default class IFMDataSphere extends HTMLElement {
       }
     });
 
-    xhr.open("GET", this._export_settings.restapiurl + "sap/bc/ina/service/v2/GetServerInfo", false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
+    xhr.open("POST", this._export_settings.restapiurl + "sap/bc/ina/service/v2/GetServerInfo", false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
 
     //adding request headers
     xhr.setRequestHeader("x-csrf-token", "Fetch");
