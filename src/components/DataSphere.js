@@ -156,34 +156,44 @@ export default class IFMDataSphere extends HTMLElement {
     var axios = require("axios");
     var oauth2 = require("axios-oauth-client");
 
-    // import axios from 'axios'
-    // import oauth from 'axios-oauth-client'
-    const getAuthorizationCode = oauth2.authorizationCode(
+
+    const getClientCredentials = oauth.clientCredentials(
       axios.create(),
       this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
       this._export_settings.DWC_clientID,
       this._export_settings.DWC_apiSecret,
-      this._export_settings.DWC_redirectURL // Redirect URL for your app
-    )
+    );
 
-    const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'OPTIONAL_SCOPES')
+    const auth = await getClientCredentials('OPTIONAL_SCOPES')
 
-    var options = {
-      method: 'GET',
-      url: this._export_settings.DWC_oAuthURL,
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
-      data: new URLSearchParams({
-        grant_type: 'client_credentials',
-        client_id: this._export_settings.DWC_clientID,
-        client_secret: this._export_settings.DWC_apiSecret,
-      })
-    };
+    // import axios from 'axios'
+    // import oauth from 'axios-oauth-client'
+    // const getAuthorizationCode = oauth2.authorizationCode(
+    //   axios.create(),
+    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
+    //   this._export_settings.DWC_clientID,
+    //   this._export_settings.DWC_apiSecret,
+    //   this._export_settings.DWC_redirectURL // Redirect URL for your app
+    // )
 
-    axios.request(options).then(function (response) {
-      console.log(response.data);
-    }).catch(function (error) {
-      console.error(error);
-    });
+    // const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'OPTIONAL_SCOPES')
+
+    // var options = {
+    //   method: 'GET',
+    //   url: this._export_settings.DWC_oAuthURL,
+    //   headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    //   data: new URLSearchParams({
+    //     grant_type: 'client_credentials',
+    //     client_id: this._export_settings.DWC_clientID,
+    //     client_secret: this._export_settings.DWC_apiSecret,
+    //   })
+    // };
+
+    // axios.request(options).then(function (response) {
+    //   console.log(response.data);
+    // }).catch(function (error) {
+    //   console.error(error);
+    // });
 
   }
 
