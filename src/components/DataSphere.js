@@ -156,7 +156,7 @@ export default class IFMDataSphere extends HTMLElement {
     var axios = require("axios").default;
 
     var options = {
-      method: 'POST',
+      method: 'GET',
       url: this._export_settings.DWC_oAuthURL,
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
       data: new URLSearchParams({
