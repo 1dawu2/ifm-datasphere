@@ -152,9 +152,29 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
+  getAccessToken() {
+    var axios = require("axios").default;
+
+    var options = {
+      method: 'POST',
+      url: this._export_settings.DWC_oAuthURL,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: this._export_settings.DWC_clientID,
+        client_secret: this._export_settings.DWC_apiSecret,
+      })
+    };
+
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    });
+
+  }
+
   getCSRFToken() {
-
-
     var response = null;
     var csrfToken = null;
     var xhr = new XMLHttpRequest();
@@ -166,7 +186,7 @@ export default class IFMDataSphere extends HTMLElement {
       }
     });
 
-    xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo", false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
+    xhr.open("GET", "https://dwc-infomotion.eu10.hcs.cloud.sap/api/v1/dwc/catalog/spaces", false); //https://dwc-infomotion.eu10.hcs.cloud.sap/sap/bc/ina/service/v2/GetServerInfo"
 
     //adding request headers
     xhr.setRequestHeader("x-csrf-token", "Fetch");
@@ -230,7 +250,8 @@ export default class IFMDataSphere extends HTMLElement {
             var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
             var POST_URL = that_._export_settings.DWC_taskChain;
 
-            that_.getCSRFToken();
+            that_.getAccessToken();
+            //that_.getCSRFToken();
 
             // $.ajax({
             //   type: 'POST',
