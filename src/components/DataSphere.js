@@ -156,8 +156,11 @@ export default class IFMDataSphere extends HTMLElement {
     var axios = require("axios");
     var oauth2 = require("axios-oauth-client");
 
+    var csrfToken = this.getCSRFToken();
+    console.log("CSRF Token:")
+    console.log(csrfToken);
 
-    const getClientCredentials = oauth.clientCredentials(
+    const getClientCredentials = oauth2.clientCredentials(
       axios.create(),
       this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
       this._export_settings.DWC_clientID,
