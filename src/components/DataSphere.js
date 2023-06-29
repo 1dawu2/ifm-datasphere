@@ -49,8 +49,6 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_taskChain = "";
     this._export_settings.DWC_redirectURL = "";
 
-
-
     // this.executeTaskChain();
 
   }
@@ -148,6 +146,22 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
+  _passcodeOAuth2() {
+    passport.use(new OAuth2Strategy({
+      authorizationURL: this._export_settings.DWC_oAuthURL,
+      tokenURL: this._export_settings.DWC_tokenURL,
+      clientID: this._export_settings.DWC_clientID,
+      clientSecret: this._export_settings.DWC_apiSecret,
+      callbackURL: this._export_settings.DWC_redirectURL
+    },
+      function (accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ exampleId: profile.id }, function (err, user) {
+          return cb(err, user);
+        });
+      }
+    ));
+  }
+
   async getAccessToken() {
     var axios = require("axios");
     var oauth2 = require("axios-oauth-client");
@@ -155,6 +169,8 @@ export default class IFMDataSphere extends HTMLElement {
     var csrfToken = this.getCSRFToken();
     console.log("CSRF Token:")
     console.log(csrfToken);
+
+    this._passcodeOAuth2();
 
     const getClientCredentials = oauth2.clientCredentials(
       axios.create(),
@@ -196,7 +212,7 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  getCSRFToken() {
+  async getCSRFToken() {
     var response = null;
     var csrfToken = null;
     var xhr = new XMLHttpRequest();

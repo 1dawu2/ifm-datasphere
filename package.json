@@ -26,6 +26,7 @@
     "@ui5/webcomponents": "^1.10.4",
     "@ui5/webcomponents-fiori": "^1.10.4",
     "axios": "^1.4.0",
-    "axios-oauth-client": "^2.0.2"
+    "axios-oauth-client": "^2.0.2",
+    "passport-oauth2": "^1.7.0"
   }
 }
