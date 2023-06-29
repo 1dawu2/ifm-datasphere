@@ -48,7 +48,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_tokenURL = "";
     this._export_settings.DWC_taskChain = "";
     this._export_settings.DWC_redirectURL = "";
-    this._export_settings.CSRFToken = this.getCSRFToken();
+    this._export_settings.CSRFToken = "";
 
     // this.executeTaskChain();
 
@@ -144,6 +144,68 @@ export default class IFMDataSphere extends HTMLElement {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+
+    // $.ajax({
+    //   type: 'POST',
+    //   url: OAUTH_URL,
+    //   contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+    //   crossDomain: true,
+    //   cache: true,
+    //   dataType: 'json',
+    //   data: {
+    //     client_id: CLIENT_ID_str,
+    //     client_secret: CLIENT_SECRET_str,
+    //     grant_type: 'client_credentials',
+    //   },
+
+    //   success: function (data) {
+    //     console.log(data);
+
+    //     var access_token = data.access_token;
+
+    //     $.ajax({
+    //       url: POST_URL,
+    //       type: 'POST',
+    //       headers: {
+    //         "Authorization": "Bearer " + access_token,
+    //         "Content-Type": "application/x-www-form-urlencoded"
+    //       },
+    //       // data: $.param({
+    //       //   "partnernumber": partnernumber
+    //       // }),
+    //       async: true,
+    //       timeout: 0,
+    //       contentType: 'application/x-www-form-urlencoded',
+    //       success: function (data) {
+    //         // this_.runNext();
+    //         console.log(data);
+    //         _score = data;
+
+    //         // that._firePropertiesChanged();
+    //         // this.settings = {};
+    //         // this.settings.score = "";
+
+    //         // that.dispatchEvent(new CustomEvent("onStart", {
+    //         //   detail: {
+    //         //     settings: this.settings
+    //         //   }
+    //         // }));
+
+    //       },
+    //       error: function (e) {
+    //         // this_.runNext();
+    //         console.log("error: " + e);
+    //         console.log(e);
+    //       }
+    //     });
+
+    //   },
+    //   error: function (e) {
+    //     // this_.runNext();
+    //     console.log(e.responseText);
+    //   }
+    // });
 
   }
 
@@ -272,68 +334,7 @@ export default class IFMDataSphere extends HTMLElement {
             var POST_URL = that_._export_settings.DWC_taskChain;
 
             that_.getAccessToken();
-            //that_.getCSRFToken();
 
-            // $.ajax({
-            //   type: 'POST',
-            //   url: OAUTH_URL,
-            //   contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-            //   crossDomain: true,
-            //   cache: true,
-            //   dataType: 'json',
-            //   data: {
-            //     client_id: CLIENT_ID_str,
-            //     client_secret: CLIENT_SECRET_str,
-            //     grant_type: 'client_credentials',
-            //   },
-
-            //   success: function (data) {
-            //     console.log(data);
-
-            //     var access_token = data.access_token;
-
-            //     $.ajax({
-            //       url: POST_URL,
-            //       type: 'POST',
-            //       headers: {
-            //         "Authorization": "Bearer " + access_token,
-            //         "Content-Type": "application/x-www-form-urlencoded"
-            //       },
-            //       // data: $.param({
-            //       //   "partnernumber": partnernumber
-            //       // }),
-            //       async: true,
-            //       timeout: 0,
-            //       contentType: 'application/x-www-form-urlencoded',
-            //       success: function (data) {
-            //         // this_.runNext();
-            //         console.log(data);
-            //         _score = data;
-
-            //         // that._firePropertiesChanged();
-            //         // this.settings = {};
-            //         // this.settings.score = "";
-
-            //         // that.dispatchEvent(new CustomEvent("onStart", {
-            //         //   detail: {
-            //         //     settings: this.settings
-            //         //   }
-            //         // }));
-
-            //       },
-            //       error: function (e) {
-            //         // this_.runNext();
-            //         console.log("error: " + e);
-            //         console.log(e);
-            //       }
-            //     });
-
-            //   },
-            //   error: function (e) {
-            //     // this_.runNext();
-            //     console.log(e.responseText);
-            //   }
-            // });
           }
 
         });
