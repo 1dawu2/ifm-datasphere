@@ -48,6 +48,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_tokenURL = "";
     this._export_settings.DWC_taskChain = "";
     this._export_settings.DWC_redirectURL = "";
+    this._export_settings.CSRFToken = this.getCSRFToken();
 
     // this.executeTaskChain();
 
@@ -144,22 +145,6 @@ export default class IFMDataSphere extends HTMLElement {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
 
-  }
-
-  _passcodeOAuth2() {
-    passport.use(new OAuth2Strategy({
-      authorizationURL: this._export_settings.DWC_oAuthURL,
-      tokenURL: this._export_settings.DWC_tokenURL,
-      clientID: this._export_settings.DWC_clientID,
-      clientSecret: this._export_settings.DWC_apiSecret,
-      callbackURL: this._export_settings.DWC_redirectURL
-    },
-      function (accessToken, refreshToken, profile, cb) {
-        User.findOrCreate({ exampleId: profile.id }, function (err, user) {
-          return cb(err, user);
-        });
-      }
-    ));
   }
 
   async getAccessToken() {
