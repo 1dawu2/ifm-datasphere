@@ -159,7 +159,7 @@ export default class IFMDataSphere extends HTMLElement {
     var credentials = {
       client: {
         id: this._export_settings.DWC_clientID,
-        secret: this_export_setting.DWC_apiSecret,
+        secret: this._export_setting.DWC_apiSecret,
       },
       auth: {
         tokenHost: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/',
