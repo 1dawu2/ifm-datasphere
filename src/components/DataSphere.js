@@ -215,20 +215,20 @@ export default class IFMDataSphere extends HTMLElement {
 
   executeTaskChain() {
 
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${this._export_settings.AccessToken}`);
-    // myHeaders.append("Cookie", "JSESSIONID=s%3AFJm0IIn9HgvNFG8BzM15sNYcDRVwRMPr.53%2B2ROKIjfB%2FHN06kydga7mz7daHzb8jZmim%2BgHWB5E; __VCAP_ID__=f12a3f39-96c8-4b24-7813-fdd8");
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
 
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+      }
+    });
 
-    fetch(this._export_settings.DWC_taskChain, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    xhr.open("POST", "https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start");
+    // WARNING: Cookies will be stripped away by the browser before sending the request.
+    // xhr.setRequestHeader("Cookie", "signature; JSESSIONID=s%3AX9hp-kceB-ckWitOCZzwyPOoPMDSYhwz.d4B%2BEhNaoy2F9Hnvk9t4tBww0hoIg%2F0hcBBzQ1pDous; __VCAP_ID__=f12a3f39-96c8-4b24-7813-fdd8");
+
+    xhr.send();
 
   }
 
@@ -263,7 +263,7 @@ export default class IFMDataSphere extends HTMLElement {
             var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
             var POST_URL = that_._export_settings.DWC_taskChain;
 
-            that_._doOAuth2();
+            that_.executeTaskChain();
 
           }
 
