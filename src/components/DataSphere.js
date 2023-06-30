@@ -186,7 +186,7 @@ export default class IFMDataSphere extends HTMLElement {
       this._export_settings.DWC_apiSecret,
       "https://bocauth.us1.sapbusinessobjects.cloud" // Redirect URL for your app
     )
-    const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'OPTIONAL_SCOPES')
+    const auth = await getAuthorizationCode();
     console.log(auth);
 
   }
