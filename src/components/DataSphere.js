@@ -49,6 +49,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_taskChain = "";
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
+    this._export_settings.AccessToken = "";
 
     // this.executeTaskChain();
 
@@ -129,92 +130,29 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  _doOAuth2(csrfToken) {
+  // _doOAuth2() {
 
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZHdjLWluZm9tb3Rpb24uYXV0aGVudGljYXRpb24uZXUxMC5oYW5hLm9uZGVtYW5kLmNvbS90b2tlbl9rZXlzIiwia2lkIjoiZGVmYXVsdC1qd3Qta2V5LTI4Njg5MjQxMyIsInR5cCI6IkpXVCIsImppZCI6ICIrYzl4NXV0YzZObHRmWFpHVDZic2M0Y2RMR2kvTlpnRVJzVnFYNGczMk13PSJ9.eyJqdGkiOiJkYmM5ODIzNzNhNGY0NWQ0YmZkY2U0ZDNkY2U2NTFkZSIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJzdWJhY2NvdW50aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJ6ZG4iOiJkd2MtaW5mb21vdGlvbiIsInNlcnZpY2VpbnN0YW5jZWlkIjoiNTc0NzcwNTItNDI0Yi00ZmZmLWFmYjctY2MwNTA4OTUzNDVjIn0sInhzLnN5c3RlbS5hdHRyaWJ1dGVzIjp7InhzLnNhbWwuZ3JvdXBzIjpbInNhYyJdLCJ4cy5yb2xlY29sbGVjdGlvbnMiOlsic2FjLnVzZXJzIl19LCJnaXZlbl9uYW1lIjoibmh1LWN1b25nLm5nbyIsInhzLnVzZXIuYXR0cmlidXRlcyI6e30sImZhbWlseV9uYW1lIjoiaW5mb21vdGlvbi5kZSIsInN1YiI6Ijg0NmI0MTk4LTY2Y2MtNGY3MC04MWQwLTJhNDFlMzExNWY3OCIsInNjb3BlIjpbIm9wZW5pZCIsImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhLnVzZXIiLCJ1YWEudXNlciJdLCJjbGllbnRfaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJjaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJhenAiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJncmFudF90eXBlIjoiYXV0aG9yaXphdGlvbl9jb2RlIiwidXNlcl9pZCI6Ijg0NmI0MTk4LTY2Y2MtNGY3MC04MWQwLTJhNDFlMzExNWY3OCIsIm9yaWdpbiI6ImhhbmFjbG91ZHNlcnZpY2VzLWV1LmFjY291bnRzLm9uZGVtYSIsInVzZXJfbmFtZSI6Im5odS1jdW9uZy5uZ29AaW5mb21vdGlvbi5kZSIsImVtYWlsIjoibmh1LWN1b25nLm5nb0BpbmZvbW90aW9uLmRlIiwiYXV0aF90aW1lIjoxNjg3OTgwNTU5LCJyZXZfc2lnIjoiMzM4ODg1NzIiLCJpYXQiOjE2ODc5ODA1NjAsImV4cCI6MTY4Nzk4NDE2MCwiaXNzIjoiaHR0cHM6Ly9kd2MtaW5mb21vdGlvbi5hdXRoZW50aWNhdGlvbi5ldTEwLmhhbmEub25kZW1hbmQuY29tL29hdXRoL3Rva2VuIiwiemlkIjoiMDdhMzE4ZTUtODg3Zi00YmVlLTlmNTAtMTk4Nzg4NzExNjM4IiwiYXVkIjpbImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhIiwic2ItYTZkMDk5NjgtOWNmMi00OTQwLWE3MjUtYmM2OWYzZTg3NWZmIWIxMDYzNDN8Y2xpZW50IWIzNjUwIiwidWFhIiwib3BlbmlkIl19.gssmp3h0FbrXxjtvrBm-n9IWetGeVmMQSvAspOOAwMrOfsZu6XgJICMD2vcTDuarZR2e4hQdNrd6QHAF7NtzqxollmUa7NLZNwFzVmGUPeDYzdXB6yujOJX2cCKdzq9k_aJlyysFAA4ZarV5YqtJ_lb1abekWikWHzycZVlgw0qBPqBcDlMiCZlNTm6djvTNxh87-9H6MsFeMxnr1Ba8qu5YclWrza6Mc_CauzxxkBUMZ_1JHM0Y180YLlXkDF1cIjWs48_-Ef01M8m3qqmsrxhH8gb26kNKP2bJu91JI302ArttCV6SHFcAqVkKf5WRK2lcuxaAOnA7CthCNyrYRQ");
-    myHeaders.append("Cookie", "signature; JSESSIONID=s%3AKzDHnBXSiRSb9xTG1LiNxqlCCPkNpOWO.Mz%2BXxdbcvbGg9zjqex24%2FwopHUWuj0whIx0E1Dd2NBg; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Authorization", "Bearer" + this._export_settings.AccessToken);
+  //   // myHeaders.append("Cookie", "signature; JSESSIONID=s%3AKzDHnBXSiRSb9xTG1LiNxqlCCPkNpOWO.Mz%2BXxdbcvbGg9zjqex24%2FwopHUWuj0whIx0E1Dd2NBg; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
 
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
+  //   var requestOptions = {
+  //     method: 'POST',
+  //     headers: myHeaders,
+  //     redirect: 'follow'
+  //   };
 
-    fetch("https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+  //   fetch(this._export_settings.DWC_taskChain, requestOptions)
+  //     .then(response => response.text())
+  //     .then(result => console.log(result))
+  //     .catch(error => console.log('error', error));
 
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: OAUTH_URL,
-    //   contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-    //   crossDomain: true,
-    //   cache: true,
-    //   dataType: 'json',
-    //   data: {
-    //     client_id: CLIENT_ID_str,
-    //     client_secret: CLIENT_SECRET_str,
-    //     grant_type: 'client_credentials',
-    //   },
-
-    //   success: function (data) {
-    //     console.log(data);
-
-    //     var access_token = data.access_token;
-
-    //     $.ajax({
-    //       url: POST_URL,
-    //       type: 'POST',
-    //       headers: {
-    //         "Authorization": "Bearer " + access_token,
-    //         "Content-Type": "application/x-www-form-urlencoded"
-    //       },
-    //       // data: $.param({
-    //       //   "partnernumber": partnernumber
-    //       // }),
-    //       async: true,
-    //       timeout: 0,
-    //       contentType: 'application/x-www-form-urlencoded',
-    //       success: function (data) {
-    //         // this_.runNext();
-    //         console.log(data);
-    //         _score = data;
-
-    //         // that._firePropertiesChanged();
-    //         // this.settings = {};
-    //         // this.settings.score = "";
-
-    //         // that.dispatchEvent(new CustomEvent("onStart", {
-    //         //   detail: {
-    //         //     settings: this.settings
-    //         //   }
-    //         // }));
-
-    //       },
-    //       error: function (e) {
-    //         // this_.runNext();
-    //         console.log("error: " + e);
-    //         console.log(e);
-    //       }
-    //     });
-
-    //   },
-    //   error: function (e) {
-    //     // this_.runNext();
-    //     console.log(e.responseText);
-    //   }
-    // });
-
-  }
+  // }
 
   async getAccessToken() {
 
     var axios = require("axios");
 
-    // var csrfToken = this.getCSRFToken();
     const body = {
       grant_type: "client_credentials",
       client_id: this._export_settings.DWC_clientID,
@@ -233,136 +171,12 @@ export default class IFMDataSphere extends HTMLElement {
         { headers: myHeaders }
       );
       console.log("Response data");
-      console.log(response.data);
+      console.log(response.data.access_token);
+      this._export_settings.AccessToken = response.data.access_token;
+      this.executeTaskChain();
     } catch (err) {
       throw err;
     }
-
-    // axios.request({
-    //   url: this._export_settings.restapiurl,
-    //   method: "post",
-    //   baseURL: this._export_settings.DWC_taskChain,
-    //   auth: {
-    //     username: "nhu-cuong.ngo@infomotion.de",
-    //     password: "Dont4Get!"
-    //   },
-    //   data: {
-    //     grant_type: "client_credentials",
-    //     client_id: this._export_settings.DWC_clientID,
-    //     client_secret: this._export_settings.DWC_apiSecret,
-    //     // _csrf: csrfToken,
-    //     "scope": "public"
-    //   }
-    //   // headers: {
-    //   //   "X-CSRF-Token": csrfToken
-    //   // }
-    // }).then(function (res) {
-    //   console.log(res);
-    // });
-
-    // const axios = require('axios');
-
-    // // Define your application's credentials and DWC API endpoints
-    // const clientId = this._export_settings.DWC_clientID;
-    // const clientSecret = this._export_settings.DWC_apiSecret;
-    // const authorizationEndpoint = this._export_settings.DWC_oAuthURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/authorize'
-    // const tokenEndpoint = this._export_settings.DWC_tokenURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/token'
-
-    // // Define the redirect URL for the authorization flow (where the authorization code will be sent)
-    // const redirectUrl = this._export_settings.DWC_redirectURL;
-
-    // // Define the DWC API endpoint you want to access with the obtained access token
-    // const apiUrl = this._export_settings.DWC_taskChain;
-
-    // // Step 1: Initiate the authorization flow
-    // const initiateAuthorizationFlow = async () => {
-    //   const authUrl = `${authorizationEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
-    //   // Redirect the user to the authorization URL
-    //   window.location.href = authUrl;
-    // };
-
-    // // Step 2: Exchange the authorization code for an access token
-    // const exchangeAuthorizationCode = async (authorizationCode) => {
-    //   const data = {
-    //     grant_type: 'authorization_code',
-    //     client_id: clientId,
-    //     client_secret: clientSecret,
-    //     code: authorizationCode,
-    //     redirect_uri: redirectUrl
-    //   };
-
-    //   const response = await axios.post(tokenEndpoint, data);
-    //   const accessToken = response.data.access_token;
-
-    //   // Use the obtained access token for subsequent API requests
-    //   fetchApiData(accessToken);
-    // };
-
-    // // Step 3: Use the access token to fetch data from DWC API
-    // const fetchApiData = async (accessToken) => {
-    //   const config = {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`
-    //     }
-    //   };
-
-    //   const response = await axios.get(apiUrl, config);
-    //   const apiData = response.data;
-
-    //   // Process the fetched data as needed
-    //   console.log(apiData);
-    // };
-
-    // // After the user is redirected back to your application with the authorization code, call the exchangeAuthorizationCode function with the code
-    // const authorizationCode = 'AUTHORIZATION_CODE_RECEIVED_FROM_REDIRECT';
-    // exchangeAuthorizationCode(authorizationCode);
-
-
-    // var axios = require("axios");
-    // var oauth2 = require("axios-oauth-client");
-
-    // var csrfToken = this.getCSRFToken();
-    // console.log("CSRF Token:")
-    // console.log(csrfToken);
-
-    // const getClientCredentials = oauth2.clientCredentials(
-    //   axios.create(),
-    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
-    //   this._export_settings.DWC_clientID,
-    //   this._export_settings.DWC_apiSecret,
-    // );
-
-    // const auth = await getClientCredentials('OPTIONAL_SCOPES')
-
-    // import axios from 'axios'
-    // import oauth from 'axios-oauth-client'
-    // const getAuthorizationCode = oauth2.authorizationCode(
-    //   axios.create(),
-    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
-    //   this._export_settings.DWC_clientID,
-    //   this._export_settings.DWC_apiSecret,
-    //   this._export_settings.DWC_redirectURL // Redirect URL for your app
-    // )
-
-    // const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'OPTIONAL_SCOPES')
-
-    // var options = {
-    //   method: 'GET',
-    //   url: this._export_settings.DWC_oAuthURL,
-    //   headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    //   data: new URLSearchParams({
-    //     grant_type: 'client_credentials',
-    //     client_id: this._export_settings.DWC_clientID,
-    //     client_secret: this._export_settings.DWC_apiSecret,
-    //   })
-    // };
-
-    // axios.request(options).then(function (response) {
-    //   console.log(response.data);
-    // }).catch(function (error) {
-    //   console.error(error);
-    // });
-
   }
 
   getCSRFToken() {
@@ -386,8 +200,7 @@ export default class IFMDataSphere extends HTMLElement {
     //sending request
     xhr.send();
 
-    return csrfToken;
-
+    this._export_settings.CSRFToken = csrfToken;
   }
 
   executeTaskChain() {
@@ -401,12 +214,11 @@ export default class IFMDataSphere extends HTMLElement {
       }
     });
 
-    xhr.open("POST", "https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start");
-    xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZHdjLWluZm9tb3Rpb24uYXV0aGVudGljYXRpb24uZXUxMC5oYW5hLm9uZGVtYW5kLmNvbS90b2tlbl9rZXlzIiwia2lkIjoiZGVmYXVsdC1qd3Qta2V5LTI4Njg5MjQxMyIsInR5cCI6IkpXVCIsImppZCI6ICJJRysyZjFVbWhtbytXNEdwRDRYWUFPME5JUnlBWEd3emdFQUZSdklaS3Y4PSJ9.eyJqdGkiOiJmYzMzNGIyMWJiZTA0MzVlODRlMTk3NDU3NTNlZmI1YSIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJzdWJhY2NvdW50aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJ6ZG4iOiJkd2MtaW5mb21vdGlvbiIsInNlcnZpY2VpbnN0YW5jZWlkIjoiNTc0NzcwNTItNDI0Yi00ZmZmLWFmYjctY2MwNTA4OTUzNDVjIn0sInhzLnN5c3RlbS5hdHRyaWJ1dGVzIjp7InhzLnNhbWwuZ3JvdXBzIjpbInNhYyJdLCJ4cy5yb2xlY29sbGVjdGlvbnMiOlsic2FjLnVzZXJzIl19LCJnaXZlbl9uYW1lIjoiZGF2aWQud3VybSIsInhzLnVzZXIuYXR0cmlidXRlcyI6e30sImZhbWlseV9uYW1lIjoiaW5mb21vdGlvbi5kZSIsInN1YiI6IjJlMzU0ZDU2LThhZmQtNDEwYS05Y2RlLWU2ODAyYTk5Yzc0MyIsInNjb3BlIjpbIm9wZW5pZCIsImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhLnVzZXIiLCJ1YWEudXNlciJdLCJjbGllbnRfaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJjaWQiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJhenAiOiJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJncmFudF90eXBlIjoiYXV0aG9yaXphdGlvbl9jb2RlIiwidXNlcl9pZCI6IjJlMzU0ZDU2LThhZmQtNDEwYS05Y2RlLWU2ODAyYTk5Yzc0MyIsIm9yaWdpbiI6ImhhbmFjbG91ZHNlcnZpY2VzLWV1LmFjY291bnRzLm9uZGVtYSIsInVzZXJfbmFtZSI6ImRhdmlkLnd1cm1AaW5mb21vdGlvbi5kZSIsImVtYWlsIjoiZGF2aWQud3VybUBpbmZvbW90aW9uLmRlIiwiYXV0aF90aW1lIjoxNjg3ODc5NDY3LCJyZXZfc2lnIjoiMTYxMzM2ODYiLCJpYXQiOjE2ODc4Nzk2ODYsImV4cCI6MTY4Nzg4MzI4NiwiaXNzIjoiaHR0cHM6Ly9kd2MtaW5mb21vdGlvbi5hdXRoZW50aWNhdGlvbi5ldTEwLmhhbmEub25kZW1hbmQuY29tL29hdXRoL3Rva2VuIiwiemlkIjoiMDdhMzE4ZTUtODg3Zi00YmVlLTlmNTAtMTk4Nzg4NzExNjM4IiwiYXVkIjpbImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhIiwic2ItYTZkMDk5NjgtOWNmMi00OTQwLWE3MjUtYmM2OWYzZTg3NWZmIWIxMDYzNDN8Y2xpZW50IWIzNjUwIiwidWFhIiwib3BlbmlkIl19.GdYP2i50VR3-KfL1tY7KZ7AlOhNB7AF_WIj8afT2JWXSrBqoQgheAHF9Wv9aw8uXjanTFO-t9W7XE3V1yC_b2Jzo0Ng8TCa-3y-7nOxQfry10lr_qAqk_nRjD9cuWlEeseYe5VhpGL1a4M3Q5bO50-hgWEEXtyjlUpXbhD8V_p1NIypn3eEGlsNZtxOGOlNWBDv9_O0_6yVRLNyk5gpLFfqq1Ddu5sp_o4nToz4VXcmpn6MvrOU449v3R9m_MMiIsq3pPjfhYb2QD2mvMcHi7jCbLXNidlHcPDC1XgH6yL6IHrNtK33seMG7XWrqK7Yw3uypxCW_mdjINCyu9uWgCg");
-    xhr.setRequestHeader("Cookie", "JSESSIONID=s%3A_EvTAY82EYX4VjpkDv0enuqPGJ9ucLLg.ni2gKCxZCFc2GQ%2B9dOIB3EJCF%2B5q0G15gj0w8KvuT%2B4; __VCAP_ID__=eb6a6391-93e0-4a14-5225-796d");
+    xhr.open("POST", this._export_settings.DWC_taskChain);
+    xhr.setRequestHeader("Authorization", "Bearer " + this._export_settings.AccessToken);
+    // xhr.setRequestHeader("Cookie", "JSESSIONID=s%3A_EvTAY82EYX4VjpkDv0enuqPGJ9ucLLg.ni2gKCxZCFc2GQ%2B9dOIB3EJCF%2B5q0G15gj0w8KvuT%2B4; __VCAP_ID__=eb6a6391-93e0-4a14-5225-796d");
 
     xhr.send();
-
 
   }
 
