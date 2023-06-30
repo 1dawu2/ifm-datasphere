@@ -210,33 +210,55 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  getAccessToken() {
+  async getAccessToken() {
 
     var axios = require("axios");
 
-    var csrfToken = this.getCSRFToken();
+    // var csrfToken = this.getCSRFToken();
+    const body = {
+      grant_type: "client_credentials",
+      client_id: this._export_settings.DWC_clientID,
+      client_secret: this._export_settings.DWC_apiSecret,
+    };
 
-    axios.request({
-      url: this._export_settings.restapiurl,
-      method: "post",
-      baseURL: this._export_settings.DWC_taskChain,
-      auth: {
-        username: "nhu-cuong.ngo@infomotion.de",
-        password: "Dont4Get!"
-      },
-      data: {
-        grant_type: "client_credentials",
-        client_id: this._export_settings.DWC_clientID,
-        client_secret: this._export_settings.DWC_apiSecret,
-        // _csrf: csrfToken,
-        "scope": "public"
-      }
-      // headers: {
-      //   "X-CSRF-Token": csrfToken
-      // }
-    }).then(function (res) {
-      console.log(res);
-    });
+    const myHeaders = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Accept": "*/*",
+    }
+
+    try {
+      const response = await axios.post(
+        this._export_settings.DWC_tokenURL,
+        body,
+        { headers: myHeaders }
+      );
+      console.log("Response data");
+      console.log(response.data);
+    } catch (err) {
+      throw err;
+    }
+
+    // axios.request({
+    //   url: this._export_settings.restapiurl,
+    //   method: "post",
+    //   baseURL: this._export_settings.DWC_taskChain,
+    //   auth: {
+    //     username: "nhu-cuong.ngo@infomotion.de",
+    //     password: "Dont4Get!"
+    //   },
+    //   data: {
+    //     grant_type: "client_credentials",
+    //     client_id: this._export_settings.DWC_clientID,
+    //     client_secret: this._export_settings.DWC_apiSecret,
+    //     // _csrf: csrfToken,
+    //     "scope": "public"
+    //   }
+    //   // headers: {
+    //   //   "X-CSRF-Token": csrfToken
+    //   // }
+    // }).then(function (res) {
+    //   console.log(res);
+    // });
 
     // const axios = require('axios');
 
