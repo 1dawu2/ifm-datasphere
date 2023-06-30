@@ -160,8 +160,8 @@ export default class IFMDataSphere extends HTMLElement {
 
     const body = {
       grant_type: "authorization_code",
-      // response_type: "token",
-      // code: this._export_settings.DWC_passcode,
+      response_type: "token",
+      code: "qL420nkkM6nn17EIxm120EUqiMRloEOv",
       redirect_uri: "https://bocauth.us1.sapbusinessobjects.cloud",
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
