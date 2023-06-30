@@ -219,7 +219,7 @@ export default class IFMDataSphere extends HTMLElement {
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${this._export_settings.AccessToken}`);
-    myHeaders.append("Cookie", "JSESSIONID=s%3AFJm0IIn9HgvNFG8BzM15sNYcDRVwRMPr.53%2B2ROKIjfB%2FHN06kydga7mz7daHzb8jZmim%2BgHWB5E; __VCAP_ID__=f12a3f39-96c8-4b24-7813-fdd8");
+    // myHeaders.append("Cookie", "JSESSIONID=s%3AFJm0IIn9HgvNFG8BzM15sNYcDRVwRMPr.53%2B2ROKIjfB%2FHN06kydga7mz7daHzb8jZmim%2BgHWB5E; __VCAP_ID__=f12a3f39-96c8-4b24-7813-fdd8");
 
     var requestOptions = {
       method: 'POST',
