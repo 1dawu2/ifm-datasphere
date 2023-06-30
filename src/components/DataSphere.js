@@ -217,7 +217,7 @@ export default class IFMDataSphere extends HTMLElement {
     var csrfToken = this.getCSRFToken();
 
     axios.request({
-      url: this._export_settings.DWC_oAuthURL,
+      url: this._export_settings.restapiurl,
       method: "post",
       baseURL: this._export_settings.DWC_taskChain,
       auth: {
@@ -228,12 +228,12 @@ export default class IFMDataSphere extends HTMLElement {
         grant_type: "client_credentials",
         client_id: this._export_settings.DWC_clientID,
         client_secret: this._export_settings.DWC_apiSecret,
-        _csrf: csrfToken,
+        // _csrf: csrfToken,
         "scope": "public"
-      },
-      headers: {
-        "X-CSRF-Token": csrfToken
       }
+      // headers: {
+      //   "X-CSRF-Token": csrfToken
+      // }
     }).then(function (res) {
       console.log(res);
     });
