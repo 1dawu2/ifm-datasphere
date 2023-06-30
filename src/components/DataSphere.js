@@ -124,7 +124,8 @@ export default class IFMDataSphere extends HTMLElement {
       "DWC_apiSecret",
       "DWC_oAuthURL",
       "DWC_tokenURL",
-      "DWC_taskChain"
+      "DWC_taskChain",
+      "DWC_redirectURL"
     ];
   }
 
@@ -209,22 +210,81 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  async getAccessToken() {
-    var axios = require("axios");
-    var oauth2 = require("axios-oauth-client");
+  getAccessToken() {
 
-    var csrfToken = this.getCSRFToken();
-    console.log("CSRF Token:")
-    console.log(csrfToken);
+    const axios = require('axios');
 
-    const getClientCredentials = oauth2.clientCredentials(
-      axios.create(),
-      this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
-      this._export_settings.DWC_clientID,
-      this._export_settings.DWC_apiSecret,
-    );
+    // Define your application's credentials and DWC API endpoints
+    const clientId = this._export_settings.DWC_clientID;
+    const clientSecret = this._export_settings.DWC_apiSecret;
+    const authorizationEndpoint = this._export_settings.DWC_oAuthURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/authorize'
+    const tokenEndpoint = this._export_settings.DWC_tokenURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/token'
 
-    const auth = await getClientCredentials('OPTIONAL_SCOPES')
+    // Define the redirect URL for the authorization flow (where the authorization code will be sent)
+    const redirectUrl = this._export_settings.DWC_redirectURL;
+
+    // Define the DWC API endpoint you want to access with the obtained access token
+    const apiUrl = this._export_settings.DWC_taskChain;
+
+    // Step 1: Initiate the authorization flow
+    const initiateAuthorizationFlow = async () => {
+      const authUrl = `${authorizationEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+      // Redirect the user to the authorization URL
+      window.location.href = authUrl;
+    };
+
+    // Step 2: Exchange the authorization code for an access token
+    const exchangeAuthorizationCode = async (authorizationCode) => {
+      const data = {
+        grant_type: 'authorization_code',
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: authorizationCode,
+        redirect_uri: redirectUrl
+      };
+
+      const response = await axios.post(tokenEndpoint, data);
+      const accessToken = response.data.access_token;
+
+      // Use the obtained access token for subsequent API requests
+      fetchApiData(accessToken);
+    };
+
+    // Step 3: Use the access token to fetch data from DWC API
+    const fetchApiData = async (accessToken) => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      };
+
+      const response = await axios.get(apiUrl, config);
+      const apiData = response.data;
+
+      // Process the fetched data as needed
+      console.log(apiData);
+    };
+
+    // After the user is redirected back to your application with the authorization code, call the exchangeAuthorizationCode function with the code
+    const authorizationCode = 'AUTHORIZATION_CODE_RECEIVED_FROM_REDIRECT';
+    exchangeAuthorizationCode(authorizationCode);
+
+
+    // var axios = require("axios");
+    // var oauth2 = require("axios-oauth-client");
+
+    // var csrfToken = this.getCSRFToken();
+    // console.log("CSRF Token:")
+    // console.log(csrfToken);
+
+    // const getClientCredentials = oauth2.clientCredentials(
+    //   axios.create(),
+    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
+    //   this._export_settings.DWC_clientID,
+    //   this._export_settings.DWC_apiSecret,
+    // );
+
+    // const auth = await getClientCredentials('OPTIONAL_SCOPES')
 
     // import axios from 'axios'
     // import oauth from 'axios-oauth-client'
