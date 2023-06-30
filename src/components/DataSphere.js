@@ -50,8 +50,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
     this._export_settings.AccessToken = "";
-
-    // this.executeTaskChain();
+    this._export_settings.DWC_passcode = this.getDataSpherePasscode();
 
   }
 
@@ -130,24 +129,43 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  // _doOAuth2() {
+  async getDataSpherePasscode() {
+    // const puppeteer = require("puppeteer");
+    // const browser = await puppeteer.launch();
+    // const page = await browser.newPage();
 
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Authorization", "Bearer" + this._export_settings.AccessToken);
-  //   // myHeaders.append("Cookie", "signature; JSESSIONID=s%3AKzDHnBXSiRSb9xTG1LiNxqlCCPkNpOWO.Mz%2BXxdbcvbGg9zjqex24%2FwopHUWuj0whIx0E1Dd2NBg; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
+    // await page.goto("https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode");
 
-  //   var requestOptions = {
-  //     method: 'POST',
-  //     headers: myHeaders,
-  //     redirect: 'follow'
-  //   };
+    // await page.waitForSelector('#logOnForm', { visible: true, timeout: 5000 });
 
-  //   fetch(this._export_settings.DWC_taskChain, requestOptions)
-  //     .then(response => response.text())
-  //     .then(result => console.log(result))
-  //     .catch(error => console.log('error', error));
+    // if (await page.$('#logOnForm') !== null) {
+    //   await page.type('#j_username', "Nhu-Cuong.Ngo@infomotion.de");
+    //   await page.type('#j_password', "Infomotion123!");
+    //   await page.click('#logOnFormSubmit');
+    // }
 
-  // }
+    // await page.waitForSelector('div.island > h1 + h2', { visible: true, timeout: 5000 });
+    // const passcode = await page.$eval('h2', el => el.textContent);
+
+    // console.log('passcode', passcode);
+    // this._export_settings.DWC_passcode = passcode;
+
+    // await browser.close();
+
+    // const { Builder, By, Key, until } = require('selenium-webdriver');
+
+    // (async function example() {
+    //   let driver = await new Builder().forBrowser('firefox').build();
+    //   try {
+    //     await driver.get('http://www.google.com/ncr');
+    //     await driver.findElement(By.name('q'));.sendKeys('webdriver', Key.RETURN);
+    //     await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
+    //   } finally {
+    //     await driver.quit();
+    //   }
+    // })();
+
+  }
 
   async getAccessToken() {
 
@@ -156,8 +174,8 @@ export default class IFMDataSphere extends HTMLElement {
     const body = {
       grant_type: "authorization_code",
       response_type: "token",
-      code: "b38t5xez4GOqjFZInCAZUYDWsh9l70O1",
-      redirect_uri: this._export_settings.DWC_redirectURL,
+      code: this._export_settings.DWC_passcode,
+      redirect_uri: "https://bocauth.us1.sapbusinessobjects.cloud",
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
     };
