@@ -154,7 +154,9 @@ export default class IFMDataSphere extends HTMLElement {
     var axios = require("axios");
 
     const body = {
-      grant_type: "client_credentials",
+      grant_type: "authorization_code",
+      response_type: "code",
+      redirect_uri: this._export_settings.DWC_redirectURL,
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
     };
@@ -171,23 +173,23 @@ export default class IFMDataSphere extends HTMLElement {
         { headers: myHeaders }
       );
       console.log("Response data");
-      console.log(response.data.access_token);
+      console.log(response.data);
       this._export_settings.AccessToken = response.data.access_token;
-      this.executeTaskChain();
+      // this.executeTaskChain();
     } catch (err) {
       throw err;
     }
 
-    var oauth = require('axios-oauth-client')
-    const getAuthorizationCode = oauth.authorizationCode(
-      axios.create(),
-      this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
-      this._export_settings.DWC_clientID,
-      this._export_settings.DWC_apiSecret,
-      "https://bocauth.us1.sapbusinessobjects.cloud" // Redirect URL for your app
-    )
-    const auth = await getAuthorizationCode();
-    console.log(auth);
+    // var oauth = require('axios-oauth-client')
+    // const getAuthorizationCode = oauth.authorizationCode(
+    //   axios.create(),
+    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
+    //   this._export_settings.DWC_clientID,
+    //   this._export_settings.DWC_apiSecret,
+    //   "https://bocauth.us1.sapbusinessobjects.cloud" // Redirect URL for your app
+    // )
+    // const auth = await getAuthorizationCode();
+    // console.log(auth);
 
   }
 
