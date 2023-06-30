@@ -215,7 +215,7 @@ export default class IFMDataSphere extends HTMLElement {
     });
 
     xhr.open("POST", this._export_settings.DWC_taskChain);
-    xhr.setRequestHeader("Authorization", "Bearer " + this._export_settings.AccessToken);
+    xhr.setRequestHeader("Authorization", `Bearer ${this._export_settings.AccessToken}`);
     // xhr.setRequestHeader("Cookie", "JSESSIONID=s%3A_EvTAY82EYX4VjpkDv0enuqPGJ9ucLLg.ni2gKCxZCFc2GQ%2B9dOIB3EJCF%2B5q0G15gj0w8KvuT%2B4; __VCAP_ID__=eb6a6391-93e0-4a14-5225-796d");
 
     xhr.send();
