@@ -152,19 +152,6 @@ export default class IFMDataSphere extends HTMLElement {
 
     // await browser.close();
 
-    // const { Builder, By, Key, until } = require('selenium-webdriver');
-
-    // (async function example() {
-    //   let driver = await new Builder().forBrowser('firefox').build();
-    //   try {
-    //     await driver.get('http://www.google.com/ncr');
-    //     await driver.findElement(By.name('q'));.sendKeys('webdriver', Key.RETURN);
-    //     await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-    //   } finally {
-    //     await driver.quit();
-    //   }
-    // })();
-
   }
 
   async getAccessToken() {
@@ -173,8 +160,8 @@ export default class IFMDataSphere extends HTMLElement {
 
     const body = {
       grant_type: "authorization_code",
-      response_type: "token",
-      code: this._export_settings.DWC_passcode,
+      // response_type: "token",
+      // code: this._export_settings.DWC_passcode,
       redirect_uri: "https://bocauth.us1.sapbusinessobjects.cloud",
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
@@ -183,7 +170,7 @@ export default class IFMDataSphere extends HTMLElement {
     const myHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Accept": "*/*",
-      "x-sap-sac-custom-auth": "true"
+      // "x-sap-sac-custom-auth": "true"
     }
 
     try {
@@ -193,7 +180,7 @@ export default class IFMDataSphere extends HTMLElement {
         { headers: myHeaders }
       );
       console.log("Response data");
-      console.log(response.data);
+      console.log(response);
       this._export_settings.AccessToken = response.data.access_token;
       // this.executeTaskChain();
     } catch (err) {
