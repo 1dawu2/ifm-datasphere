@@ -156,6 +156,7 @@ export default class IFMDataSphere extends HTMLElement {
     const body = {
       grant_type: "authorization_code",
       response_type: "code",
+      code: "c3y6TyG8RbQ1MKjzc6cbHUJrkUzFVY1x",
       redirect_uri: this._export_settings.DWC_redirectURL,
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
