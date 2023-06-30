@@ -156,7 +156,7 @@ export default class IFMDataSphere extends HTMLElement {
     const body = {
       grant_type: "authorization_code",
       response_type: "code",
-      code: "c3y6TyG8RbQ1MKjzc6cbHUJrkUzFVY1x",
+      code: "b38t5xez4GOqjFZInCAZUYDWsh9l70O1",
       redirect_uri: this._export_settings.DWC_redirectURL,
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
@@ -165,6 +165,7 @@ export default class IFMDataSphere extends HTMLElement {
     const myHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Accept": "*/*",
+      "x-sap-sac-custom-auth": "true"
     }
 
     try {
