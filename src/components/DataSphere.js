@@ -205,20 +205,20 @@ export default class IFMDataSphere extends HTMLElement {
 
   executeTaskChain() {
 
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${this._export_settings.AccessToken}`);
+    myHeaders.append("Cookie", "JSESSIONID=s%3AFJm0IIn9HgvNFG8BzM15sNYcDRVwRMPr.53%2B2ROKIjfB%2FHN06kydga7mz7daHzb8jZmim%2BgHWB5E; __VCAP_ID__=f12a3f39-96c8-4b24-7813-fdd8");
 
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(this.responseText);
-      }
-    });
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
 
-    xhr.open("POST", this._export_settings.DWC_taskChain);
-    xhr.setRequestHeader("Authorization", `Bearer ${this._export_settings.AccessToken}`);
-    // xhr.setRequestHeader("Cookie", "JSESSIONID=s%3A_EvTAY82EYX4VjpkDv0enuqPGJ9ucLLg.ni2gKCxZCFc2GQ%2B9dOIB3EJCF%2B5q0G15gj0w8KvuT%2B4; __VCAP_ID__=eb6a6391-93e0-4a14-5225-796d");
-
-    xhr.send();
+    fetch(this._export_settings.DWC_taskChain, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
 
   }
 
