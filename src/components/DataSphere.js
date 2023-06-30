@@ -50,6 +50,8 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
     this._export_settings.AccessToken = "";
+    this._export_settings.credentials = {};
+    this._export_settings.OAuthClient = null;
 
   }
 
@@ -115,7 +117,6 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_taskChain = value;
   }
 
-
   static get observedAttributes() {
     return [
       "restapiurl",
@@ -145,6 +146,63 @@ export default class IFMDataSphere extends HTMLElement {
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
 
+  }
+
+  performAuth() {
+
+    this.intiAuth();
+    this.getAuthUrl();
+
+  }
+
+  intiAuth() {
+    var credentials = {
+      client: {
+        id: this._export_settings.DWC_clientID,
+        secret: this_export_setting.DWC_apiSecret,
+      },
+      auth: {
+        tokenHost: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/',
+        authorizePath: 'oauth/authorize',
+        tokenPath: 'oauth/token'
+      }
+    };
+    var oauth2 = require('simple-oauth2').create(credentials);
+    console.log(oauth2);
+    this._export_settings.OAuthClient = oauth2;
+  }
+
+  getAuthUrl() {
+    var returnVal = this._export_settings.OAuthClient.authorizationCode.authorizeURL({
+      redirect_uri: this._export_settings.DWC_redirectURL,
+      scope: scopes.join(' ')
+    });
+    console.log('Generated auth url: ' + returnVal);
+
+    return returnVal;
+  }
+
+  getTokenFromCode(auth_code, callback, response) {
+    var token;
+    this._export_settings.OAuthClient.authorizationCode.getToken({
+      code: auth_code,
+      redirect_uri: this._export_settings.DWC_redirectURL,
+      scope: scopes.join(' ')
+    }, function (error, result) {
+      if (error) {
+        console.log('Access token error: ', error.message);
+        callback(response, error, null);
+      } else {
+        token = this._export_settings.OAuthClient.accessToken.create(result);
+        console.log('Token created: ', token.token);
+        callback(response, null, token);
+      }
+    });
+  }
+
+  refreshAccessToken(refreshToken, callback) {
+    var tokenObj = this._export_settings.OAuthClient.accessToken.create({ refresh_token: refreshToken });
+    tokenObj.refresh(callback);
   }
 
   async getAccessToken() {
@@ -256,15 +314,7 @@ export default class IFMDataSphere extends HTMLElement {
         return Controller.extend("ifm.datasphere.initial", {
 
           onPress: function (oEvent) {
-            var this_ = this;
-
-            var CLIENT_ID_str = that_._export_settings.DWC_clientID;
-            var CLIENT_SECRET_str = that_._export_settings.DWC_apiSecret;
-            var OAUTH_URL = that_._export_settings.DWC_oAuthURL;
-            var POST_URL = that_._export_settings.DWC_taskChain;
-
-            that_.executeTaskChain();
-
+            that_.performAuth();
           }
 
         });

@@ -11,6 +11,10 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
+  target: "node",
+  node: {
+    __dirname: false,
+  },
   stats: {
     children: true
   },
@@ -29,6 +33,10 @@ const config = {
   ],
   module: {
     rules: [
+      {
+        test: /\.node$/,
+        loader: "node-loader",
+      },
       {
         test: /\.(js|jsx)$/i,
         loader: "babel-loader",
@@ -71,11 +79,10 @@ const config = {
 };
 
 module.exports = () => {
-
   if (isProduction) {
     config.mode = "production";
-
     config.plugins.push(new MiniCssExtractPlugin());
+
   } else {
     config.mode = "development";
   }
