@@ -212,62 +212,80 @@ export default class IFMDataSphere extends HTMLElement {
 
   getAccessToken() {
 
-    const axios = require('axios');
+    var axios = require("axios");
 
-    // Define your application's credentials and DWC API endpoints
-    const clientId = this._export_settings.DWC_clientID;
-    const clientSecret = this._export_settings.DWC_apiSecret;
-    const authorizationEndpoint = this._export_settings.DWC_oAuthURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/authorize'
-    const tokenEndpoint = this._export_settings.DWC_tokenURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/token'
+    axios.request({
+      url: this._export_settings.DWC_oAuthURL,
+      method: "post",
+      baseURL: this._export_settings.DWC_taskChain,
+      auth: {
+        username: "nhu-cuong.ngo@infomotion.de",
+        password: "Dont4Get!"
+      },
+      data: {
+        "grant_type": "client_credentials",
+        "scope": "public"
+      }
+    }).then(function (res) {
+      console.log(res);
+    });
 
-    // Define the redirect URL for the authorization flow (where the authorization code will be sent)
-    const redirectUrl = this._export_settings.DWC_redirectURL;
+    // const axios = require('axios');
 
-    // Define the DWC API endpoint you want to access with the obtained access token
-    const apiUrl = this._export_settings.DWC_taskChain;
+    // // Define your application's credentials and DWC API endpoints
+    // const clientId = this._export_settings.DWC_clientID;
+    // const clientSecret = this._export_settings.DWC_apiSecret;
+    // const authorizationEndpoint = this._export_settings.DWC_oAuthURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/authorize'
+    // const tokenEndpoint = this._export_settings.DWC_tokenURL; //'https://your-dwc-instance.authentication.eu10.hana.ondemand.com/oauth/token'
 
-    // Step 1: Initiate the authorization flow
-    const initiateAuthorizationFlow = async () => {
-      const authUrl = `${authorizationEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
-      // Redirect the user to the authorization URL
-      window.location.href = authUrl;
-    };
+    // // Define the redirect URL for the authorization flow (where the authorization code will be sent)
+    // const redirectUrl = this._export_settings.DWC_redirectURL;
 
-    // Step 2: Exchange the authorization code for an access token
-    const exchangeAuthorizationCode = async (authorizationCode) => {
-      const data = {
-        grant_type: 'authorization_code',
-        client_id: clientId,
-        client_secret: clientSecret,
-        code: authorizationCode,
-        redirect_uri: redirectUrl
-      };
+    // // Define the DWC API endpoint you want to access with the obtained access token
+    // const apiUrl = this._export_settings.DWC_taskChain;
 
-      const response = await axios.post(tokenEndpoint, data);
-      const accessToken = response.data.access_token;
+    // // Step 1: Initiate the authorization flow
+    // const initiateAuthorizationFlow = async () => {
+    //   const authUrl = `${authorizationEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+    //   // Redirect the user to the authorization URL
+    //   window.location.href = authUrl;
+    // };
 
-      // Use the obtained access token for subsequent API requests
-      fetchApiData(accessToken);
-    };
+    // // Step 2: Exchange the authorization code for an access token
+    // const exchangeAuthorizationCode = async (authorizationCode) => {
+    //   const data = {
+    //     grant_type: 'authorization_code',
+    //     client_id: clientId,
+    //     client_secret: clientSecret,
+    //     code: authorizationCode,
+    //     redirect_uri: redirectUrl
+    //   };
 
-    // Step 3: Use the access token to fetch data from DWC API
-    const fetchApiData = async (accessToken) => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      };
+    //   const response = await axios.post(tokenEndpoint, data);
+    //   const accessToken = response.data.access_token;
 
-      const response = await axios.get(apiUrl, config);
-      const apiData = response.data;
+    //   // Use the obtained access token for subsequent API requests
+    //   fetchApiData(accessToken);
+    // };
 
-      // Process the fetched data as needed
-      console.log(apiData);
-    };
+    // // Step 3: Use the access token to fetch data from DWC API
+    // const fetchApiData = async (accessToken) => {
+    //   const config = {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`
+    //     }
+    //   };
 
-    // After the user is redirected back to your application with the authorization code, call the exchangeAuthorizationCode function with the code
-    const authorizationCode = 'AUTHORIZATION_CODE_RECEIVED_FROM_REDIRECT';
-    exchangeAuthorizationCode(authorizationCode);
+    //   const response = await axios.get(apiUrl, config);
+    //   const apiData = response.data;
+
+    //   // Process the fetched data as needed
+    //   console.log(apiData);
+    // };
+
+    // // After the user is redirected back to your application with the authorization code, call the exchangeAuthorizationCode function with the code
+    // const authorizationCode = 'AUTHORIZATION_CODE_RECEIVED_FROM_REDIRECT';
+    // exchangeAuthorizationCode(authorizationCode);
 
 
     // var axios = require("axios");
