@@ -50,7 +50,8 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
     this._export_settings.AccessToken = "";
-    this._export_settings.DWC_passcode = this.getDataSpherePasscode();
+
+    // this.executeTaskChain();
 
   }
 
@@ -129,40 +130,31 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  async getDataSpherePasscode() {
-    // const puppeteer = require("puppeteer");
-    // const browser = await puppeteer.launch();
-    // const page = await browser.newPage();
+  // _doOAuth2() {
 
-    // await page.goto("https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode");
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Authorization", "Bearer" + this._export_settings.AccessToken);
+  //   // myHeaders.append("Cookie", "signature; JSESSIONID=s%3AKzDHnBXSiRSb9xTG1LiNxqlCCPkNpOWO.Mz%2BXxdbcvbGg9zjqex24%2FwopHUWuj0whIx0E1Dd2NBg; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
 
-    // await page.waitForSelector('#logOnForm', { visible: true, timeout: 5000 });
+  //   var requestOptions = {
+  //     method: 'POST',
+  //     headers: myHeaders,
+  //     redirect: 'follow'
+  //   };
 
-    // if (await page.$('#logOnForm') !== null) {
-    //   await page.type('#j_username', "Nhu-Cuong.Ngo@infomotion.de");
-    //   await page.type('#j_password', "Infomotion123!");
-    //   await page.click('#logOnFormSubmit');
-    // }
+  //   fetch(this._export_settings.DWC_taskChain, requestOptions)
+  //     .then(response => response.text())
+  //     .then(result => console.log(result))
+  //     .catch(error => console.log('error', error));
 
-    // await page.waitForSelector('div.island > h1 + h2', { visible: true, timeout: 5000 });
-    // const passcode = await page.$eval('h2', el => el.textContent);
-
-    // console.log('passcode', passcode);
-    // this._export_settings.DWC_passcode = passcode;
-
-    // await browser.close();
-
-  }
+  // }
 
   async getAccessToken() {
 
     var axios = require("axios");
 
     const body = {
-      grant_type: "authorization_code",
-      response_type: "token",
-      code: "qL420nkkM6nn17EIxm120EUqiMRloEOv",
-      redirect_uri: "https://bocauth.us1.sapbusinessobjects.cloud",
+      grant_type: "client_credentials",
       client_id: this._export_settings.DWC_clientID,
       client_secret: this._export_settings.DWC_apiSecret,
     };
@@ -170,7 +162,6 @@ export default class IFMDataSphere extends HTMLElement {
     const myHeaders = {
       "Content-Type": "application/x-www-form-urlencoded",
       "Accept": "*/*",
-      // "x-sap-sac-custom-auth": "true"
     }
 
     try {
@@ -180,9 +171,9 @@ export default class IFMDataSphere extends HTMLElement {
         { headers: myHeaders }
       );
       console.log("Response data");
-      console.log(response);
+      console.log(response.data.access_token);
       this._export_settings.AccessToken = response.data.access_token;
-      // this.executeTaskChain();
+      this.executeTaskChain();
     } catch (err) {
       throw err;
     }
@@ -195,7 +186,7 @@ export default class IFMDataSphere extends HTMLElement {
     //   this._export_settings.DWC_apiSecret,
     //   "https://bocauth.us1.sapbusinessobjects.cloud" // Redirect URL for your app
     // )
-    // const auth = await getAuthorizationCode();
+    // const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'uaa.resource publicapiservice-sac-saceu10!t3650.apiaccess approuter-sac-saceu10!t3650.sap.fpa.user')
     // console.log(auth);
 
   }
