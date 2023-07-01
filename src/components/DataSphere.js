@@ -184,6 +184,7 @@ export default class IFMDataSphere extends HTMLElement {
       scopes: []
     })
     console.log(DataSphereAuth);
+    DataSphereAuth.createToken();
     this._export_settings.OAuthClient = DataSphereAuth;
   }
 
