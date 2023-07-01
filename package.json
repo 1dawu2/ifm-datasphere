@@ -26,8 +26,8 @@
   "dependencies": {
     "@ui5/webcomponents": "^1.10.4",
     "@ui5/webcomponents-fiori": "^1.10.4",
-    "assert": "^2.0.0",
     "axios": "^1.4.0",
-    "simple-oauth2": "^5.0.0"
+    "client-oauth2": "^4.3.3",
+    "querystring": "^0.2.1"
   }
 }

@@ -90,17 +90,17 @@ module.exports = () => {
   if (isProduction) {
     config.mode = "production";
     config.plugins.push(new MiniCssExtractPlugin());
-    config.resolve = {
-      fallback: {
-        querystring: false,
-        stream: false,
-        url: false,
-        https: false, //require.resolve('https-browserify'),
-        http: false, //require.resolve('http-browserify'),
-        //"assert": require.resolve("assert/"),
-        zlib: false //require.resolve('browserify-zlib')
-      }
-    }
+    // config.resolve = {
+    //   fallback: {
+    //     querystring: false,
+    //     stream: false,
+    //     url: false,
+    //     https: false, //require.resolve('https-browserify'),
+    //     http: false, //require.resolve('http-browserify'),
+    //     //"assert": require.resolve("assert/"),
+    //     zlib: false //require.resolve('browserify-zlib')
+    //   }
+    // }
 
   } else {
     config.mode = "development";

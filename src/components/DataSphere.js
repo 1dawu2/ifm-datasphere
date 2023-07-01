@@ -151,7 +151,7 @@ export default class IFMDataSphere extends HTMLElement {
   performAuth() {
 
     this.intiAuth();
-    this.getAuthUrl();
+    // this.getAuthUrl();
 
   }
 
@@ -167,9 +167,17 @@ export default class IFMDataSphere extends HTMLElement {
         tokenPath: 'oauth/token'
       }
     };
-    var oauth2 = require('simple-oauth2').create(credentials);
-    console.log(oauth2);
-    this._export_settings.OAuthClient = oauth2;
+    var ClientOAuth2 = require('client-oauth2');
+    var DataSphereAuth = new ClientOAuth2({
+      clientId: this._export_settings.DWC_clientID,
+      clientSecret: this._export_settings.DWC_apiSecret,
+      accessTokenUri: this._export_settings.DWC_tokenURL,
+      authorizationUri: this._export_settings.DWC_oAuthURL,
+      redirectUri: this._export_settings.DWC_redirectURL,
+      scopes: []
+    })
+    console.log(DataSphereAuth);
+    this._export_settings.OAuthClient = DataSphereAuth;
   }
 
   getAuthUrl() {
