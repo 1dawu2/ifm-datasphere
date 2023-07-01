@@ -92,10 +92,13 @@ module.exports = () => {
     config.plugins.push(new MiniCssExtractPlugin());
     config.resolve = {
       fallback: {
-        https: require.resolve('https-browserify'),
-        http: require.resolve('http-browserify'),
-        "assert": require.resolve("assert/"),
-        zlib: require.resolve('browserify-zlib')
+        querystring: false,
+        stream: false,
+        url: false,
+        https: false, //require.resolve('https-browserify'),
+        http: false, //require.resolve('http-browserify'),
+        //"assert": require.resolve("assert/"),
+        zlib: false //require.resolve('browserify-zlib')
       }
     }
 
