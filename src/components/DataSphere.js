@@ -82,6 +82,13 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.restapiurl = value;
   }
 
+  get DWC_redirectURL() {
+    return this._export_settings.DWC_redirectURL;
+  }
+  set DWC_redirectURL(value) {
+    this._export_settings.DWC_redirectURL = value;
+  }
+
   get DWC_clientID() {
     return this._export_settings.DWC_clientID;
   }
