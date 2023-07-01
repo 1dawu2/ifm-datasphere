@@ -11,10 +11,10 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  target: "node",
-  node: {
-    __dirname: false,
-  },
+  // target: "node",
+  // node: {
+  //   __dirname: false,
+  // },
   stats: {
     children: true
   },
@@ -33,10 +33,10 @@ const config = {
   ],
   module: {
     rules: [
-      {
-        test: /\.node$/,
-        loader: "node-loader",
-      },
+      // {
+      //   test: /\.node$/,
+      //   loader: "node-loader",
+      // },
       {
         test: /\.(js|jsx)$/i,
         loader: "babel-loader",
@@ -82,6 +82,13 @@ module.exports = () => {
   if (isProduction) {
     config.mode = "production";
     config.plugins.push(new MiniCssExtractPlugin());
+    config.resolve = {
+      fallback: {
+        https: false, //require.resolve('https-browserify'),
+        http: false, // require.resolve('http-browserify'),
+        zlib: false // require.resolve('browserify-zlib')
+      }
+    }
 
   } else {
     config.mode = "development";
