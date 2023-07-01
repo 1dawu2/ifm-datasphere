@@ -26,6 +26,7 @@
   "dependencies": {
     "@ui5/webcomponents": "^1.10.4",
     "@ui5/webcomponents-fiori": "^1.10.4",
+    "assert": "^2.0.0",
     "axios": "^1.4.0",
     "browserify-zlib": "^0.2.0",
     "http": "^0.0.1-security",

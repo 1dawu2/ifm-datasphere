@@ -25,12 +25,13 @@ const config = {
     filename: 'main_bundle.js'
   },
   plugins: [
+    // Add your plugins here
+    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+
     // new HtmlWebpackPlugin({
     //   template: "./src/components/templates/",
     // }),
 
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
@@ -91,9 +92,10 @@ module.exports = () => {
     config.plugins.push(new MiniCssExtractPlugin());
     config.resolve = {
       fallback: {
-        https: false, //require.resolve('https-browserify'),
-        http: false, // require.resolve('http-browserify'),
-        zlib: false // require.resolve('browserify-zlib')
+        https: require.resolve('https-browserify'),
+        http: require.resolve('http-browserify'),
+        "assert": require.resolve("assert/"),
+        zlib: require.resolve('browserify-zlib')
       }
     }
 
