@@ -139,7 +139,7 @@ export default class IFMDataSphere extends HTMLElement {
   _doOAuth2(token) {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer " + token);
+    myHeaders.append("Authorization", "Bearer " + this._export_settings.Token.accessToken);
 
     var requestOptions = {
       method: 'POST',
@@ -156,10 +156,9 @@ export default class IFMDataSphere extends HTMLElement {
 
   performAuth() {
 
-    var token = this.intiAuth();
-    console.log(token);
-    this._export_settings.Token = token;
-    this._doOAuth2(token);
+    this.intiAuth();
+    console.log(this._export_settings.Token);
+    this._doOAuth2();
 
     // this.getAuthUrl();
 
@@ -173,12 +172,12 @@ export default class IFMDataSphere extends HTMLElement {
       clientSecret: this._export_settings.DWC_apiSecret,
       accessTokenUri: this._export_settings.DWC_tokenURL,
       authorizationUri: this._export_settings.DWC_oAuthURL,
-      redirectUri: this._export_settings.DWC_redirectURL,
-      scopes: []
+      redirectUri: this._export_settings.DWC_redirectURL
+      // scopes: []
     })
     this._export_settings.OAuthClient = DataSphereAuth;
     DataSphereAuth.credentials.getToken().then(function (token) {
-      return token.accessToken
+      this._export_settings.Token = token;
     });
   }
 
