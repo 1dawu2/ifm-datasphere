@@ -49,7 +49,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_taskChain = "";
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
-    this._export_settings.AccessToken = "";
+    this._export_settings.Token = null;
     this._export_settings.credentials = {};
     this._export_settings.OAuthClient = null;
 
@@ -136,11 +136,10 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  _doOAuth2() {
+  _doOAuth2(token) {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZHdjLWluZm9tb3Rpb24uYXV0aGVudGljYXRpb24uZXUxMC5oYW5hLm9uZGVtYW5kLmNvbS90b2tlbl9rZXlzIiwia2lkIjoiZGVmYXVsdC1qd3Qta2V5LTI4Njg5MjQxMyIsInR5cCI6IkpXVCIsImppZCI6ICJVSmk3LzJYSFNLaThCY2ZmYUpHQnFOeWFOSFNZWGwxa2E3OENQK2pPa1NBPSJ9.eyJqdGkiOiJiYWZmOGExZTNlMzY0ZmE3ODM3ZTI3ZTk3ZDFkYTgzNSIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJzdWJhY2NvdW50aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJ6ZG4iOiJkd2MtaW5mb21vdGlvbiIsInNlcnZpY2VpbnN0YW5jZWlkIjoiNTc0NzcwNTItNDI0Yi00ZmZmLWFmYjctY2MwNTA4OTUzNDVjIn0sInN1YiI6InNiLWE2ZDA5OTY4LTljZjItNDk0MC1hNzI1LWJjNjlmM2U4NzVmZiFiMTA2MzQzfGNsaWVudCFiMzY1MCIsImF1dGhvcml0aWVzIjpbInVhYS5yZXNvdXJjZSIsInB1YmxpY2FwaXNlcnZpY2Utc2FjLXNhY2V1MTAhdDM2NTAuYXBpYWNjZXNzIiwiYXBwcm91dGVyLXNhYy1zYWNldTEwIXQzNjUwLnNhcC5mcGEudXNlciJdLCJzY29wZSI6WyJ1YWEucmVzb3VyY2UiLCJwdWJsaWNhcGlzZXJ2aWNlLXNhYy1zYWNldTEwIXQzNjUwLmFwaWFjY2VzcyIsImFwcHJvdXRlci1zYWMtc2FjZXUxMCF0MzY1MC5zYXAuZnBhLnVzZXIiXSwiY2xpZW50X2lkIjoic2ItYTZkMDk5NjgtOWNmMi00OTQwLWE3MjUtYmM2OWYzZTg3NWZmIWIxMDYzNDN8Y2xpZW50IWIzNjUwIiwiY2lkIjoic2ItYTZkMDk5NjgtOWNmMi00OTQwLWE3MjUtYmM2OWYzZTg3NWZmIWIxMDYzNDN8Y2xpZW50IWIzNjUwIiwiYXpwIjoic2ItYTZkMDk5NjgtOWNmMi00OTQwLWE3MjUtYmM2OWYzZTg3NWZmIWIxMDYzNDN8Y2xpZW50IWIzNjUwIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI5NjFlMDNkMCIsImlhdCI6MTY4ODE0MDQ0MywiZXhwIjoxNjg4MTQ0MDQzLCJpc3MiOiJodHRwczovL2R3Yy1pbmZvbW90aW9uLmF1dGhlbnRpY2F0aW9uLmV1MTAuaGFuYS5vbmRlbWFuZC5jb20vb2F1dGgvdG9rZW4iLCJ6aWQiOiIwN2EzMThlNS04ODdmLTRiZWUtOWY1MC0xOTg3ODg3MTE2MzgiLCJhdWQiOlsiYXBwcm91dGVyLXNhYy1zYWNldTEwIXQzNjUwLnNhcC5mcGEiLCJzYi1hNmQwOTk2OC05Y2YyLTQ5NDAtYTcyNS1iYzY5ZjNlODc1ZmYhYjEwNjM0M3xjbGllbnQhYjM2NTAiLCJ1YWEiLCJwdWJsaWNhcGlzZXJ2aWNlLXNhYy1zYWNldTEwIXQzNjUwIl19.M-o4NMsxr-_DhGJAqvMCWZ-PSS5AJw1z3U9ygMcI35o05w-e54RAf5h1Z4Aml2jcQ562x9hBefLkNvWym6Js8pv-ttK1DeG4AeXwmOfbZc2_Mc9Yu-tKAQLYez6vXvQUxV7Im2nSrm9nCUQRHhf4bd22hDkgjAddV4kdo9b2wXq5vXopQKblT1-SuYKqMi_kV4tQBQXfMTzj628j-NTP75rzhnkS10Qi7BMBAyS-QdbrXqpGKUEPeR3F3gKywf9MQWfGz9zKi1upCKWpSZ7rkMrfUTaXiQuZCKk3G7uUro8ULmJPBwkHJJQJMJQF-Bm4kGw7BGnXJK6cn419CuIejw");
-    // myHeaders.append("Cookie", "signature; JSESSIONID=s%3AKzDHnBXSiRSb9xTG1LiNxqlCCPkNpOWO.Mz%2BXxdbcvbGg9zjqex24%2FwopHUWuj0whIx0E1Dd2NBg; __VCAP_ID__=efeff00f-03a4-412b-4a11-649d");
+    myHeaders.append("Authorization", "Bearer " + token);
 
     var requestOptions = {
       method: 'POST',
@@ -157,8 +156,11 @@ export default class IFMDataSphere extends HTMLElement {
 
   performAuth() {
 
-    this._export_settings.AccessToken = this.intiAuth();
-    console.log(this._export_settings.AccessToken);
+    var token = this.intiAuth();
+    console.log(token);
+    this._export_settings.Token = token;
+    this._doOAuth2(token);
+
     // this.getAuthUrl();
 
   }
