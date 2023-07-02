@@ -24,6 +24,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@badgateway/oauth2-client": "^2.2.0",
     "@ui5/webcomponents": "^1.10.4",
     "@ui5/webcomponents-fiori": "^1.10.4",
     "axios": "^1.4.0",

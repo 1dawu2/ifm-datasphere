@@ -1,3 +1,4 @@
+import { OAuth2Client, OAuth2Fetch } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -165,22 +166,40 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   intiAuth() {
-
-    var ClientOAuth2 = require('client-oauth2');
-    var DataSphereAuth = new ClientOAuth2({
+    const client = new OAuth2Client({
+      // OAuth2 config
+      // The base URI of your OAuth2 server
+      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
-      accessTokenUri: this._export_settings.DWC_tokenURL,
-      authorizationUri: this._export_settings.DWC_oAuthURL,
-      redirectUri: this._export_settings.DWC_redirectURL
-      // scopes: []
-    })
-    this._export_settings.OAuthClient = DataSphereAuth;
-    DataSphereAuth.credentials.getToken()
-      .then(function (user) {
-        console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
-        this._export_settings.Token = user;
-      });
+      tokenEndpoint: '/oauth/token',
+      authorizationEndpoint: '/oauth/authorize',
+    });
+
+    const fetchWrapper = new OAuth2Fetch({
+      client: client,
+      getNewToken: async () => {
+        return client.clientCredentials
+      },
+      onError: (err) => {
+        throw (err);
+      }
+    });
+    // var ClientOAuth2 = require('client-oauth2');
+    // var DataSphereAuth = new ClientOAuth2({
+    //   clientId: this._export_settings.DWC_clientID,
+    //   clientSecret: this._export_settings.DWC_apiSecret,
+    //   accessTokenUri: this._export_settings.DWC_tokenURL,
+    //   authorizationUri: this._export_settings.DWC_oAuthURL,
+    //   redirectUri: this._export_settings.DWC_redirectURL
+    //   // scopes: []
+    // })
+    // this._export_settings.OAuthClient = DataSphereAuth;
+    // DataSphereAuth.credentials.getToken()
+    //   .then(function (user) {
+    //     console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
+    //     this._export_settings.Token = user;
+    //   });
   }
 
   getAuthUrl() {
