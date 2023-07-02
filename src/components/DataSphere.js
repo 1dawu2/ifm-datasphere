@@ -185,6 +185,12 @@ export default class IFMDataSphere extends HTMLElement {
         throw (err);
       }
     });
+
+    console.log(fetchWrapper);
+    const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
+      method: 'POST',
+    });
+    console.log(response);
     // var ClientOAuth2 = require('client-oauth2');
     // var DataSphereAuth = new ClientOAuth2({
     //   clientId: this._export_settings.DWC_clientID,
