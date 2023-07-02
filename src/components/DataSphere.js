@@ -159,7 +159,7 @@ export default class IFMDataSphere extends HTMLElement {
 
     this.intiAuth();
     console.log(this._export_settings.Token);
-    this._doOAuth2();
+    // this._doOAuth2();
 
     // this.getAuthUrl();
 
