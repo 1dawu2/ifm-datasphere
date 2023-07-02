@@ -158,6 +158,7 @@ export default class IFMDataSphere extends HTMLElement {
   performAuth() {
 
     this._export_settings.AccessToken = this.intiAuth();
+    console.log(this._export_settings.AccessToken);
     // this.getAuthUrl();
 
   }
