@@ -166,18 +166,18 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   intiAuth() {
-    const client = new OAuth2Client({
+    const clientOAuth2 = new OAuth2Client({
       // OAuth2 config
       // The base URI of your OAuth2 server
       server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
       tokenEndpoint: '/oauth/token',
-      authorizationEndpoint: '/oauth/authorize',
+      authorizationEndpoint: '/oauth/authorize'
     });
 
     const fetchWrapper = new OAuth2Fetch({
-      client: client,
+      client: clientOAuth2,
       getNewToken: async () => {
         return client.clientCredentials
       },
@@ -187,6 +187,7 @@ export default class IFMDataSphere extends HTMLElement {
     });
 
     console.log(fetchWrapper);
+
     const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
       method: 'POST',
     });
