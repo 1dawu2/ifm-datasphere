@@ -157,7 +157,7 @@ export default class IFMDataSphere extends HTMLElement {
 
   performAuth() {
 
-    this.intiAuth();
+    this._export_settings.AccessToken = this.intiAuth();
     // this.getAuthUrl();
 
   }
@@ -174,12 +174,9 @@ export default class IFMDataSphere extends HTMLElement {
       scopes: []
     })
     this._export_settings.OAuthClient = DataSphereAuth;
-    this._export_settings.AccessToken = DataSphereAuth.credentials.getToken();
-    console.log(this._export_settings.AccessToken);
-    // .then(function (token) {
-    //   this._export_settings.AccessToken = token.accessToken;
-    //   console.log(token.accessToken) //=> { accessToken: '...', tokenType: 'bearer', ... }
-    // });
+    DataSphereAuth.credentials.getToken().then(function (token) {
+      return token.accessToken
+    });
   }
 
   getAuthUrl() {
