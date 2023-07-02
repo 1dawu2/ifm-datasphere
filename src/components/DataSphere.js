@@ -179,7 +179,7 @@ export default class IFMDataSphere extends HTMLElement {
     const fetchWrapper = new OAuth2Fetch({
       client: clientOAuth2,
       getNewToken: async () => {
-        return client.clientCredentials
+        return clientOAuth2.clientCredentials
       },
       onError: (err) => {
         throw (err);
