@@ -163,17 +163,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   intiAuth() {
-    var credentials = {
-      client: {
-        id: this._export_settings.DWC_clientID,
-        secret: this._export_settings.DWC_apiSecret,
-      },
-      auth: {
-        tokenHost: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/',
-        authorizePath: 'oauth/authorize',
-        tokenPath: 'oauth/token'
-      }
-    };
+
     var ClientOAuth2 = require('client-oauth2');
     var DataSphereAuth = new ClientOAuth2({
       clientId: this._export_settings.DWC_clientID,
@@ -183,13 +173,11 @@ export default class IFMDataSphere extends HTMLElement {
       redirectUri: this._export_settings.DWC_redirectURL,
       scopes: []
     })
-    console.log(DataSphereAuth);
-    var token = DataSphereAuth.createToken();
-    console.log(token.accessToken);
-    var uri = DataSphereAuth.code.getUri();
-    var token2 = DataSphereAuth.code.getToken();
-    console.log(token2);
-    console.log(uri);
+
+    DataSphereAuth.credentials.getToken()
+      .then(function (user) {
+        console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
+      });
     this._export_settings.OAuthClient = DataSphereAuth;
   }
 
