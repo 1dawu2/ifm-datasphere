@@ -175,8 +175,9 @@ export default class IFMDataSphere extends HTMLElement {
     })
 
     DataSphereAuth.credentials.getToken()
-      .then(function (user) {
-        console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
+      .then(function (token) {
+        this._export_settings.AccessToken = token.accessToken;
+        console.log(token.accessToken) //=> { accessToken: '...', tokenType: 'bearer', ... }
       });
     this._export_settings.OAuthClient = DataSphereAuth;
   }
