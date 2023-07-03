@@ -266,7 +266,7 @@ export default class IFMDataSphere extends HTMLElement {
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
-    var encodedToken = 'Basic ' + Buffer.from(base64Token).toString('base64');
+    var encodedToken = Buffer.from(base64Token).toString('base64');
 
     const body = {
       grant_type: "client_credentials",
