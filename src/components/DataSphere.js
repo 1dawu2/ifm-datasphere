@@ -272,13 +272,16 @@ export default class IFMDataSphere extends HTMLElement {
       client_secret: this._export_settings.DWC_apiSecret,
     };
 
-    const response = await axios.post(
+    axios.post(
       'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
-      querystring.stringify({ 'grant_type': 'client_credentials' }),
+      querystring.stringify({
+        'grant_type': 'authorization_code',
+        'redirect_uri': 'https://bocauth.us1.sapbusinessobjects.cloud',
+        'code': 'gIs6Qrf6N0A5pIfjGz72l67XVm08Tw4s'
+      }),
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic xxxx'
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
     ).then((response) => {

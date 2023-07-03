@@ -28,6 +28,7 @@
     "@ui5/webcomponents": "^1.10.4",
     "@ui5/webcomponents-fiori": "^1.10.4",
     "axios": "^1.4.0",
+    "axios-oauth-client": "^2.0.2",
     "client-oauth2": "^4.3.3",
     "querystring": "^0.2.1"
   }
