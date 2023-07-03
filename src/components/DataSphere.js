@@ -156,9 +156,9 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performAuth() {
-
-    this.intiAuth();
-    console.log(this._export_settings.Token);
+    this.getAccessToken();
+    // this.intiAuth();
+    // console.log(this._export_settings.Token);
     // this._doOAuth2();
 
     // this.getAuthUrl();
@@ -277,18 +277,25 @@ export default class IFMDataSphere extends HTMLElement {
     }
 
     try {
-      const response = await axios.post(
-        this._export_settings.DWC_tokenURL,
-        body,
-        { headers: myHeaders }
-      );
-      console.log("Response data");
-      console.log(response.data.access_token);
-      this._export_settings.AccessToken = response.data.access_token;
-      this._doOAuth2();
+      const response = await axios.get('https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443', { headers: myHeaders });
+      console.log(response);
     } catch (err) {
-      throw err;
-    }
+      throw (err);
+    };
+
+    // try {
+    //   const response = await axios.post(
+    //     this._export_settings.DWC_tokenURL,
+    //     body,
+    //     { headers: myHeaders }
+    //   );
+    //   console.log("Response data");
+    //   console.log(response.data.access_token);
+    //   this._export_settings.AccessToken = response.data.access_token;
+    //   this._doOAuth2();
+    // } catch (err) {
+    //   throw err;
+    // }
 
     // var oauth = require('axios-oauth-client')
     // const getAuthorizationCode = oauth.authorizationCode(
