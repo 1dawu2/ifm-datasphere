@@ -169,28 +169,28 @@ export default class IFMDataSphere extends HTMLElement {
     const client = new OAuth2Client({
       // OAuth2 config
       // The base URI of your OAuth2 server
-      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode',
+      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
       // clientSecret: this._export_settings.DWC_apiSecret,
       // tokenEndpoint: '/oauth/token',
       // authorizationEndpoint: '/oauth/authorize'
     });
 
-    const codeVerifier = await generateCodeVerifier();
+    // const codeVerifier = await generateCodeVerifier();
     // In a browser this might work as follows:
-    document.location = await client.authorizationCode.getAuthorizeUri({
-      redirectUri: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode',
-      // state: 'some-string',
-      codeVerifier
-      // scope: ['scope1', 'scope2'],
-    });
+    // document.location = await client.authorizationCode.getAuthorizeUri({
+    //   redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
+    //   // state: 'some-string',
+    //   codeVerifier
+    //   // scope: ['scope1', 'scope2'],
+    // });
 
     const oauth2Token = await client.authorizationCode.getTokenFromCodeRedirect(
       document.location,
       {
-        redirectUri: this._export_settings.DWC_redirectURL,
+        redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
         // state: 'some-string',
-        codeVerifier,
+        // codeVerifier,
       }
     );
 
