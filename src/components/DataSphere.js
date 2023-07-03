@@ -169,7 +169,7 @@ export default class IFMDataSphere extends HTMLElement {
     const client = new OAuth2Client({
       // OAuth2 config
       // The base URI of your OAuth2 server
-      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
+      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode',
       clientId: this._export_settings.DWC_clientID,
       // clientSecret: this._export_settings.DWC_apiSecret,
       // tokenEndpoint: '/oauth/token',
@@ -179,7 +179,7 @@ export default class IFMDataSphere extends HTMLElement {
     const codeVerifier = await generateCodeVerifier();
     // In a browser this might work as follows:
     document.location = await client.authorizationCode.getAuthorizeUri({
-      redirectUri: this._export_settings.DWC_redirectURL,
+      redirectUri: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/passcode',
       // state: 'some-string',
       codeVerifier
       // scope: ['scope1', 'scope2'],
