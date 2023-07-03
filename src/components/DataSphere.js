@@ -265,6 +265,8 @@ export default class IFMDataSphere extends HTMLElement {
 
     var axios = require("axios");
     var querystring = require("querystring");
+    const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
+    var encodedToken = 'Basic ' + Buffer.from(base64Token).toString('base64');
 
     const body = {
       grant_type: "client_credentials",
@@ -276,12 +278,13 @@ export default class IFMDataSphere extends HTMLElement {
       'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
       querystring.stringify({
         'grant_type': 'authorization_code',
-        'redirect_uri': 'https://bocauth.us1.sapbusinessobjects.cloud',
         'code': 'gIs6Qrf6N0A5pIfjGz72l67XVm08Tw4s'
       }),
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Authorization': 'Basic ' + encodedToken,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': '*/*'
         }
       }
     ).then((response) => {
