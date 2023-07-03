@@ -172,11 +172,12 @@ export default class IFMDataSphere extends HTMLElement {
       server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
       // clientSecret: this._export_settings.DWC_apiSecret,
-      // tokenEndpoint: '/oauth/token',
-      // authorizationEndpoint: '/oauth/authorize'
+      tokenEndpoint: '/oauth/token',
+      authorizationEndpoint: '/oauth/authorize'
+
     });
 
-    // const codeVerifier = await generateCodeVerifier();
+    const codeVerifier = await generateCodeVerifier();
     // In a browser this might work as follows:
     // document.location = await client.authorizationCode.getAuthorizeUri({
     //   redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
@@ -190,7 +191,7 @@ export default class IFMDataSphere extends HTMLElement {
       {
         redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
         // state: 'some-string',
-        // codeVerifier,
+        codeVerifier,
       }
     );
 
