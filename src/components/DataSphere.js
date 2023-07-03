@@ -264,7 +264,7 @@ export default class IFMDataSphere extends HTMLElement {
   async getAccessToken() {
 
     var axios = require("axios");
-    var query_string = require("querystring");
+    var querystring = require("querystring");
 
     const body = {
       grant_type: "client_credentials",
