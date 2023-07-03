@@ -264,6 +264,7 @@ export default class IFMDataSphere extends HTMLElement {
   async getAccessToken() {
 
     var axios = require("axios");
+    var query_string = require("querystring");
 
     const body = {
       grant_type: "client_credentials",
@@ -271,22 +272,20 @@ export default class IFMDataSphere extends HTMLElement {
       client_secret: this._export_settings.DWC_apiSecret,
     };
 
-    //       "Content-Type": "application/x-www-form-urlencoded",
-    const reqGETHeaders = {
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-      "Sec-Fetch-Site": "none",
-      "Sec-Fetch-Mode": "navigate",
-      "Sec-Fetch-User": "?1",
-      "Sec-Fetch-Dest": "document"
-    }
-
-    try {
-      const response = await axios.get('https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443', { headers: reqGETHeaders });
+    const response = await axios.post(
+      'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
+      querystring.stringify({ 'grant_type': 'client_credentials' }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic xxxx'
+        }
+      }
+    ).then((response) => {
       console.log(response);
-    } catch (err) {
-      throw (err);
-    };
-
+    }).catch((err) => {
+      console.log(err);
+    });
     // try {
     //   const response = await axios.post(
     //     this._export_settings.DWC_tokenURL,
