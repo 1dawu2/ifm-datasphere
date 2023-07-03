@@ -276,7 +276,7 @@ export default class IFMDataSphere extends HTMLElement {
         }
       }
     ).then((response) => {
-      console.log(response);
+      console.log(response.headers.location);
     }).catch((err) => {
       console.log(err);
     });
