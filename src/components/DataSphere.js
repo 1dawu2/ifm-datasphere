@@ -1,4 +1,4 @@
-import { OAuth2Client, OAuth2Fetch } from '@badgateway/oauth2-client';
+import { OAuth2Client, OAuth2Fetch, generateCodeVerifier } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -165,33 +165,51 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  intiAuth() {
-    const clientOAuth2 = new OAuth2Client({
+  async intiAuth() {
+    const client = new OAuth2Client({
       // OAuth2 config
       // The base URI of your OAuth2 server
       server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
-      clientSecret: this._export_settings.DWC_apiSecret,
-      tokenEndpoint: '/oauth/token',
-      authorizationEndpoint: '/oauth/authorize'
+      // clientSecret: this._export_settings.DWC_apiSecret,
+      // tokenEndpoint: '/oauth/token',
+      // authorizationEndpoint: '/oauth/authorize'
     });
 
-    const fetchWrapper = new OAuth2Fetch({
-      client: clientOAuth2,
-      getNewToken: async () => {
-        return clientOAuth2.clientCredentials
-      },
-      onError: (err) => {
-        throw (err);
+    const codeVerifier = await generateCodeVerifier();
+    // In a browser this might work as follows:
+    document.location = await client.authorizationCode.getAuthorizeUri({
+      redirectUri: this._export_settings.DWC_redirectURL,
+      // state: 'some-string',
+      codeVerifier
+      // scope: ['scope1', 'scope2'],
+    });
+
+    const oauth2Token = await client.authorizationCode.getTokenFromCodeRedirect(
+      document.location,
+      {
+        redirectUri: this._export_settings.DWC_redirectURL,
+        // state: 'some-string',
+        codeVerifier,
       }
-    });
+    );
 
-    console.log(fetchWrapper);
+    // const fetchWrapper = new OAuth2Fetch({
+    //   client: clientOAuth2,
+    //   getNewToken: async () => {
+    //     return clientOAuth2.clientCredentials
+    //   },
+    //   onError: (err) => {
+    //     throw (err);
+    //   }
+    // });
 
-    const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
-      method: 'POST',
-    });
-    console.log(response);
+    // console.log(fetchWrapper);
+
+    // const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
+    //   method: 'POST',
+    // });
+    // console.log(response);
     // var ClientOAuth2 = require('client-oauth2');
     // var DataSphereAuth = new ClientOAuth2({
     //   clientId: this._export_settings.DWC_clientID,
