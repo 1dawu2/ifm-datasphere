@@ -170,13 +170,22 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   getAccessToken() {
-
+    var axiosOAuth2 = require("axios-oauth-client");
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
     var encodedToken = Buffer.from(base64Token).toString('base64');
-    const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);
+    const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}`);
     //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
+
+    const getAuthorizationCode = oauth.authorizationCode(
+      axios.create(),
+      this._export_settings.DWC_tokenURL,
+      this._export_settings.DWC_clientID,
+      this._export_settings.DWC_apiSecret,
+      'https://www.getpostman.com/oauth2/callback'
+    )
+    console.log(getAuthorizationCode);
 
     axios.get(
       authorizationURL,
