@@ -169,8 +169,8 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   async authCallback() {
-    const puppeteer = require('puppeteer-core');
-    const browser = await puppeteer.launch({ headless: true });
+    var puppeteer = require('puppeteer-core');
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
     await page.goto(authorizationURL);
