@@ -170,7 +170,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   getAccessToken() {
-    var axiosOAuth2 = require("axios-oauth-client");
+    // var axiosOAuth2 = require("axios-oauth-client");
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
@@ -178,14 +178,14 @@ export default class IFMDataSphere extends HTMLElement {
     const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}`);
     //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
 
-    const getAuthorizationCode = axiosOAuth2.authorizationCode(
-      axios.create(),
-      this._export_settings.DWC_tokenURL,
-      this._export_settings.DWC_clientID,
-      this._export_settings.DWC_apiSecret,
-      'https://www.getpostman.com/oauth2/callback'
-    )
-    console.log(getAuthorizationCode);
+    // const getAuthorizationCode = axiosOAuth2.authorizationCode(
+    //   axios.create(),
+    //   this._export_settings.DWC_tokenURL,
+    //   this._export_settings.DWC_clientID,
+    //   this._export_settings.DWC_apiSecret,
+    //   'https://www.getpostman.com/oauth2/callback'
+    // )
+    // console.log(getAuthorizationCode);
 
     axios.get(
       authorizationURL,
@@ -195,29 +195,33 @@ export default class IFMDataSphere extends HTMLElement {
         }
       }
     ).then((response) => {
-      console.log(response.headers.location);
+      console.log(response);
+      const urlParams = new URLSearchParams(response.location.search);
+      const authorizationCode = urlParams.get('code');
+      console.log('Authorization Code');
+      console.log(authorizationCode);
     }).catch((err) => {
       console.log(err);
     });
 
-    axios.post(
-      'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
-      querystring.stringify({
-        'grant_type': 'authorization_code',
-        'code': 'gIs6Qrf6N0A5pIfjGz72l67XVm08Tw4s'
-      }),
-      {
-        headers: {
-          'Authorization': 'Basic ' + encodedToken,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*'
-        }
-      }
-    ).then((response) => {
-      console.log(response);
-    }).catch((err) => {
-      console.log(err);
-    });
+    // axios.post(
+    //   'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
+    //   querystring.stringify({
+    //     'grant_type': 'authorization_code',
+    //     'code': 'gIs6Qrf6N0A5pIfjGz72l67XVm08Tw4s'
+    //   }),
+    //   {
+    //     headers: {
+    //       'Authorization': 'Basic ' + encodedToken,
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //       'Accept': '*/*'
+    //     }
+    //   }
+    // ).then((response) => {
+    //   console.log(response);
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
 
   }
 
