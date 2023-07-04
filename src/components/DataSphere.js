@@ -23,6 +23,10 @@ tmpl.innerHTML = `
                     press="onPress"
                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                 </m:Button>
+                <m:Button text="Get Authorization Code"
+                    press="getAuthorizationCode"
+                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+                </m:Button>
             </m:FlexBox>
           </m:Panel>
         </m:VBox>
@@ -261,12 +265,14 @@ export default class IFMDataSphere extends HTMLElement {
     tokenObj.refresh(callback);
   }
 
-  async getAccessToken() {
+  getAccessToken() {
 
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
     var encodedToken = Buffer.from(base64Token).toString('base64');
+
+
 
     axios.get(
       'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443',
@@ -394,6 +400,17 @@ export default class IFMDataSphere extends HTMLElement {
 
           onPress: function (oEvent) {
             that_.performAuth();
+          },
+
+          getAuthorizationCode: function (oEvent) {
+            const authorizationURL = `${this._export_settings.DWC_oAuthURL}/?response_type=code&client_id${this._export_settings.DWC_clientID}&redirect_uri${this._export_settings.DWC_redirectURL}`;
+            window.location.href = authorizationURL;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const authorizationCode = urlParams.get('code');
+            console.log('Authorization Code');
+            console.log(authorizationCode);
+
           }
 
         });
