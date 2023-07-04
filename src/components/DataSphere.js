@@ -403,7 +403,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           getAuthorizationCode: function (oEvent) {
-            const authorizationURL = `${that_._export_settings.DWC_oAuthURL}/?response_type=code&client_id${that_._export_settings.DWC_clientID}&redirect_uri${that_._export_settings.DWC_redirectURL}`;
+            const authorizationURL = `${that_._export_settings.DWC_oAuthURL}/?response_type=code&client_id=${that_._export_settings.DWC_clientID}&redirect_uri=${that_._export_settings.DWC_redirectURL}`;
             window.location.href = authorizationURL;
 
             const urlParams = new URLSearchParams(window.location.search);
