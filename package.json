@@ -1,4 +1,7 @@
 {
+  "browser": {
+    "child_process": false
+  },
   "version": "0.0.1",
   "description": "ifm-datasphere",
   "name": "ifm-datasphere",
@@ -12,6 +15,7 @@
     "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.22.5",
     "@babel/preset-env": "^7.20.2",
+    "@playwright/test": "^1.35.1",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "eslint-webpack-plugin": "^4.0.1",
@@ -25,7 +29,10 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
-    "axios-oauth-client": "^2.0.2",
-    "querystring": "^0.2.1"
+    "jszip": "^3.10.1",
+    "querystring": "^0.2.1",
+    "selenium-webdriver": "^4.10.0",
+    "tmp": "^0.2.1",
+    "ws": "^8.13.0"
   }
 }

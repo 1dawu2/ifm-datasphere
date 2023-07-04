@@ -12,10 +12,14 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  // target: "node",
-  // node: {
-  //   __dirname: false,
-  // },
+  target: "node",
+  node: {
+    __dirname: false,
+  },
+  externals: {
+    bufferutil: "bufferutil",
+    "utf-8-validate": "utf-8-validate",
+  },
   stats: {
     children: true
   },
@@ -90,6 +94,7 @@ module.exports = () => {
   if (isProduction) {
     config.mode = "production";
     config.plugins.push(new MiniCssExtractPlugin());
+
     // config.resolve = {
     //   fallback: {
     //     querystring: false,

@@ -24,3 +24,6 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 ifm-datasphere.json
+/test-results/
+/playwright-report/
+/playwright/.cache/

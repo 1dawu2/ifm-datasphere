@@ -1,4 +1,3 @@
-import { OAuth2Client, OAuth2Fetch, generateCodeVerifier } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -169,6 +168,18 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
+  async authCallback() {
+    const { Builder, By, Key, until } = require('selenium-webdriver');
+    const driver = await new Builder().forBrowser('chrome').build();
+    const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
+    await driver.get(authorizationURL);
+    await driver.wait(until.urlContains(this._export_settings.DWC_redirectURL));
+    const url = await driver.getCurrentUrl();
+    const authorizationCode = new URL(url).searchParams.get('code');
+    await driver.quit();
+    console.log(authorizationCode)
+  }
+
   getAccessToken() {
     // var axiosOAuth2 = require("axios-oauth-client");
     var axios = require("axios");
@@ -177,6 +188,7 @@ export default class IFMDataSphere extends HTMLElement {
     var encodedToken = Buffer.from(base64Token).toString('base64');
     const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}`);
     //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
+    //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https://www.getpostman.com/oauth2/callback'
 
     // const getAuthorizationCode = axiosOAuth2.authorizationCode(
     //   axios.create(),
@@ -296,15 +308,15 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           getAuthorizationCode: function (oEvent) {
-            const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);//&redirect_uri=${that_._export_settings.DWC_redirectURL}
-            //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
-            window.location.href = authorizationURL;
+            // const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);//&redirect_uri=${that_._export_settings.DWC_redirectURL}
+            // //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
+            // window.location.href = authorizationURL;
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const authorizationCode = urlParams.get('code');
-            console.log('Authorization Code');
-            console.log(authorizationCode);
-
+            // const urlParams = new URLSearchParams(window.location.search);
+            // const authorizationCode = urlParams.get('code');
+            // console.log('Authorization Code');
+            // console.log(authorizationCode);
+            this.authCallback();
           }
 
         });
