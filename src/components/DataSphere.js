@@ -169,113 +169,17 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  async intiAuth() {
-    const client = new OAuth2Client({
-      // OAuth2 config
-      // The base URI of your OAuth2 server
-      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
-      clientId: this._export_settings.DWC_clientID,
-      // clientSecret: this._export_settings.DWC_apiSecret,
-      tokenEndpoint: '/oauth/token',
-      authorizationEndpoint: '/oauth/authorize'
-
-    });
-
-    const codeVerifier = await generateCodeVerifier();
-    // In a browser this might work as follows:
-    // document.location = await client.authorizationCode.getAuthorizeUri({
-    //   redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
-    //   // state: 'some-string',
-    //   codeVerifier
-    //   // scope: ['scope1', 'scope2'],
-    // });
-
-    const oauth2Token = await client.authorizationCode.getTokenFromCodeRedirect(
-      document.location,
-      {
-        redirectUri: 'https://bocauth.us1.sapbusinessobjects.cloud:443',
-        // state: 'some-string',
-        codeVerifier,
-      }
-    );
-
-    // const fetchWrapper = new OAuth2Fetch({
-    //   client: clientOAuth2,
-    //   getNewToken: async () => {
-    //     return clientOAuth2.clientCredentials
-    //   },
-    //   onError: (err) => {
-    //     throw (err);
-    //   }
-    // });
-
-    // console.log(fetchWrapper);
-
-    // const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
-    //   method: 'POST',
-    // });
-    // console.log(response);
-    // var ClientOAuth2 = require('client-oauth2');
-    // var DataSphereAuth = new ClientOAuth2({
-    //   clientId: this._export_settings.DWC_clientID,
-    //   clientSecret: this._export_settings.DWC_apiSecret,
-    //   accessTokenUri: this._export_settings.DWC_tokenURL,
-    //   authorizationUri: this._export_settings.DWC_oAuthURL,
-    //   redirectUri: this._export_settings.DWC_redirectURL
-    //   // scopes: []
-    // })
-    // this._export_settings.OAuthClient = DataSphereAuth;
-    // DataSphereAuth.credentials.getToken()
-    //   .then(function (user) {
-    //     console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
-    //     this._export_settings.Token = user;
-    //   });
-  }
-
-  getAuthUrl() {
-    var returnVal = this._export_settings.OAuthClient.authorizationCode.authorizeURL({
-      redirect_uri: this._export_settings.DWC_redirectURL,
-      scope: scopes.join(' ')
-    });
-    console.log('Generated auth url: ' + returnVal);
-
-    return returnVal;
-  }
-
-  getTokenFromCode(auth_code, callback, response) {
-    var token;
-    this._export_settings.OAuthClient.authorizationCode.getToken({
-      code: auth_code,
-      redirect_uri: this._export_settings.DWC_redirectURL,
-      scope: scopes.join(' ')
-    }, function (error, result) {
-      if (error) {
-        console.log('Access token error: ', error.message);
-        callback(response, error, null);
-      } else {
-        token = this._export_settings.OAuthClient.accessToken.create(result);
-        console.log('Token created: ', token.token);
-        callback(response, null, token);
-      }
-    });
-  }
-
-  refreshAccessToken(refreshToken, callback) {
-    var tokenObj = this._export_settings.OAuthClient.accessToken.create({ refresh_token: refreshToken });
-    tokenObj.refresh(callback);
-  }
-
   getAccessToken() {
 
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
     var encodedToken = Buffer.from(base64Token).toString('base64');
-
-
+    const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);
+    //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
 
     axios.get(
-      'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443',
+      authorizationURL,
       {
         headers: {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
@@ -305,30 +209,6 @@ export default class IFMDataSphere extends HTMLElement {
     }).catch((err) => {
       console.log(err);
     });
-    // try {
-    //   const response = await axios.post(
-    //     this._export_settings.DWC_tokenURL,
-    //     body,
-    //     { headers: myHeaders }
-    //   );
-    //   console.log("Response data");
-    //   console.log(response.data.access_token);
-    //   this._export_settings.AccessToken = response.data.access_token;
-    //   this._doOAuth2();
-    // } catch (err) {
-    //   throw err;
-    // }
-
-    // var oauth = require('axios-oauth-client')
-    // const getAuthorizationCode = oauth.authorizationCode(
-    //   axios.create(),
-    //   this._export_settings.DWC_oAuthURL, // OAuth 2.0 token endpoint
-    //   this._export_settings.DWC_clientID,
-    //   this._export_settings.DWC_apiSecret,
-    //   "https://bocauth.us1.sapbusinessobjects.cloud" // Redirect URL for your app
-    // )
-    // const auth = await getAuthorizationCode('AUTHORIZATION_CODE', 'uaa.resource publicapiservice-sac-saceu10!t3650.apiaccess approuter-sac-saceu10!t3650.sap.fpa.user')
-    // console.log(auth);
 
   }
 
@@ -403,7 +283,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           getAuthorizationCode: function (oEvent) {
-            const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}&redirect_uri=${that_._export_settings.DWC_redirectURL}`);
+            const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);//&redirect_uri=${that_._export_settings.DWC_redirectURL}
             //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
             window.location.href = authorizationURL;
 
