@@ -300,6 +300,12 @@ export default class IFMDataSphere extends HTMLElement {
         return Controller.extend("ifm.datasphere.initial", {
 
           onPress: function (oEvent) {
+            /* In the code, `that_` is a reference to the current instance of the class
+            `IFMDataSphere`. It is used to access the instance properties and methods within the
+            inner function of `sap.ui.define`. This is necessary because the inner function has its
+            own scope and `this` refers to the inner function itself, not the instance of the class.
+            By assigning `that_ = that`, the inner function can access the instance properties and
+            methods using `that_` instead of `this`. */
             that_.performAuth();
           },
 
@@ -312,7 +318,7 @@ export default class IFMDataSphere extends HTMLElement {
             // const authorizationCode = urlParams.get('code');
             // console.log('Authorization Code');
             // console.log(authorizationCode);
-            this.authCallback();
+            that_.authCallback();
           }
 
         });
