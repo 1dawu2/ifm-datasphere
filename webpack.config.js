@@ -12,14 +12,11 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  target: "node",
-  node: {
-    __dirname: false,
-  },
-  externals: {
-    bufferutil: "bufferutil",
-    "utf-8-validate": "utf-8-validate",
-  },
+  // target: "web",
+  // externals: {
+  //   bufferutil: "buffer",
+  //   "utf-8-validate": "utf-8-validate",
+  // },
   stats: {
     children: true
   },
@@ -95,17 +92,27 @@ module.exports = () => {
     config.mode = "production";
     config.plugins.push(new MiniCssExtractPlugin());
 
-    // config.resolve = {
-    //   fallback: {
-    //     querystring: false,
-    //     stream: false,
-    //     url: false,
-    //     https: false, //require.resolve('https-browserify'),
-    //     http: false, //require.resolve('http-browserify'),
-    //     //"assert": require.resolve("assert/"),
-    //     zlib: false //require.resolve('browserify-zlib')
-    //   }
-    // }
+    config.resolve = {
+      fallback: {
+        tls: false,
+        dns: false,
+        module: false,
+        constants: require.resolve('constants-browserify'),
+        async_hooks: false, //npm i async-hook-browser
+        net: require.resolve('net-browserify'),
+        child_process: false,
+        "fs/promises": false,
+        os: require.resolve('os-browserify/browser'),
+        stream: require.resolve('stream-browserify'),
+        fs: require.resolve('browserify-fs'),
+        https: require.resolve('https-browserify'),
+        zlib: require.resolve('browserify-zlib'),
+        vm: require.resolve('vm-browserify'),
+        readline: require.resolve('readline-browserify'),
+        http: require.resolve('stream-http'),
+        crypto: require.resolve('crypto-browserify')
+      }
+    }
 
   } else {
     config.mode = "development";

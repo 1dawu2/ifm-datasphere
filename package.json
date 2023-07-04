@@ -1,7 +1,4 @@
 {
-  "browser": {
-    "child_process": false
-  },
   "version": "0.0.1",
   "description": "ifm-datasphere",
   "name": "ifm-datasphere",
@@ -29,10 +26,13 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
-    "jszip": "^3.10.1",
+    "browserify": "^17.0.0",
+    "browserify-fs": "^1.0.0",
+    "http-browserify": "^1.7.0",
+    "net-browserify": "^0.2.4",
+    "puppeteer-core": "^20.7.4",
     "querystring": "^0.2.1",
-    "selenium-webdriver": "^4.10.0",
-    "tmp": "^0.2.1",
-    "ws": "^8.13.0"
+    "readline-browserify": "^0.0.4",
+    "stream-browserify": "^3.0.0"
   }
 }

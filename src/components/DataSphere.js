@@ -169,14 +169,14 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   async authCallback() {
-    const { Builder, By, Key, until } = require('selenium-webdriver');
-    const driver = await new Builder().forBrowser('chrome').build();
+    const puppeteer = require('puppeteer-core');
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
     const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
-    await driver.get(authorizationURL);
-    await driver.wait(until.urlContains(this._export_settings.DWC_redirectURL));
-    const url = await driver.getCurrentUrl();
-    const authorizationCode = new URL(url).searchParams.get('code');
-    await driver.quit();
+    await page.goto(authorizationURL);
+    const redirectURI = await page.waitForNavigation();
+    const authorizationCode = new URL(redirectURI).searchParams.get('code');
+    await browser.close();
     console.log(authorizationCode)
   }
 
