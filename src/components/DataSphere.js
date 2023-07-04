@@ -403,7 +403,8 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           getAuthorizationCode: function (oEvent) {
-            const authorizationURL = `${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}&redirect_uri=${that_._export_settings.DWC_redirectURL}`;
+            const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}&redirect_uri=${that_._export_settings.DWC_redirectURL}`);
+            //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
             window.location.href = authorizationURL;
 
             const urlParams = new URLSearchParams(window.location.search);
