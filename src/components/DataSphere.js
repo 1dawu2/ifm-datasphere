@@ -208,10 +208,6 @@ export default class IFMDataSphere extends HTMLElement {
       }
     ).then((response) => {
       console.log(response);
-      const urlParams = new URLSearchParams(response.location.search);
-      const authorizationCode = urlParams.get('code');
-      console.log('Authorization Code');
-      console.log(authorizationCode);
     }).catch((err) => {
       console.log(err);
     });
