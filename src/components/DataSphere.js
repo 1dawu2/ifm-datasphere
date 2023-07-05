@@ -169,15 +169,39 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   async authCallback() {
-    var puppeteer = require('puppeteer-core');
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
-    await page.goto(authorizationURL);
-    const redirectURI = await page.waitForNavigation();
-    const authorizationCode = new URL(redirectURI).searchParams.get('code');
-    await browser.close();
-    console.log(authorizationCode)
+    if (window.sap && sap.fpa && sap.fpa.ui && sap.fpa.ui.infra) {
+      if (sap.fpa.ui.infra.common) {
+        let context = sap.fpa.ui.infra.common.getContext();
+        console.log("Context:");
+        console.log(context);
+      };
+    };
+    const { AuthorizationCode } = require('simple-oauth2');
+    const config = {
+      client: {
+        id: this._export_settings.DWC_clientID,
+        secret: this._export_settings.DWC_apiSecret
+      },
+      auth: {
+        tokenHost: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com'
+      }
+    };
+    const client = new AuthorizationCode(config);
+    const authorizationUri = client.authorizeURL({
+      redirect_uri: 'http://localhost:3000/callback',
+      scope: '',
+      state: ''
+    });
+    console.log(authorizationUri);
+    // var puppeteer = require('puppeteer-core');
+    // const browser = await puppeteer.launch();
+    // const page = await browser.newPage();
+    // const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
+    // await page.goto(authorizationURL);
+    // const redirectURI = await page.waitForNavigation();
+    // const authorizationCode = new URL(redirectURI).searchParams.get('code');
+    // await browser.close();
+    // console.log(authorizationCode)
   }
 
   getAccessToken() {
