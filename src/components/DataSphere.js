@@ -170,7 +170,8 @@ export default class IFMDataSphere extends HTMLElement {
     });
 
     var uri = dspAuth.code.getUri();
-    console.log(uri);
+    var token = dspAuth.code.getToken(uri, OAuth22Client.CodeFlow);
+    console.log(token);
     const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
     window.location.href = authURL;
     const urlParams = new URLSearchParams(window.location.search);
