@@ -162,7 +162,7 @@ export default class IFMDataSphere extends HTMLElement {
   getAuthorizationCode() {
     var OAuth22Client = require('client-oauth2');
     var dspAuth = new OAuth22Client({
-      client: this._export_settings.DWC_clientID,
+      clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
       accessTokenUri: this._export_settings.DWC_tokenURL,
       authorizationUri: this._export_settings.DWC_oAuthURL,
