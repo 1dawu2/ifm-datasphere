@@ -186,7 +186,7 @@ export default class IFMDataSphere extends HTMLElement {
       codeVerifier,
     });
 
-    this.openDialog(authURL);
+    // this.openDialog(authURL);
 
     // console.log(this._export_settings.AuthorizationCode);
   }
