@@ -182,7 +182,7 @@ export default class IFMDataSphere extends HTMLElement {
     const codeVerifier = await generateCodeVerifier();
     console.log(codeVerifier)
     document.location = await dspAuth.authorizationCode.getAuthorizeUri({
-      redirectUri: authURL,
+      redirectUri: this._export_settings.DWC_redirectURL //authURL,
       // codeVerifier,
     });
 
