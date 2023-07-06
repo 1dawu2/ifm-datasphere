@@ -159,7 +159,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   openDialog(targetURL) {
-    var popup = window.open(targetURL, "Get Authorization Code", width = "400", height = "400");
+    var popup = window.open(targetURL, "Get Authorization Code");
   }
 
   closeDialog() {
