@@ -155,13 +155,8 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performAuth() {
-    this.getAccessToken();
-
-    // console.log(this._export_settings.Token);
-    // this._doOAuth2();
-
-    // this.getAuthUrl();
-
+    this.getAuthorizationCode();
+    // this.getAccessToken();
   }
 
   getAuthorizationCode() {
@@ -173,6 +168,9 @@ export default class IFMDataSphere extends HTMLElement {
       authorizationUri: this._export_settings.DWC_oAuthURL,
       redirectUri: this._export_settings.DWC_redirectURL
     });
+
+    var uri = dspAuth.code.getUri();
+    console.log(uri);
 
   }
 
