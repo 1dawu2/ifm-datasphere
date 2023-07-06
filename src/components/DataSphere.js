@@ -155,24 +155,27 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performAuth() {
+    this.getAccessToken();
     this.getAuthorizationCode();
-    // this.getAccessToken();
   }
 
   getAuthorizationCode() {
     var OAuth22Client = require('client-oauth2');
+
+    const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
+
     var dspAuth = new OAuth22Client({
       clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
       accessTokenUri: this._export_settings.DWC_tokenURL,
-      authorizationUri: this._export_settings.DWC_oAuthURL,
-      redirectUri: this._export_settings.DWC_redirectURL
+      authorizationUri: authURL,
+      redirectUri: authURL
     });
 
     var uri = dspAuth.code.getUri();
     var token = dspAuth.code.getToken(uri, OAuth22Client.CodeFlow);
     console.log(token);
-    const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
+
     window.location.href = authURL;
     const urlParams = new URLSearchParams(window.location.search);
     const authorizationCode = urlParams.get('code');
