@@ -1,3 +1,4 @@
+import { OAuth2Client, generateCodeVerifier } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -135,31 +136,20 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  _doOAuth2(token) {
-
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer " + this._export_settings.Token.accessToken);
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    fetch(this._export_settings.DWC_taskChain, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-
-  }
-
   performAuth() {
-    this.getAccessToken();
+    // this.getAccessToken();
     this.getAuthorizationCode();
   }
 
   openDialog(targetURL) {
-    var popup = window.open(targetURL, "Get Authorization Code");
+    var popup = window.open(targetURL, "Get Authorization Code", "width=400,height=400");
+    var timer = setInterval(function () {
+      if (popup.closed) {
+        clearInterval(timer);
+        alert('closed');
+        this.closeDialog();
+      }
+    }, 1000);
   }
 
   closeDialog() {
@@ -177,26 +167,28 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
 
-  getAuthorizationCode() {
-    var OAuth22Client = require('client-oauth2');
+  async getAuthorizationCode() {
 
     const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
-
-    var dspAuth = new OAuth22Client({
+    const dspAuth = new OAuth2Client({
+      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth',
       clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
-      accessTokenUri: this._export_settings.DWC_tokenURL,
-      authorizationUri: authURL,
-      redirectUri: authURL
+      tokenEndpoint: '/token',
+      authorizationEndpoint: '/authorize',
     });
+    console.log(dspAuth);
 
-    var uri = dspAuth.code.getUri();
-    var token = dspAuth.code.getToken(uri, OAuth22Client.CodeFlow);
-    console.log(token);
+    const codeVerifier = await generateCodeVerifier();
+    console.log(codeVerifier);
+    document.location = await dspAuth.authorizationCode.getAuthorizeUri({
+      redirectUri: authURL,
+      codeVerifier,
+    });
 
     this.openDialog(authURL);
 
-    console.log(this._export_settings.AuthorizationCode);
+    // console.log(this._export_settings.AuthorizationCode);
   }
 
   getAccessToken() {

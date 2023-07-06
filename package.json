@@ -25,10 +25,10 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@badgateway/oauth2-client": "^2.2.0",
     "axios": "^1.4.0",
     "browserify": "^17.0.0",
     "browserify-fs": "^1.0.0",
-    "client-oauth2": "^4.3.3",
     "http-browserify": "^1.7.0",
     "net-browserify": "^0.2.4",
     "querystring": "^0.2.1",
