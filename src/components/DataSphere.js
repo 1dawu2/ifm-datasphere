@@ -50,8 +50,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DWC_redirectURL = "";
     this._export_settings.CSRFToken = "";
     this._export_settings.Token = null;
-    this._export_settings.credentials = {};
-    this._export_settings.OAuthClient = null;
+    this._export_settings.AuthorizationCode = "";
 
   }
 
@@ -159,6 +158,25 @@ export default class IFMDataSphere extends HTMLElement {
     this.getAuthorizationCode();
   }
 
+  openDialog(targetURL) {
+    var popup = window.open(targetURL, "Get Authorization Code", width = "400", height = "400");
+  }
+
+  closeDialog() {
+    const urlParams = new URLSearchParams(window.location.search);
+    this._export_settings.AuthorizationCode = urlParams.get('code');
+    window.close;
+    window.opener.returnOrigin();
+  }
+
+  returnOrigin() {
+    var currentURL = window.location.href;
+    // var sep = currentURL.indexOf("?") !== -1 ? "&" : "?";
+    var newURL = currentURL;
+    window.location.href = newURL;
+  }
+
+
   getAuthorizationCode() {
     var OAuth22Client = require('client-oauth2');
 
@@ -176,10 +194,9 @@ export default class IFMDataSphere extends HTMLElement {
     var token = dspAuth.code.getToken(uri, OAuth22Client.CodeFlow);
     console.log(token);
 
-    window.location.href = authURL;
-    const urlParams = new URLSearchParams(window.location.search);
-    const authorizationCode = urlParams.get('code');
-    console.log(authorizationCode);
+    this.openDialog(authURL);
+
+    console.log(this._export_settings.AuthorizationCode);
   }
 
   getAccessToken() {
