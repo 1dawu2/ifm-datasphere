@@ -180,10 +180,10 @@ export default class IFMDataSphere extends HTMLElement {
     console.log(dspAuth);
 
     const codeVerifier = await generateCodeVerifier();
-    console.log(codeVerifier);
+    console.log(codeVerifier)
     document.location = await dspAuth.authorizationCode.getAuthorizeUri({
       redirectUri: authURL,
-      codeVerifier,
+      // codeVerifier,
     });
 
     // this.openDialog(authURL);
