@@ -171,7 +171,11 @@ export default class IFMDataSphere extends HTMLElement {
 
     var uri = dspAuth.code.getUri();
     console.log(uri);
-
+    const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
+    window.location.href = authURL;
+    const urlParams = new URLSearchParams(window.location.search);
+    const authorizationCode = urlParams.get('code');
+    console.log(authorizationCode);
   }
 
   getAccessToken() {
@@ -180,18 +184,9 @@ export default class IFMDataSphere extends HTMLElement {
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DWC_clientID}:${this._export_settings.DWC_apiSecret}`;
     var encodedToken = Buffer.from(base64Token).toString('base64');
-    const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}`);
+    const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
     //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
     //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https://www.getpostman.com/oauth2/callback'
-
-    // const getAuthorizationCode = axiosOAuth2.authorizationCode(
-    //   axios.create(),
-    //   this._export_settings.DWC_tokenURL,
-    //   this._export_settings.DWC_clientID,
-    //   this._export_settings.DWC_apiSecret,
-    //   'https://www.getpostman.com/oauth2/callback'
-    // )
-    // console.log(getAuthorizationCode);
 
     axios.get(
       authorizationURL,
