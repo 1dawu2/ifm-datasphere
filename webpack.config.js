@@ -12,11 +12,6 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  // target: "web",
-  // externals: {
-  //   bufferutil: "buffer",
-  //   "utf-8-validate": "utf-8-validate",
-  // },
   stats: {
     children: true
   },

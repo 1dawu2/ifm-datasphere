@@ -22,10 +22,6 @@ tmpl.innerHTML = `
                     press="onPress"
                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                 </m:Button>
-                <m:Button text="Get Authorization Code"
-                    press="getAuthorizationCode"
-                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
-                </m:Button>
             </m:FlexBox>
           </m:Panel>
         </m:VBox>
@@ -160,7 +156,7 @@ export default class IFMDataSphere extends HTMLElement {
 
   performAuth() {
     this.getAccessToken();
-    // this.intiAuth();
+
     // console.log(this._export_settings.Token);
     // this._doOAuth2();
 
@@ -168,40 +164,16 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  async authCallback() {
-    if (window.sap && sap.fpa && sap.fpa.ui && sap.fpa.ui.infra) {
-      if (sap.fpa.ui.infra.common) {
-        let context = sap.fpa.ui.infra.common.getContext();
-        console.log("Context:");
-        console.log(context);
-      };
-    };
-    const { AuthorizationCode } = require('simple-oauth2');
-    const config = {
-      client: {
-        id: this._export_settings.DWC_clientID,
-        secret: this._export_settings.DWC_apiSecret
-      },
-      auth: {
-        tokenHost: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com'
-      }
-    };
-    const client = new AuthorizationCode(config);
-    const authorizationUri = client.authorizeURL({
-      redirect_uri: 'http://localhost:3000/callback',
-      scope: '',
-      state: ''
+  getAuthorizationCode() {
+    var OAuth22Client = require('client-oauth2');
+    var dspAuth = new OAuth22Client({
+      client: this._export_settings.DWC_clientID,
+      clientSecret: this._export_settings.DWC_apiSecret,
+      accessTokenUri: this._export_settings.DWC_tokenURL,
+      authorizationUri: this._export_settings.DWC_oAuthURL,
+      redirectUri: this._export_settings.DWC_redirectURL
     });
-    console.log(authorizationUri);
-    // var puppeteer = require('puppeteer-core');
-    // const browser = await puppeteer.launch();
-    // const page = await browser.newPage();
-    // const authorizationURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
-    // await page.goto(authorizationURL);
-    // const redirectURI = await page.waitForNavigation();
-    // const authorizationCode = new URL(redirectURI).searchParams.get('code');
-    // await browser.close();
-    // console.log(authorizationCode)
+
   }
 
   getAccessToken() {
@@ -324,26 +296,8 @@ export default class IFMDataSphere extends HTMLElement {
         return Controller.extend("ifm.datasphere.initial", {
 
           onPress: function (oEvent) {
-            /* In the code, `that_` is a reference to the current instance of the class
-            `IFMDataSphere`. It is used to access the instance properties and methods within the
-            inner function of `sap.ui.define`. This is necessary because the inner function has its
-            own scope and `this` refers to the inner function itself, not the instance of the class.
-            By assigning `that_ = that`, the inner function can access the instance properties and
-            methods using `that_` instead of `this`. */
             that_.performAuth();
           },
-
-          getAuthorizationCode: function (oEvent) {
-            // const authorizationURL = encodeURI(`${that_._export_settings.DWC_oAuthURL}?response_type=code&client_id=${that_._export_settings.DWC_clientID}`);//&redirect_uri=${that_._export_settings.DWC_redirectURL}
-            // //'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-a6d09968-9cf2-4940-a725-bc69f3e875ff!b106343%7Cclient!b3650&redirect_uri=https%3A%2F%2Fbocauth.us1.sapbusinessobjects.cloud%3A443'
-            // window.location.href = authorizationURL;
-
-            // const urlParams = new URLSearchParams(window.location.search);
-            // const authorizationCode = urlParams.get('code');
-            // console.log('Authorization Code');
-            // console.log(authorizationCode);
-            that_.authCallback();
-          }
 
         });
 
