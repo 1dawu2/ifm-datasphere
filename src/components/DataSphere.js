@@ -63,7 +63,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   onCustomWidgetAfterUpdate(changedProperties) {
-    this.buildUI(changedProperties, this);
+    this.buildUI(this);
   }
 
   // SETTINGS
