@@ -130,7 +130,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performOAuth2() {
-    that_.setOAuth2Client();
+    this.setOAuth2Client();
     this.getAuthorizationCode();
     this.extractAuthorizationCode();
     this.getAccessToken();
