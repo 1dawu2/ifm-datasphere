@@ -182,6 +182,10 @@ export default class IFMDataSphere extends HTMLElement {
     // trigger DataSphere Task Chain
     const response = await fetchWrapper.fetch(this._export_settings.DSP_taskChain, {
       method: 'POST'
+    }).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
     });
     console.log(response);
   }
