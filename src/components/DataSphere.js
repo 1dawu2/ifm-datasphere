@@ -170,41 +170,15 @@ export default class IFMDataSphere extends HTMLElement {
     });
   }
 
-  getAccessToken() {
-    const fetchWrapper = new OAuth2Fetch({
-      client: this._export_settings.DSP_OAuth2Client,
-      /**
-       * You are responsible for implementing this function.
-       * it's purpose is to supply the 'initial' oauth2 token.
-       */
-      getNewToken: async () => {
-        return client.authorizationCode.getTokenFromCodeRedirect(
-          document.location,
-          {
-            redirectUri: this._export_settings.DSP_redirectURL,
-          }
-        );
+  async getAccessToken() {
 
-        // return this._export_settings.DSP_OAuth2Client.authorizationCode({
-        //   code: this._export_settings.DSP_authorizationCode,
-        //   redirectUri: this._export_settings.DSP_redirectURL,
-        // });
-        // },
-        // onError: (err) => {
-        //   // error handling
-        //   console.log(err);
-        //   sap.ui.define([
-        //     "sap/ui/core/mvc/Controller",
-        //     "sap/m/MessageBox",
-        //     "sap/m/MessageToast"
-        //   ], function (Controller, MessageBox, MessageToast) {
-        //     "use strict";
-        //     sap.m.MessageBox.error("Some error during token retrieval");
-        //   });
-      }
+    const oauth2Token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
+      document.location,
+      { redirectUri: this._export_settings.DSP_redirectURL }
+    );
 
-    });
-    console.log(fetchWrapper);
+    console.log(oauth2Token);
+
     // Fallback
 
     // var axios = require("axios");
