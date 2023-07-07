@@ -139,6 +139,7 @@ export default class IFMDataSphere extends HTMLElement {
   performAuth() {
     // this.getAccessToken();
     this.getAuthorizationCode();
+    this.extractAuthorization();
   }
 
   openDialog(targetURL) {
@@ -152,11 +153,9 @@ export default class IFMDataSphere extends HTMLElement {
     }, 1000);
   }
 
-  closeDialog() {
+  extractAuthorization() {
     const urlParams = new URLSearchParams(window.location.search);
     this._export_settings.AuthorizationCode = urlParams.get('code');
-    window.close;
-    window.opener.returnOrigin();
   }
 
   returnOrigin() {
