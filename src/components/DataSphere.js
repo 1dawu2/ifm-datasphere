@@ -17,7 +17,7 @@ tmpl.innerHTML = `
           <m:FlexBox
             height="100%">
               <m:Button text="Execute Task Chain"
-                icon=""
+                icon="sap-icon://BusinessSuiteInAppSymbols/icon-phase"
                 press="onPress"
                 ariaDescribedBy="defaultButtonDescription genericButtonDescription">
               </m:Button>
