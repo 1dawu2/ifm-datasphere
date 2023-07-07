@@ -163,10 +163,9 @@ export default class IFMDataSphere extends HTMLElement {
       client: dspAuth,
 
       getNewToken: async () => {
-        return dspAuth.authorizationCode({
-          redirectUri: this._export_settings.DSP_redirectURL
-        })
-
+        return await dspAuth.authorizationCode.getTokenFromCodeRedirect({
+          redirectUri: this._export_settings.DSP_redirectURL,
+        });
         // document.location = await dspAuth.authorizationCode.getAuthorizeUri({
         //   redirectUri: this._export_settings.DSP_redirectURL
         //   // in case DataSphere supports PCKE remove the below comment
