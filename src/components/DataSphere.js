@@ -163,7 +163,7 @@ export default class IFMDataSphere extends HTMLElement {
     // console.log(codeVerifier)
 
     // start authorization process
-    document.location = await this._export_settings.DSP_OAuthClient.authorizationCode.getAuthorizeUri({
+    document.location = await this._export_settings.DSP_OAuth2Client.authorizationCode.getAuthorizeUri({
       redirectUri: this._export_settings.DSP_redirectURL
       // in case DataSphere supports PCKE remove the below comment
       // codeVerifier
