@@ -171,36 +171,37 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   getAccessToken() {
-    this._export_settings.DSP_OAuth2Client.authorizationCode.getToken({
-      code: this._export_settings.DSP_authorizationCode,
-      redirectUri: this._export_settings.DSP_redirectURL
-    });
-
     const fetchWrapper = new OAuth2Fetch({
-      client: this._export_settings.DSP_OAuth2Client
+      client: this._export_settings.DSP_OAuth2Client,
       /**
        * You are responsible for implementing this function.
        * it's purpose is to supply the 'initial' oauth2 token.
        */
-      // getNewToken: async () => {
+      getNewToken: async () => {
+        return client.authorizationCode.getTokenFromCodeRedirect(
+          document.location,
+          {
+            redirectUri: this._export_settings.DSP_redirectURL,
+          }
+        );
 
-      //   return this._export_settings.DSP_OAuth2Client.authorizationCode({
-      //     code: this._export_settings.DSP_authorizationCode,
-      //     redirectUri: this._export_settings.DSP_redirectURL,
-      //   });
-      // },
-      // onError: (err) => {
-      //   // error handling
-      //   console.log(err);
-      //   sap.ui.define([
-      //     "sap/ui/core/mvc/Controller",
-      //     "sap/m/MessageBox",
-      //     "sap/m/MessageToast"
-      //   ], function (Controller, MessageBox, MessageToast) {
-      //     "use strict";
-      //     sap.m.MessageBox.error("Some error during token retrieval");
-      //   });
-      // }
+        // return this._export_settings.DSP_OAuth2Client.authorizationCode({
+        //   code: this._export_settings.DSP_authorizationCode,
+        //   redirectUri: this._export_settings.DSP_redirectURL,
+        // });
+        // },
+        // onError: (err) => {
+        //   // error handling
+        //   console.log(err);
+        //   sap.ui.define([
+        //     "sap/ui/core/mvc/Controller",
+        //     "sap/m/MessageBox",
+        //     "sap/m/MessageToast"
+        //   ], function (Controller, MessageBox, MessageToast) {
+        //     "use strict";
+        //     sap.m.MessageBox.error("Some error during token retrieval");
+        //   });
+      }
 
     });
     console.log(fetchWrapper);
