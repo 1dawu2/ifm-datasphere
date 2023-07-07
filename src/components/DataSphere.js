@@ -17,7 +17,7 @@ tmpl.innerHTML = `
           <m:FlexBox
             height="100%">
               <m:Button text="Execute Task Chain"
-                icon="sap-icon://BusinessSuiteInAppSymbols/icon-phase"
+                icon="sap-icon://process"
                 press="onPress"
                 ariaDescribedBy="defaultButtonDescription genericButtonDescription">
               </m:Button>
@@ -163,11 +163,15 @@ export default class IFMDataSphere extends HTMLElement {
       client: dspAuth,
 
       getNewToken: async () => {
-        document.location = await dspAuth.authorizationCode.getAuthorizeUri({
+        return dspAuth.authorizationCode({
           redirectUri: this._export_settings.DSP_redirectURL
-          // in case DataSphere supports PCKE remove the below comment
-          // codeVerifier
-        });
+        })
+
+        // document.location = await dspAuth.authorizationCode.getAuthorizeUri({
+        //   redirectUri: this._export_settings.DSP_redirectURL
+        //   // in case DataSphere supports PCKE remove the below comment
+        //   // codeVerifier
+        // });
       },
       onError: (err) => {
         // err handling
@@ -176,7 +180,7 @@ export default class IFMDataSphere extends HTMLElement {
     });
 
     // trigger DataSphere Task Chain
-    const response = fetchWrapper.fetch(this._export_settings.DSP_taskChain, {
+    const response = await fetchWrapper.fetch(this._export_settings.DSP_taskChain, {
       method: 'POST'
     });
     console.log(response);
