@@ -46,7 +46,8 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DSP_tokenURL = "";
     this._export_settings.DSP_taskChain = "";
     this._export_settings.DSP_redirectURL = "";
-    this._export_settings.AuthorizationCode = "";
+    this._export_settings.DSP_OAuth2Client = null;
+    this._export_settings.DSP_authorizationCode = "";
 
   }
 
@@ -129,26 +130,32 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performOAuth2() {
+    that_.setOAuth2Client();
     this.getAuthorizationCode();
-    this.extractAuthorization();
+    this.extractAuthorizationCode();
+    this.getAccessToken();
   }
 
-  extractAuthorization() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this._export_settings.AuthorizationCode = urlParams.get('code');
-  }
-
-  async getAuthorizationCode() {
-
+  setOAuth2Client() {
     const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
-    const dspAuth = new OAuth2Client({
+    this._export_settings.DSP_OAuth2Client = new OAuth2Client({
       server: this._export_settings.DSP_serverURL,
       clientId: this._export_settings.DSP_clientID,
       clientSecret: this._export_settings.DSP_apiSecret,
       tokenEndpoint: '/oauth/token',
       authorizationEndpoint: '/oauth/authorize',
     });
-    console.log(dspAuth);
+
+  }
+
+  extractAuthorizationCode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    this._export_settings.DSP_authorizationCode = urlParams.get('code');
+  }
+
+  async getAuthorizationCode() {
+
+    console.log(this._export_settings.DSP_OAuth2Client);
 
     // Use codeVerifier as soon as DataSphere supports PCKE Authorization
     // currently only authorization code is supported
@@ -156,45 +163,41 @@ export default class IFMDataSphere extends HTMLElement {
     // console.log(codeVerifier)
 
     // start authorization process
-
-
-    // start getting access token
-    const fetchWrapper = new OAuth2Fetch({
-      client: dspAuth,
-
-      getNewToken: async () => {
-        return await dspAuth.authorizationCode.getTokenFromCodeRedirect({
-          redirectUri: this._export_settings.DSP_redirectURL,
-        });
-        // document.location = await dspAuth.authorizationCode.getAuthorizeUri({
-        //   redirectUri: this._export_settings.DSP_redirectURL
-        //   // in case DataSphere supports PCKE remove the below comment
-        //   // codeVerifier
-        // });
-      },
-      onError: (err) => {
-        // err handling
-        console.log(err);
-      }
+    document.location = await this._export_settings.DSP_OAuthClient.authorizationCode.getAuthorizeUri({
+      redirectUri: this._export_settings.DSP_redirectURL
+      // in case DataSphere supports PCKE remove the below comment
+      // codeVerifier
     });
-
-    // trigger DataSphere Task Chain
-    const response = await fetchWrapper.fetch(this._export_settings.DSP_taskChain, {
-      method: 'POST'
-    }).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.log(error);
-    });
-    console.log(response);
   }
 
   getAccessToken() {
-    var axios = require("axios");
-    var querystring = require("querystring");
-    const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
-    var encodedToken = Buffer.from(base64Token).toString('base64');
-    const authorizationURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
+    const fetchWrapper = new OAuth2Fetch({
+      client: this._export_settings.DSP_OAuth2Client,
+
+      /**
+       * You are responsible for implementing this function.
+       * it's purpose is to supply the 'initial' oauth2 token.
+       */
+      getNewToken: async () => {
+
+        return this._export_settings.DSP_OAuth2Client.authorizationCode({
+          code: this._export_settings.DSP_authorizationCode,
+          redirectUri: this._export_settings.DSP_redirectURL,
+        });
+      },
+      onError: (err) => {
+        // error handling
+        console.log(err);
+      }
+
+    });
+    // Fallback
+
+    // var axios = require("axios");
+    // var querystring = require("querystring");
+    // const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
+    // var encodedToken = Buffer.from(base64Token).toString('base64');
+    // const authorizationURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
 
     // axios.post(
     //   'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth/token',
