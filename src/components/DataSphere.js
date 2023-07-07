@@ -171,11 +171,11 @@ export default class IFMDataSphere extends HTMLElement {
 
     const authURL = encodeURI(`${this._export_settings.DWC_oAuthURL}?response_type=code&client_id=${this._export_settings.DWC_clientID}&redirect_uri=${this._export_settings.DWC_redirectURL}`);
     const dspAuth = new OAuth2Client({
-      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com/oauth',
+      server: 'https://dwc-infomotion.authentication.eu10.hana.ondemand.com',
       clientId: this._export_settings.DWC_clientID,
       clientSecret: this._export_settings.DWC_apiSecret,
-      tokenEndpoint: '/token',
-      authorizationEndpoint: '/authorize',
+      tokenEndpoint: '/oauth/token',
+      authorizationEndpoint: '/oauth/authorize',
     });
     console.log(dspAuth);
 
