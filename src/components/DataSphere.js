@@ -1,4 +1,4 @@
-import { OAuth2Client, generateCodeVerifier } from '@badgateway/oauth2-client';
+import { OAuth2Client, OAuth2Fetch, generateCodeVerifier } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -178,16 +178,33 @@ export default class IFMDataSphere extends HTMLElement {
     });
     console.log(dspAuth);
 
-    const codeVerifier = await generateCodeVerifier();
-    console.log(codeVerifier)
+    // Use codeVerifier as soon as DataSphere supports PCKE Authorization
+    // currently only authorization code is supported
+    // const codeVerifier = await generateCodeVerifier();
+    // console.log(codeVerifier)
     document.location = await dspAuth.authorizationCode.getAuthorizeUri({
       redirectUri: this._export_settings.DWC_redirectURL //authURL,
       // codeVerifier,
     });
 
-    // this.openDialog(authURL);
+    const fetchWrapper = new OAuth2Fetch({
+      client: dspAuth,
 
-    // console.log(this._export_settings.AuthorizationCode);
+      getNewToken: async () => {
+        return dspAuth;
+      },
+      onError: (err) => {
+        // err is of type Error
+        console.log(err);
+      }
+    });
+
+    const response = fetchWrapper.fetch(this._export_settings.DWC_taskChain, {
+      method: 'POST'
+    });
+    console.log(response);
+
+
   }
 
   getAccessToken() {
