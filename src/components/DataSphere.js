@@ -132,8 +132,8 @@ export default class IFMDataSphere extends HTMLElement {
 
   performOAuth2() {
     this.setOAuth2Client();
-    this.getAuthorizationCode();
-    this.extractAuthorizationCode();
+    // this.getAuthorizationCode();
+    // this.extractAuthorizationCode();
     this.getAccessToken();
     console.log(this._export_settings.DSP_token);
 
@@ -175,52 +175,52 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAccessToken() {
 
-    // this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
-    //   document.location,
-    //   {
-    //     code: this._export_settings.DSP_authorizationCode,
-    //     redirectUri: this._export_settings.DSP_redirectURL
-    //   }
-    // );
-    const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
-
-    var data = 'grant_type=authorization_code'
-      + '&code=' + this._export_settings.DSP_authorizationCode
-      + '&client_id=' + this._export_settings.DSP_clientID
-      + '&client_secret=' + encodeURIComponent(this._export_settings.DSP_apiSecret)
-      + '&redirect_uri=' + encodeURIComponent(this._export_settings.DSP_redirectURL);
-
-    var xhr = new XMLHttpRequest()
-    xhr.open('POST', tokenURL, true);
-
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    xhr.setRequestHeader('Accept', '*/*');
-    xhr.setRequestHeader('x-sap-sac-custom-auth', 'true');
-
-
-    xhr.onerror = (err) => {
-      console.log(err);
-    }
-    xhr.onreadystatechange = (e) => {
-      var state = e;
-
-      if (xhr.readyState == 4) {
-        if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-          var jsonResult = JSON.parse(xhr.responseText);
-          var access_token = {
-            token: jsonResult.access_token,
-            expires_in: new Date((new Date()).getTime() +
-              (jsonResult.expires_in - 300) * 1000)
-          };
-          console.log(access_token);
-
-        } else {
-          //reject(xhr);
-        }
+    this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
+      document.location,
+      {
+        code: this._export_settings.DSP_authorizationCode,
+        redirectUri: this._export_settings.DSP_redirectURL
       }
-    };
+    );
+    // const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
-    xhr.send(data);
+    // var data = 'grant_type=authorization_code'
+    //   + '&code=' + this._export_settings.DSP_authorizationCode
+    //   + '&client_id=' + this._export_settings.DSP_clientID
+    //   + '&client_secret=' + encodeURIComponent(this._export_settings.DSP_apiSecret)
+    //   + '&redirect_uri=' + encodeURIComponent(this._export_settings.DSP_redirectURL);
+
+    // var xhr = new XMLHttpRequest()
+    // xhr.open('POST', tokenURL, true);
+
+    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    // xhr.setRequestHeader('Accept', '*/*');
+    // xhr.setRequestHeader('x-sap-sac-custom-auth', 'true');
+
+
+    // xhr.onerror = (err) => {
+    //   console.log(err);
+    // }
+    // xhr.onreadystatechange = (e) => {
+    //   var state = e;
+
+    //   if (xhr.readyState == 4) {
+    //     if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+    //       var jsonResult = JSON.parse(xhr.responseText);
+    //       var access_token = {
+    //         token: jsonResult.access_token,
+    //         expires_in: new Date((new Date()).getTime() +
+    //           (jsonResult.expires_in - 300) * 1000)
+    //       };
+    //       console.log(access_token);
+
+    //     } else {
+    //       //reject(xhr);
+    //     }
+    //   }
+    // };
+
+    // xhr.send(data);
 
     // Fallback
 
