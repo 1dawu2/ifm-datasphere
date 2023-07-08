@@ -171,11 +171,14 @@ export default class IFMDataSphere extends HTMLElement {
     //   // in case DataSphere supports PCKE remove the below comment
     //   // codeVerifier
     // });
-    const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
-    window.location.href = authURL;
-    if (window.location.href.includes(this._export_settings.DSP_redirectURL)) {
-      this.extractAuthorizationCode();
-    };
+    const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}`); //&redirect_uri=${this._export_settings.DSP_redirectURL}
+    document.location.href = authURL;
+    window.addEventListener('load', function () {
+      if (document.location.href.includes('code')) {
+        this.extractAuthorizationCode();
+      };
+      this.window.history.back;
+    })
 
   }
 
