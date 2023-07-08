@@ -48,6 +48,7 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DSP_redirectURL = "";
     this._export_settings.DSP_OAuth2Client = null;
     this._export_settings.DSP_authorizationCode = "";
+    this._export_settings.DSP_token = "";
 
   }
 
@@ -134,6 +135,7 @@ export default class IFMDataSphere extends HTMLElement {
     this.getAuthorizationCode();
     this.extractAuthorizationCode();
     this.getAccessToken();
+    console.log(this._export_settings.DSP_token);
 
   }
 
@@ -173,15 +175,13 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAccessToken() {
 
-    const oauth2Token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getToken(
+    this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getToken(
       // document.location,
       {
         code: this._export_settings.DSP_authorizationCode,
         redirectUri: this._export_settings.DSP_redirectURL
       }
     );
-
-    console.log(oauth2Token);
 
     // Fallback
 
