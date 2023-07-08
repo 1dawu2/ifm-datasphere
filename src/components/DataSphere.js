@@ -132,7 +132,9 @@ export default class IFMDataSphere extends HTMLElement {
 
   performOAuth2() {
     this.setOAuth2Client();
-    this.getAuthorizationCode();
+    this.getAuthorizationCode().then((response) => {
+      console.log(response);
+    });
     // this.extractAuthorizationCode();
     // this.getAccessToken();
     console.log(this._export_settings.DSP_token);
@@ -158,8 +160,6 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAuthorizationCode() {
 
-    console.log(this._export_settings.DSP_OAuth2Client);
-
     // Use codeVerifier as soon as DataSphere supports PCKE Authorization
     // currently only authorization code is supported
     // const codeVerifier = await generateCodeVerifier();
@@ -170,12 +170,6 @@ export default class IFMDataSphere extends HTMLElement {
       redirectUri: this._export_settings.DSP_redirectURL
       // in case DataSphere supports PCKE remove the below comment
       // codeVerifier
-    });
-    window.addEventListener('load', function () {
-      this.extractAuthorizationCode();
-      window.history.back
-      this.document.location.href = this._export_settings.DSP_redirectURL;
-
     });
 
   }
