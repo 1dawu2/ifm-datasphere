@@ -191,27 +191,39 @@ export default class IFMDataSphere extends HTMLElement {
     var encodedToken = Buffer.from(base64Token).toString('base64');
     const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
-    await axios.post(
-      tokenURL,
-      querystring.stringify({
-        'grant_type': 'authorization_code',
-        'code': this._export_settings.DSP_authorizationCode,
-        'redirect_uri': this._export_settings.DSP_redirectURL
-      }),
-      {
-        headers: {
-          'Authorization': 'Basic ' + encodedToken,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*',
-          'x-sap-sac-custom-auth': true,
-          'Connection': 'keep-alive'
-        }
-      }
-    ).then((response) => {
-      console.log(response);
-    }).catch((err) => {
-      console.log(err);
-    });
+    const form = new FormData();
+    form.append('client_id', this._export_settings.DSP_clientID);
+    form.append('client_secret', this._export_settings.DSP_apiSecret)
+    form.append('code', this._export_settings.DSP_authorizationCode);
+    form.append('grant_type', 'authorization_code');
+    form.append('redirect_uri', this._export_settings.DSP_redirectURL);
+    axios.post(tokenURL, form, { headers: form.getHeaders() })
+      .then((response) => {
+        const accessToken = response.data.access_token;
+        // handleTokens(accessToken, refreshToken, res);
+      }).catch((err) => { console.error(JSON.stringify(err)); });
+
+    // await axios.post(
+    //   tokenURL,
+    //   querystring.stringify({
+    //     'grant_type': 'authorization_code',
+    //     'code': this._export_settings.DSP_authorizationCode,
+    //     'redirect_uri': this._export_settings.DSP_redirectURL
+    //   }),
+    //   {
+    //     headers: {
+    //       'Authorization': 'Basic ' + encodedToken,
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //       'Accept': '*/*',
+    //       'x-sap-sac-custom-auth': true,
+    //       'Connection': 'keep-alive'
+    //     }
+    //   }
+    // ).then((response) => {
+    //   console.log(response);
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
 
   }
 
