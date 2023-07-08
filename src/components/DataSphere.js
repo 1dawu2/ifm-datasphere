@@ -132,8 +132,8 @@ export default class IFMDataSphere extends HTMLElement {
 
   performOAuth2() {
     this.setOAuth2Client();
-    this.getAuthorizationCode();
-    this.extractAuthorizationCode();
+    // this.getAuthorizationCode();
+    // this.extractAuthorizationCode();
     this.getAccessToken();
     console.log(this._export_settings.DSP_token);
 
@@ -175,33 +175,22 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAccessToken() {
 
-    // this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getToken(
-    //   // document.location,
-    //   {
-    //     code: this._export_settings.DSP_authorizationCode,
-    //     redirectUri: this._export_settings.DSP_redirectURL
-    //   }
-    // );
+    this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
+      document.location,
+      {
+        code: this._export_settings.DSP_authorizationCode,
+        redirectUri: this._export_settings.DSP_redirectURL
+      }
+    );
 
     // Fallback
 
-    var axios = require("axios");
-    var querystring = require("querystring");
-    const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
-    var encodedToken = Buffer.from(base64Token).toString('base64');
-    const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
+    // var axios = require("axios");
+    // var querystring = require("querystring");
+    // const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
+    // var encodedToken = Buffer.from(base64Token).toString('base64');
+    // const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
-    const form = new FormData();
-    form.append('client_id', this._export_settings.DSP_clientID);
-    form.append('client_secret', this._export_settings.DSP_apiSecret)
-    form.append('code', this._export_settings.DSP_authorizationCode);
-    form.append('grant_type', 'authorization_code');
-    form.append('redirect_uri', this._export_settings.DSP_redirectURL);
-    axios.post(tokenURL, form, { headers: form.getHeaders() })
-      .then((response) => {
-        const accessToken = response.data.access_token;
-        // handleTokens(accessToken, refreshToken, res);
-      }).catch((err) => { console.error(JSON.stringify(err)); });
 
     // await axios.post(
     //   tokenURL,
