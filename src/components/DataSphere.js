@@ -142,7 +142,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   setOAuth2Client() {
-    const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
+    // const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
     this._export_settings.DSP_OAuth2Client = new OAuth2Client({
       server: this._export_settings.DSP_serverURL,
       clientId: this._export_settings.DSP_clientID,
@@ -166,11 +166,16 @@ export default class IFMDataSphere extends HTMLElement {
     // console.log(codeVerifier)
 
     // start authorization process
-    document.location = await this._export_settings.DSP_OAuth2Client.authorizationCode.getAuthorizeUri({
-      redirectUri: this._export_settings.DSP_redirectURL
-      // in case DataSphere supports PCKE remove the below comment
-      // codeVerifier
-    });
+    // document.location = await this._export_settings.DSP_OAuth2Client.authorizationCode.getAuthorizeUri({
+    //   redirectUri: this._export_settings.DSP_redirectURL
+    //   // in case DataSphere supports PCKE remove the below comment
+    //   // codeVerifier
+    // });
+    const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
+    window.location.href = authURL;
+    if (window.location.href.includes(this._export_settings.DSP_redirectURL)) {
+      this.extractAuthorizationCode();
+    };
 
   }
 
