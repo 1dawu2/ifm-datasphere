@@ -131,10 +131,10 @@ export default class IFMDataSphere extends HTMLElement {
 
   performOAuth2() {
     this.setOAuth2Client();
-    // this.getAuthorizationCode();
-
-    this.getAccessToken();
+    this.getAuthorizationCode();
     this.extractAuthorizationCode();
+    this.getAccessToken();
+
   }
 
   setOAuth2Client() {
@@ -173,9 +173,12 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAccessToken() {
 
-    const oauth2Token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
-      document.location,
-      { redirectUri: this._export_settings.DSP_redirectURL }
+    const oauth2Token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getToken(
+      // document.location,
+      {
+        code: this._export_settings.DSP_authorizationCode,
+        redirectUri: this._export_settings.DSP_redirectURL
+      }
     );
 
     console.log(oauth2Token);
