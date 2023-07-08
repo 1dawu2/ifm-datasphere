@@ -191,7 +191,7 @@ export default class IFMDataSphere extends HTMLElement {
     var encodedToken = Buffer.from(base64Token).toString('base64');
     const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
-    axios.post(
+    await axios.post(
       tokenURL,
       querystring.stringify({
         'grant_type': 'authorization_code',
@@ -202,7 +202,9 @@ export default class IFMDataSphere extends HTMLElement {
         headers: {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*'
+          'Accept': '*/*',
+          'x-sap-sac-custom-auth': true,
+          'Connection': 'keep-alive'
         }
       }
     ).then((response) => {
