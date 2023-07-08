@@ -171,16 +171,12 @@ export default class IFMDataSphere extends HTMLElement {
       // in case DataSphere supports PCKE remove the below comment
       // codeVerifier
     });
+    window.addEventListener('load', function () {
+      this.extractAuthorizationCode();
+      window.history.back
+      this.document.location.href = this._export_settings.DSP_redirectURL;
 
-    const accessToken = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
-      document.location,
-      {
-        code: this._export_settings.DSP_authorizationCode,
-        redirectUri: this._export_settings.DSP_redirectURL
-      }
-    );
-
-    this._export_settings.DSP_token = accessToken;
+    });
 
   }
 
