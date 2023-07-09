@@ -290,7 +290,7 @@ export default class IFMDataSphere extends HTMLElement {
 
           onPress: function (oEvent) {
             // that_.performOAuth2();
-            const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
             var ui5Dialog = new sap.m.Dialog({
               title: "Authorization",
               content: [`'<iframe id="authorizationFrame" src="${authURL}" style="width:100%; height:500px;"></iframe>'`],
