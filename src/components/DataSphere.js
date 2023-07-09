@@ -297,7 +297,7 @@ export default class IFMDataSphere extends HTMLElement {
             });
             var ui5Dialog = Dialog({
               title: "Authorization",
-              content: [ui5Frame],
+              content: ["test"],
               buttons: [
                 new Button({
                   text: "Close",
