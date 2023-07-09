@@ -281,9 +281,10 @@ export default class IFMDataSphere extends HTMLElement {
       [
         "sap/ui/core/mvc/Controller",
         "sap/m/Dialog",
+        "sap/m/Button",
         "sap/ui/core/library",
       ],
-      function (Controller) {
+      function (Controller, Dialog, Button) {
         "use strict";
 
         return Controller.extend("ifm.datasphere.initial", {
@@ -291,11 +292,14 @@ export default class IFMDataSphere extends HTMLElement {
           onPress: function (oEvent) {
             // that_.performOAuth2();
             const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
-            var ui5Dialog = new sap.m.Dialog({
+            var ui5Frame = new sap.ui.core.HTML({
+              content: `'<iframe id="authorizationFrame" src="${authURL}" style="width: 100 %; height: 500px;"></iframe>'`
+            });
+            var ui5Dialog = Dialog({
               title: "Authorization",
-              content: [`'<iframe id="authorizationFrame" src="${authURL}" style="width:100%; height:500px;"></iframe>'`],
+              content: [ui5Frame],
               buttons: [
-                new sap.m.Button({
+                new Button({
                   text: "Close",
                   press: function () {
                     ui5Dialog.close();
