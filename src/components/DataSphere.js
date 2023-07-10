@@ -327,7 +327,7 @@ export default class IFMDataSphere extends HTMLElement {
 
       //### THE APP: place the XMLView somewhere into DOM ###
       var oView = sap.ui.xmlview({
-        viewContent: jQuery(_shadowRoot.getElementById(_id + "_oView")).html(),
+        viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
       });
       oView.placeAt(content);
 
