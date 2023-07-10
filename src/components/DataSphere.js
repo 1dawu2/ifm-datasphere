@@ -132,9 +132,7 @@ export default class IFMDataSphere extends HTMLElement {
 
   performOAuth2() {
     this.setOAuth2Client();
-    this.getAuthorizationCode().then((response) => {
-      console.log(response);
-    });
+    this.getAccessToken();
     // this.extractAuthorizationCode();
     // this.getAccessToken();
     console.log(this._export_settings.DSP_token);
@@ -322,6 +320,7 @@ export default class IFMDataSphere extends HTMLElement {
                 }),
                 afterClose: function () {
                   console.log(that_._export_settings.DSP_authorizationCode);
+                  that_.performOAuth2();
                   this.oDefaultDialog.destroyContent();
                 }
               });
