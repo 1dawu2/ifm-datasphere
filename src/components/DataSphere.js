@@ -296,7 +296,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=http://www.infomotion.de`); //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=https://infomotion1.eu10.hanacloudservices.cloud.sap/`); //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
