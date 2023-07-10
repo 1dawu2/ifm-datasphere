@@ -298,15 +298,15 @@ export default class IFMDataSphere extends HTMLElement {
           onPress: function (oEvent) {
             const authURL = `${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`; //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
             var ui5Frame = new sap.ui.core.HTML({
-              content: "<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>"
+              content: `"<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>"`
             });
             if (!this.oDefaultDialog) {
               var ui5Card = new sap.f.Card({
                 content: [ui5Frame]
               });
               var ui5ScrollContainer = new sap.m.ScrollContainer({
-                height: "400px",
-                width: "100%",
+                height: "500px",
+                width: "500px",
                 content: [ui5Card]
               });
               this.oDefaultDialog = new sap.m.Dialog({
