@@ -182,13 +182,14 @@ export default class IFMDataSphere extends HTMLElement {
 
   async getAccessToken() {
 
-    this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
-      document.location,
-      {
-        code: this._export_settings.DSP_authorizationCode,
-        redirectUri: this._export_settings.DSP_redirectURL
-      }
-    );
+    // this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
+    //   document.location,
+    //   {
+    //     code: this._export_settings.DSP_authorizationCode,
+    //     redirectUri: this._export_settings.DSP_redirectURL
+    //   }
+    // );
+
     // const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
     // var data = 'grant_type=authorization_code'
@@ -231,34 +232,34 @@ export default class IFMDataSphere extends HTMLElement {
 
     // Fallback
 
-    // var axios = require("axios");
-    // var querystring = require("querystring");
-    // const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
-    // var encodedToken = Buffer.from(base64Token).toString('base64');
-    // const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
+    var axios = require("axios");
+    var querystring = require("querystring");
+    const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
+    var encodedToken = Buffer.from(base64Token).toString('base64');
+    const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
 
 
-    // await axios.post(
-    //   tokenURL,
-    //   querystring.stringify({
-    //     'grant_type': 'authorization_code',
-    //     'code': this._export_settings.DSP_authorizationCode,
-    //     'redirect_uri': this._export_settings.DSP_redirectURL
-    //   }),
-    //   {
-    //     headers: {
-    //       'Authorization': 'Basic ' + encodedToken,
-    //       'Content-Type': 'application/x-www-form-urlencoded',
-    //       'Accept': '*/*',
-    //       'x-sap-sac-custom-auth': true,
-    //       'Connection': 'keep-alive'
-    //     }
-    //   }
-    // ).then((response) => {
-    //   console.log(response);
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
+    await axios.post(
+      tokenURL,
+      querystring.stringify({
+        'grant_type': 'authorization_code',
+        'code': this._export_settings.DSP_authorizationCode,
+        // 'redirect_uri': this._export_settings.DSP_redirectURL
+      }),
+      {
+        headers: {
+          'Authorization': 'Basic ' + encodedToken,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': '*/*',
+          'x-sap-sac-custom-auth': true,
+          'Connection': 'keep-alive'
+        }
+      }
+    ).then((response) => {
+      console.log(response);
+    }).catch((err) => {
+      console.log(err);
+    });
 
   }
 
