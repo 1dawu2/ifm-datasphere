@@ -251,8 +251,7 @@ export default class IFMDataSphere extends HTMLElement {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': '*/*',
-          'x-sap-sac-custom-auth': true,
-          'Connection': 'keep-alive'
+          'x-sap-sac-custom-auth': true
         }
       }
     ).then((response) => {
@@ -322,7 +321,7 @@ export default class IFMDataSphere extends HTMLElement {
                 afterClose: function () {
                   console.log(that_._export_settings.DSP_authorizationCode);
                   that_.performOAuth2();
-                  this.oDefaultDialog.destroyContent();
+                  // this.oDefaultDialog.destroyContent();
                 }
               });
             };
