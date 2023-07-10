@@ -297,13 +297,12 @@ export default class IFMDataSphere extends HTMLElement {
             });
             var ui5Dialog = Dialog({
               title: "Authorization",
-              content: ["test"],
+              content: [],
               buttons: [
                 new sap.m.Button({
                   press: function () {
-                    this.getParent().close();
-                  },
-                  text: "OK"
+                    ui5Dialog.close();
+                  }
                 }),
               ],
               afterClose: function () {
