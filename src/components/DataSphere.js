@@ -309,7 +309,6 @@ export default class IFMDataSphere extends HTMLElement {
                   }
                 }),
                 beginButton: new Button({
-                  type: ButtonType.Emphasized,
                   text: "OK",
                   press: function () {
                     this.oDefaultDialog.close();
