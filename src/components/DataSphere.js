@@ -301,13 +301,7 @@ export default class IFMDataSphere extends HTMLElement {
             if (!this.oDefaultDialog) {
               this.oDefaultDialog = new Dialog({
                 title: "Available Products",
-                content: new List({
-                  items: {
-                    template: new StandardListItem({
-                      title: "test"
-                    })
-                  }
-                }),
+                content: [ui5Frame],
                 beginButton: new Button({
                   text: "OK",
                   press: function () {
