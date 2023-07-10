@@ -297,9 +297,10 @@ export default class IFMDataSphere extends HTMLElement {
 
           onPress: function (oEvent) {
             const authURL = `${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`; //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
-            var urlTest = "http://www.infomotion.de";
+            var sFrame = `"<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>"`;
+            console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
-              content: `"<iframe id='authorizationFrame' src='${urlTest}' style='width: 500px; height: 500px;'></iframe>"`
+              content: [sFrame]
             });
             if (!this.oDefaultDialog) {
               var ui5Card = new sap.f.Card({
