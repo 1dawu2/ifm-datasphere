@@ -299,12 +299,12 @@ export default class IFMDataSphere extends HTMLElement {
               title: "Authorization",
               content: ["test"],
               buttons: [
-                new Button({
-                  text: "Close",
+                new sap.m.Button({
                   press: function () {
-                    ui5Dialog.close();
-                  }
-                })
+                    this.getParent().close();
+                  },
+                  text: "OK"
+                }),
               ],
               afterClose: function () {
                 ui5Dialog.destroyContent();
