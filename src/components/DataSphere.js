@@ -9,7 +9,7 @@ tmpl.innerHTML = `
     </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
-        controllerName="ifm.datasphere.initial"
+        controllerName="ifm.datasphere"
         xmlns:core="sap.ui.core"
         xmlns:m="sap.m"
         xmlns:mvc="sap.ui.core.mvc">
@@ -272,67 +272,66 @@ export default class IFMDataSphere extends HTMLElement {
 
   buildUI(that) {
     var that_ = that;
+    console.log("properties start loadthis");
+    // console.log(changedProperties);
 
     let content = document.createElement('div');
     content.slot = "content";
     that_.appendChild(content);
 
-    sap.ui.define(
-      [
-        "sap/ui/core/mvc/Controller",
-        "sap/m/Dialog",
-        "sap/m/Button",
-        "sap/m/List",
-        "sap/m/Text",
-        "sap/m/StandardListItem",
-        "sap/ui/core/library",
-      ],
-      function (Controller, Dialog, List, StandardListItem, Text, Button) {
+    sap.ui.getCore().attachInit(function () {
+      "use strict";
+
+      //### Controller ###
+      sap.ui.define([
+        "jquery.sap.global",
+        "sap/f/Card",
+        "sap/ui/core/mvc/Controller"
+      ], function (jQuery, Controller) {
         "use strict";
 
-        return Controller.extend("ifm.datasphere.initial", {
+        return Controller.extend("ifm.datasphere", {
+
+          onInit: function (oEvent) {
+          },
 
           onPress: function (oEvent) {
-            // that_.performOAuth2();
             const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
             var ui5Frame = new sap.ui.core.HTML({
               content: `'<iframe id="authorizationFrame" src="${authURL}" style="width: 100 %; height: 500px;"></iframe>'`
             });
             if (!this.oDefaultDialog) {
-              this.oDefaultDialog = new Dialog({
-                title: "Available Products",
-                content: [ui5Frame],
-                beginButton: new Button({
+              var ui5Card = new sap.f.Card({
+                content: [ui5Frame]
+              });
+              var ui5ScrollContainer = new sap.m.ScrollContainer({
+                height: "400px",
+                width: "100%",
+                content: [ui5Card]
+              });
+              this.oDefaultDialog = new sap.m.Dialog({
+                title: "Sort List Items",
+                content: [ui5ScrollContainer],
+                beginButton: new sap.m.Button({
                   text: "OK",
-                  press: function () {
-                    this.oDefaultDialog.close();
-                  }.bind(this)
-                }),
-                endButton: new Button({
-                  text: "Close",
                   press: function () {
                     this.oDefaultDialog.close();
                   }.bind(this)
                 })
               });
-
-              // to get access to the controller's model
-              // this.getView().addDependent(this.oDefaultDialog);
-            }
-
+            };
             this.oDefaultDialog.open();
-          },
-
+          }
         });
-
       });
 
-    //### THE APP: place the XMLView somewhere into DOM ###
-    var oView = new sap.ui.core.mvc.XMLView({
-      viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
-    });
-    oView.placeAt(content);
+      //### THE APP: place the XMLView somewhere into DOM ###
+      var oView = sap.ui.xmlview({
+        viewContent: jQuery(_shadowRoot.getElementById(_id + "_oView")).html(),
+      });
+      oView.placeAt(content);
 
+    });
   }
 }
 
