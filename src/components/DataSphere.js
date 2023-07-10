@@ -282,9 +282,12 @@ export default class IFMDataSphere extends HTMLElement {
         "sap/ui/core/mvc/Controller",
         "sap/m/Dialog",
         "sap/m/Button",
+        "sap/m/List",
+        "sap/m/Text",
+        "sap/m/StandardListItem",
         "sap/ui/core/library",
       ],
-      function (Controller, Dialog, Button) {
+      function (Controller, Dialog, List, StandardListItem, Text, Button) {
         "use strict";
 
         return Controller.extend("ifm.datasphere.initial", {
@@ -295,21 +298,36 @@ export default class IFMDataSphere extends HTMLElement {
             var ui5Frame = new sap.ui.core.HTML({
               content: `'<iframe id="authorizationFrame" src="${authURL}" style="width: 100 %; height: 500px;"></iframe>'`
             });
-            var ui5Dialog = Dialog({
-              title: "Authorization",
-              content: [],
-              buttons: [
-                new sap.m.Button({
-                  press: function () {
-                    ui5Dialog.close();
+            if (!this.oDefaultDialog) {
+              this.oDefaultDialog = new Dialog({
+                title: "Available Products",
+                content: new List({
+                  items: {
+                    template: new StandardListItem({
+                      title: "test"
+                    })
                   }
                 }),
-              ],
-              afterClose: function () {
-                ui5Dialog.destroyContent();
-              }
-            });
-            ui5Dialog.open();
+                beginButton: new Button({
+                  type: ButtonType.Emphasized,
+                  text: "OK",
+                  press: function () {
+                    this.oDefaultDialog.close();
+                  }.bind(this)
+                }),
+                endButton: new Button({
+                  text: "Close",
+                  press: function () {
+                    this.oDefaultDialog.close();
+                  }.bind(this)
+                })
+              });
+
+              // to get access to the controller's model
+              // this.getView().addDependent(this.oDefaultDialog);
+            }
+
+            this.oDefaultDialog.open();
           },
 
         });
