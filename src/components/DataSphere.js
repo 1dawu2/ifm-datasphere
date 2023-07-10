@@ -319,7 +319,11 @@ export default class IFMDataSphere extends HTMLElement {
                   press: function () {
                     this.oDefaultDialog.close();
                   }.bind(this)
-                })
+                }),
+                afterClose: function () {
+                  this.oDefaultDialog.destroyContent();
+                  console.log(that_._export_settings.DSP_authorizationCode);
+                }
               });
             };
             this.oDefaultDialog.open();
@@ -331,7 +335,7 @@ export default class IFMDataSphere extends HTMLElement {
                 if (frameDocument.location.href.indexOf("code") !== -1) {
                   clearInterval(checkAuthorizationCode);
                   var urlParams = new URLSearchParams(frameDocument.location.search);
-                  var authorizationCode = urlParams.get("code");
+                  that_._export_settings.DSP_authorizationCode = urlParams.get("code");
                   this.oDefaultDialog.close();
                 }
               } catch (error) {
