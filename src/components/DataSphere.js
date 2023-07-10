@@ -296,9 +296,9 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
+            const authURL = `${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`; //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
             var ui5Frame = new sap.ui.core.HTML({
-              content: "<iframe id='authorizationFrame' src='https://www.infomotion.de' style='width: 500px; height: 500px;'></iframe>"
+              content: "<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>"
             });
             if (!this.oDefaultDialog) {
               var ui5Card = new sap.f.Card({
@@ -310,7 +310,7 @@ export default class IFMDataSphere extends HTMLElement {
                 content: [ui5Card]
               });
               this.oDefaultDialog = new sap.m.Dialog({
-                title: "Sort List Items",
+                title: "Authorization Code",
                 content: [ui5ScrollContainer],
                 beginButton: new sap.m.Button({
                   text: "OK",
