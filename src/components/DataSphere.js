@@ -244,7 +244,7 @@ export default class IFMDataSphere extends HTMLElement {
       querystring.stringify({
         'grant_type': 'authorization_code',
         'code': this._export_settings.DSP_authorizationCode,
-        // 'redirect_uri': this._export_settings.DSP_redirectURL
+        'redirect_uri': this._export_settings.DSP_redirectURL
       }),
       {
         headers: {
@@ -294,8 +294,8 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`); //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
-            var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 500px; height: 500px;'></iframe>`;
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`); //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
+            var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
               content: [sFrame]
@@ -305,8 +305,8 @@ export default class IFMDataSphere extends HTMLElement {
                 content: [ui5Frame]
               });
               var ui5ScrollContainer = new sap.m.ScrollContainer({
-                height: "500px",
-                width: "500px",
+                height: "600px",
+                width: "600px",
                 content: [ui5Card]
               });
               this.oDefaultDialog = new sap.m.Dialog({
