@@ -251,7 +251,12 @@ export default class IFMDataSphere extends HTMLElement {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': '*/*',
-          'x-sap-sac-custom-auth': true
+          // 'x-sap-sac-custom-auth': true
+          'Cache-Control': 'no-cache',
+          'Host': this._export_settings.DSP_serverURL,
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
+          'Content-Length': '244'
         }
       }
     ).then((response) => {
@@ -300,32 +305,32 @@ export default class IFMDataSphere extends HTMLElement {
             var ui5Frame = new sap.ui.core.HTML({
               content: [sFrame]
             });
-            if (!this.oDefaultDialog) {
-              var ui5Card = new sap.f.Card({
-                content: [ui5Frame]
-              });
-              var ui5ScrollContainer = new sap.m.ScrollContainer({
-                height: "600px",
-                width: "600px",
-                content: [ui5Card]
-              });
-              this.oDefaultDialog = new sap.m.Dialog({
-                title: "Authorization Code",
-                content: [ui5ScrollContainer],
-                beginButton: new sap.m.Button({
-                  text: "OK",
-                  press: function () {
-                    this.oDefaultDialog.close();
-                  }.bind(this)
-                }),
-                afterClose: function () {
-                  console.log(that_._export_settings.DSP_authorizationCode);
-                  that_.performOAuth2();
-                  // this.oDefaultDialog.destroyContent();
-                }
-              });
-            };
-            this.oDefaultDialog.open();
+            // if (!this.oDefaultDialog) {
+            var ui5Card = new sap.f.Card({
+              content: [ui5Frame]
+            });
+            var ui5ScrollContainer = new sap.m.ScrollContainer({
+              height: "600px",
+              width: "600px",
+              content: [ui5Card]
+            });
+            var ui5Dialog = new sap.m.Dialog({
+              title: "Authorization Code",
+              content: [ui5ScrollContainer],
+              beginButton: new sap.m.Button({
+                text: "OK",
+                press: function () {
+                  ui5Dialog.close();
+                }.bind(this)
+              }),
+              afterClose: function () {
+                console.log(that_._export_settings.DSP_authorizationCode);
+                that_.performOAuth2();
+                ui5Dialog.destroyContent();
+              }
+            });
+            // };
+            ui5Dialog.open();
 
             var checkAuthorizationCode = setInterval(function () {
               try {
@@ -336,7 +341,7 @@ export default class IFMDataSphere extends HTMLElement {
                   var urlParams = new URLSearchParams(frameDocument.location.search);
                   that_._export_settings.DSP_authorizationCode = urlParams.get("code");
                 }
-                this.oDefaultDialog.close();
+                ui5Dialog.close();
               } catch (error) {
                 console.log(error);
               }
