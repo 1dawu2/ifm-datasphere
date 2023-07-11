@@ -129,6 +129,23 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
+  async executeChain(chainID) {
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+        console.log(this.responseText);
+      }
+    });
+
+    xhr.open("POST", "https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start");
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this._export_settings.DSP_token);
+    // xhr.setRequestHeader("Cookie", "JSESSIONID=s%3AfJJKLeLolSShyzivv-f36JScg8MR6c09.BsrH7NzGjoeODuxOjD%2FZ5Cmn2LXCG9hU11WdSjyU8YI; __VCAP_ID__=daf6cb9d-dd08-45cd-7a4b-1d87");
+
+    xhr.send();
+  }
+
   async getAccessToken() {
     var axios = require("axios");
     var querystring = require("querystring");
@@ -142,23 +159,16 @@ export default class IFMDataSphere extends HTMLElement {
       querystring.stringify({
         'grant_type': 'authorization_code',
         'code': this._export_settings.DSP_authorizationCode
-        // 'redirect_uri': 'https://infomotion1.eu10.hanacloudservices.cloud.sap'
       }),
       {
         headers: {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
-          // 'Accept': '*/*',
-          // 'x-sap-sac-custom-auth': 'true',
-          // 'Cache-Control': 'no-cache',
-          // 'Host': this._export_settings.DSP_serverURL,
-          // 'Accept-Encoding': 'gzip, deflate, br',
-          // 'Connection': 'keep-alive',
-          // 'Content-Length': '244'
         }
       }
     ).then((response) => {
-      console.log(response);
+      this._export_settings.DSP_token = response.access_token;
+      this.executeChain();
     }).catch((err) => {
       console.log(err);
     });
@@ -195,7 +205,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`); //&redirect_uri=https://infomotion1.eu10.hanacloudservices.cloud.sap
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`);
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
