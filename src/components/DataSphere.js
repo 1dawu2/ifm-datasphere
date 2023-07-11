@@ -131,12 +131,9 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performOAuth2() {
+    console.log(this._export_settings.DSP_token);
     this.setOAuth2Client();
     this.getAccessToken();
-    // this.extractAuthorizationCode();
-    // this.getAccessToken();
-    console.log(this._export_settings.DSP_token);
-
   }
 
   setOAuth2Client() {
@@ -151,35 +148,6 @@ export default class IFMDataSphere extends HTMLElement {
 
   }
 
-  extractAuthorizationCode() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this._export_settings.DSP_authorizationCode = urlParams.get('code');
-  }
-
-  async getAuthorizationCode() {
-
-    // Use codeVerifier as soon as DataSphere supports PCKE Authorization
-    // currently only authorization code is supported
-    // const codeVerifier = await generateCodeVerifier();
-    // console.log(codeVerifier)
-
-    // start authorization process
-    // document.location = await this._export_settings.DSP_OAuth2Client.authorizationCode.getAuthorizeUri({
-    //   redirectUri: this._export_settings.DSP_redirectURL
-    //   // in case DataSphere supports PCKE remove the below comment
-    //   // codeVerifier
-    // });
-    const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}`); //&redirect_uri=${this._export_settings.DSP_redirectURL}
-    document.location.href = authURL;
-    window.addEventListener('load', function () {
-      if (document.location.href.includes('code')) {
-        this.extractAuthorizationCode();
-      };
-      this.window.history.back;
-    })
-
-  }
-
   async getAccessToken() {
 
     // this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
@@ -189,46 +157,6 @@ export default class IFMDataSphere extends HTMLElement {
     //     redirectUri: this._export_settings.DSP_redirectURL
     //   }
     // );
-
-    // const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
-
-    // var data = 'grant_type=authorization_code'
-    //   + '&code=' + this._export_settings.DSP_authorizationCode
-    //   + '&client_id=' + this._export_settings.DSP_clientID
-    //   + '&client_secret=' + encodeURIComponent(this._export_settings.DSP_apiSecret)
-    //   + '&redirect_uri=' + encodeURIComponent(this._export_settings.DSP_redirectURL);
-
-    // var xhr = new XMLHttpRequest()
-    // xhr.open('POST', tokenURL, true);
-
-    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    // xhr.setRequestHeader('Accept', '*/*');
-    // xhr.setRequestHeader('x-sap-sac-custom-auth', 'true');
-
-
-    // xhr.onerror = (err) => {
-    //   console.log(err);
-    // }
-    // xhr.onreadystatechange = (e) => {
-    //   var state = e;
-
-    //   if (xhr.readyState == 4) {
-    //     if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-    //       var jsonResult = JSON.parse(xhr.responseText);
-    //       var access_token = {
-    //         token: jsonResult.access_token,
-    //         expires_in: new Date((new Date()).getTime() +
-    //           (jsonResult.expires_in - 300) * 1000)
-    //       };
-    //       console.log(access_token);
-
-    //     } else {
-    //       //reject(xhr);
-    //     }
-    //   }
-    // };
-
-    // xhr.send(data);
 
     // Fallback
 
@@ -244,14 +172,14 @@ export default class IFMDataSphere extends HTMLElement {
       querystring.stringify({
         'grant_type': 'authorization_code',
         'code': this._export_settings.DSP_authorizationCode,
-        'redirect_uri': this._export_settings.DSP_redirectURL
+        'redirect_uri': this._export_settings.DSP_serverURL
       }),
       {
         headers: {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': '*/*',
-          // 'x-sap-sac-custom-auth': true
+          'x-sap-sac-custom-auth': 'true',
           'Cache-Control': 'no-cache',
           'Host': this._export_settings.DSP_serverURL,
           'Accept-Encoding': 'gzip, deflate, br',
@@ -275,8 +203,6 @@ export default class IFMDataSphere extends HTMLElement {
 
   buildUI(that) {
     var that_ = that;
-    console.log("properties start loadthis");
-    // console.log(changedProperties);
 
     let content = document.createElement('div');
     content.slot = "content";
@@ -299,21 +225,23 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`); //encodeURI() &redirect_uri=${that_._export_settings.DSP_redirectURL}
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_serverURL}`);
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
               content: [sFrame]
             });
-            // if (!this.oDefaultDialog) {
+
             var ui5Card = new sap.f.Card({
               content: [ui5Frame]
             });
+
             var ui5ScrollContainer = new sap.m.ScrollContainer({
               height: "600px",
               width: "600px",
               content: [ui5Card]
             });
+
             var ui5Dialog = new sap.m.Dialog({
               title: "Authorization Code",
               content: [ui5ScrollContainer],
@@ -329,7 +257,7 @@ export default class IFMDataSphere extends HTMLElement {
                 ui5Dialog.destroyContent();
               }
             });
-            // };
+
             ui5Dialog.open();
 
             var checkAuthorizationCode = setInterval(function () {
