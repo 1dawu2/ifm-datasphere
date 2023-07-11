@@ -1,4 +1,3 @@
-import { OAuth2Client, OAuth2Fetch, generateCodeVerifier } from '@badgateway/oauth2-client';
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -130,34 +129,7 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  performOAuth2() {
-    this.getAccessToken();
-  }
-
-  setOAuth2Client() {
-    // const authURL = encodeURI(`${this._export_settings.DSP_oAuthURL}?response_type=code&client_id=${this._export_settings.DSP_clientID}&redirect_uri=${this._export_settings.DSP_redirectURL}`);
-    this._export_settings.DSP_OAuth2Client = new OAuth2Client({
-      server: this._export_settings.DSP_serverURL,
-      clientId: this._export_settings.DSP_clientID,
-      clientSecret: this._export_settings.DSP_apiSecret,
-      tokenEndpoint: '/oauth/token',
-      authorizationEndpoint: '/oauth/authorize',
-    });
-
-  }
-
   async getAccessToken() {
-
-    // this._export_settings.DSP_token = await this._export_settings.DSP_OAuth2Client.authorizationCode.getTokenFromCodeRedirect(
-    //   document.location,
-    //   {
-    //     code: this._export_settings.DSP_authorizationCode,
-    //     redirectUri: this._export_settings.DSP_redirectURL
-    //   }
-    // );
-
-    // Fallback
-
     var axios = require("axios");
     var querystring = require("querystring");
     const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
@@ -169,8 +141,8 @@ export default class IFMDataSphere extends HTMLElement {
       tokenURL,
       querystring.stringify({
         'grant_type': 'authorization_code',
-        'code': this._export_settings.DSP_authorizationCode,
-        'redirect_uri': 'https://infomotion1.eu10.hanacloudservices.cloud.sap'
+        'code': this._export_settings.DSP_authorizationCode
+        // 'redirect_uri': 'https://infomotion1.eu10.hanacloudservices.cloud.sap'
       }),
       {
         headers: {
@@ -223,7 +195,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=https://infomotion1.eu10.hanacloudservices.cloud.sap`);
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`); //&redirect_uri=https://infomotion1.eu10.hanacloudservices.cloud.sap
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
