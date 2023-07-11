@@ -237,7 +237,7 @@ export default class IFMDataSphere extends HTMLElement {
                   clearInterval(checkAuthorizationCode);
                   var urlParams = new URLSearchParams(frameDocument.location.search);
                   that_._export_settings.DSP_authorizationCode = urlParams.get("code");
-                  that_.performOAuth2();
+                  that_.getAccessToken();
                   ui5Dialog.close();
                 }
               } catch (error) {
