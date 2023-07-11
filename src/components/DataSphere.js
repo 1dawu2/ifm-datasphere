@@ -167,6 +167,7 @@ export default class IFMDataSphere extends HTMLElement {
         }
       }
     ).then((response) => {
+      console.log(response);
       this._export_settings.DSP_token = response.access_token;
       this.executeChain();
     }).catch((err) => {
