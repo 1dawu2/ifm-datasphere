@@ -172,7 +172,7 @@ export default class IFMDataSphere extends HTMLElement {
       querystring.stringify({
         'grant_type': 'authorization_code',
         'code': this._export_settings.DSP_authorizationCode,
-        'redirect_uri': this._export_settings.DSP_serverURL
+        'redirect_uri': this._export_settings.DSP_redirectURL
       }),
       {
         headers: {
@@ -225,7 +225,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_serverURL}`);
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
@@ -253,7 +253,6 @@ export default class IFMDataSphere extends HTMLElement {
               }),
               afterClose: function () {
                 console.log(that_._export_settings.DSP_authorizationCode);
-                that_.performOAuth2();
                 ui5Dialog.destroyContent();
               }
             });
@@ -268,8 +267,9 @@ export default class IFMDataSphere extends HTMLElement {
                   clearInterval(checkAuthorizationCode);
                   var urlParams = new URLSearchParams(frameDocument.location.search);
                   that_._export_settings.DSP_authorizationCode = urlParams.get("code");
+                  that_.performOAuth2();
+                  ui5Dialog.close();
                 }
-                ui5Dialog.close();
               } catch (error) {
                 console.log(error);
               }
