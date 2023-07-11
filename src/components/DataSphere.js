@@ -131,8 +131,6 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   performOAuth2() {
-    console.log(this._export_settings.DSP_token);
-    this.setOAuth2Client();
     this.getAccessToken();
   }
 
@@ -172,7 +170,7 @@ export default class IFMDataSphere extends HTMLElement {
       querystring.stringify({
         'grant_type': 'authorization_code',
         'code': this._export_settings.DSP_authorizationCode,
-        'redirect_uri': this._export_settings.DSP_redirectURL
+        'redirect_uri': 'https://infomotion1.eu10.hanacloudservices.cloud.sap'
       }),
       {
         headers: {
@@ -225,7 +223,7 @@ export default class IFMDataSphere extends HTMLElement {
           },
 
           onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=${that_._export_settings.DSP_redirectURL}`);
+            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}&redirect_uri=https://infomotion1.eu10.hanacloudservices.cloud.sap`);
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
             console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
