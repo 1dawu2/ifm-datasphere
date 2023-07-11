@@ -148,13 +148,13 @@ export default class IFMDataSphere extends HTMLElement {
         headers: {
           'Authorization': 'Basic ' + encodedToken,
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': '*/*',
-          'x-sap-sac-custom-auth': 'true',
-          'Cache-Control': 'no-cache',
-          'Host': this._export_settings.DSP_serverURL,
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive',
-          'Content-Length': '244'
+          // 'Accept': '*/*',
+          // 'x-sap-sac-custom-auth': 'true',
+          // 'Cache-Control': 'no-cache',
+          // 'Host': this._export_settings.DSP_serverURL,
+          // 'Accept-Encoding': 'gzip, deflate, br',
+          // 'Connection': 'keep-alive',
+          // 'Content-Length': '244'
         }
       }
     ).then((response) => {
