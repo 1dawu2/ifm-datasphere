@@ -144,10 +144,11 @@ export default class IFMDataSphere extends HTMLElement {
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         console.log(this.responseText);
+        this._export_settings.DSP_status = JSON.parse(this.responseText);
       } else {
         console.log("error");
+        this._export_settings.DSP_status = "error"
       }
-      this._export_settings.DSP_status = this.responseText;
     });
 
     xhr.open("POST", this._export_settings.DSP_taskChain);
@@ -241,7 +242,11 @@ export default class IFMDataSphere extends HTMLElement {
                 }.bind(this)
               }),
               afterClose: function () {
-                sap.m.MessageBox.information(that_._export_settings.DSP_status);
+                if (that_._export_settings.DSP_status !== "error") {
+                  sap.m.MessageBox.success(that_._export_settings.DSP_status);
+                } else {
+                  sap.m.MessageBox.error(that_._export_settings.DSP_status);
+                }
                 ui5Dialog.destroyContent();
               }
             });
