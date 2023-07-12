@@ -46,7 +46,6 @@ export default class IFMDataSphere extends HTMLElement {
     this._export_settings.DSP_tokenURL = "";
     this._export_settings.DSP_taskChain = "";
     this._export_settings.DSP_redirectURL = "";
-    this._export_settings.DSP_OAuth2Client = null;
     this._export_settings.DSP_authorizationCode = "";
     this._export_settings.DSP_token = "";
 
