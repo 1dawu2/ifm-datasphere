@@ -38,6 +38,7 @@ export default class IFMDataSphere extends HTMLElement {
     _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
     this._export_settings = {};
+    this._export_settings.DSP_status = "";
     this._export_settings.DSP_serverURL = "";
     this._export_settings.DSP_clientID = "";
     this._export_settings.DSP_apiSecret = "";
@@ -68,6 +69,13 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   // SETTINGS
+  get DSP_status() {
+    return this._export_settings.DSP_status;
+  }
+  set DSP_status(value) {
+    this._export_settings.DSP_status = value;
+  }
+
   get DSP_serverURL() {
     return this._export_settings.DSP_serverURL;
   }
@@ -125,23 +133,26 @@ export default class IFMDataSphere extends HTMLElement {
       "DSP_oAuthURL",
       "DSP_tokenURL",
       "DSP_taskChain",
-      "DSP_redirectURL"
+      "DSP_redirectURL",
+      "DSP_status"
     ];
   }
 
-  async executeChain(chainID) {
+  async executeChain() {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         console.log(this.responseText);
+      } else {
+        console.log("error");
       }
+      this._export_settings.DSP_status = this.responseText;
     });
 
-    xhr.open("POST", "https://dwc-infomotion.eu10.hcs.cloud.sap/dwaas-core/tf/BU_SINGER/taskchains/Task_Chain_1/start");
+    xhr.open("POST", this._export_settings.DSP_taskChain);
     xhr.setRequestHeader('Authorization', 'Bearer ' + this._export_settings.DSP_token);
-    // xhr.setRequestHeader("Cookie", "JSESSIONID=s%3AfJJKLeLolSShyzivv-f36JScg8MR6c09.BsrH7NzGjoeODuxOjD%2FZ5Cmn2LXCG9hU11WdSjyU8YI; __VCAP_ID__=daf6cb9d-dd08-45cd-7a4b-1d87");
 
     xhr.send();
   }
@@ -152,7 +163,6 @@ export default class IFMDataSphere extends HTMLElement {
     const base64Token = `${this._export_settings.DSP_clientID}:${this._export_settings.DSP_apiSecret}`;
     var encodedToken = Buffer.from(base64Token).toString('base64');
     const tokenURL = encodeURI(`${this._export_settings.DSP_serverURL}/oauth/token`);
-
 
     await axios.post(
       tokenURL,
@@ -167,11 +177,11 @@ export default class IFMDataSphere extends HTMLElement {
         }
       }
     ).then((response) => {
-      console.log(response);
       this._export_settings.DSP_token = response.data.access_token;
       this.executeChain();
     }).catch((err) => {
       console.log(err);
+
     });
 
   }
@@ -208,7 +218,6 @@ export default class IFMDataSphere extends HTMLElement {
           onPress: function (oEvent) {
             const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`);
             var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
-            console.log(sFrame);
             var ui5Frame = new sap.ui.core.HTML({
               content: [sFrame]
             });
@@ -233,7 +242,7 @@ export default class IFMDataSphere extends HTMLElement {
                 }.bind(this)
               }),
               afterClose: function () {
-                console.log(that_._export_settings.DSP_authorizationCode);
+                sap.m.MessageBox.information(that_._export_settings.DSP_status);
                 ui5Dialog.destroyContent();
               }
             });
