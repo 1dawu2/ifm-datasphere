@@ -242,12 +242,12 @@ export default class IFMDataSphere extends HTMLElement {
                 }.bind(this)
               }),
               afterClose: function () {
-                if (that_._export_settings.DSP_status !== "error" || that_._export_settings.DSP_status !== "") {
+                if (!that_._export_settings.DSP_status) {
                   sap.m.MessageBox.success(that_._export_settings.DSP_status);
                 } else {
                   sap.m.MessageBox.error(that_._export_settings.DSP_status);
                 }
-                ui5Dialog.destroyContent();
+                //ui5Dialog.destroyContent();
               }
             });
 
