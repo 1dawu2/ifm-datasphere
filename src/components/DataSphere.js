@@ -138,6 +138,9 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   executeChain() {
+    const token = this._export_settings.DSP_token;
+    const taskChain = this._export_settings.DSP_taskChain;
+
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
@@ -151,8 +154,8 @@ export default class IFMDataSphere extends HTMLElement {
           }
         }
       }
-      xhr.open("POST", this._export_settings.DSP_taskChain);
-      xhr.setRequestHeader('Authorization', 'Bearer ' + this._export_settings.DSP_token);
+      xhr.open("POST", taskChain);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       xhr.send();
       // xhr.addEventListener("readystatechange", function () {
       //   if (this.readyState === 4) {
@@ -258,11 +261,13 @@ export default class IFMDataSphere extends HTMLElement {
                 }.bind(this)
               }),
               afterClose: function () {
-                if (!that_._export_settings.DSP_status) {
-                  sap.m.MessageBox.success(that_._export_settings.DSP_status);
-                } else {
-                  sap.m.MessageBox.error(that_._export_settings.DSP_status);
-                }
+                console.log("Status:")
+                console.log(that_._export_settings.DSP_status);
+                // if (!that_._export_settings.DSP_status) {
+                //   sap.m.MessageBox.success(that_._export_settings.DSP_status);
+                // } else {
+                //   sap.m.MessageBox.error(that_._export_settings.DSP_status);
+                // }
                 //ui5Dialog.destroyContent();
               }
             });
