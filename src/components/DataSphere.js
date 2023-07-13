@@ -137,24 +137,37 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  async executeChain() {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
+  executeChain() {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
 
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(this.responseText);
-        this._export_settings.DSP_status = JSON.parse(this.responseText);
-      } else {
-        console.log("error");
-        this._export_settings.DSP_status = "error"
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            resolve(xhr.responseText);
+          } else {
+            reject(new Error('Request faild with status: ' + xhr.status));
+          }
+        }
       }
+      xhr.open("POST", this._export_settings.DSP_taskChain);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + this._export_settings.DSP_token);
+      xhr.send();
+      // xhr.addEventListener("readystatechange", function () {
+      //   if (this.readyState === 4) {
+      //     console.log(this.responseText);
+      //     this._export_settings.DSP_status = JSON.parse(this.responseText);
+      //   } else {
+      //     console.log("error");
+      //     this._export_settings.DSP_status = "error"
+      //   }
+      // });
+
+
     });
 
-    xhr.open("POST", this._export_settings.DSP_taskChain);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + this._export_settings.DSP_token);
 
-    xhr.send();
   }
 
   async getAccessToken() {
@@ -178,7 +191,9 @@ export default class IFMDataSphere extends HTMLElement {
       }
     ).then((response) => {
       this._export_settings.DSP_token = response.data.access_token;
-      this.executeChain();
+      var responseText = this.executeChain();
+      console.log(responseText);
+      this._export_settings.DSP_status = responseText;
     }).catch((err) => {
       console.log(err);
 
