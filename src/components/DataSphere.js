@@ -163,11 +163,7 @@ export default class IFMDataSphere extends HTMLElement {
       //     this._export_settings.DSP_status = "error"
       //   }
       // });
-
-
     });
-
-
   }
 
   async getAccessToken() {
@@ -191,9 +187,14 @@ export default class IFMDataSphere extends HTMLElement {
       }
     ).then((response) => {
       this._export_settings.DSP_token = response.data.access_token;
-      var responseText = this.executeChain();
-      console.log(responseText);
-      this._export_settings.DSP_status = responseText;
+      try {
+        var responseText = this.executeChain();
+        this._export_settings.DSP_status = responseText;
+        console.log(responseText);
+      } catch (err) {
+        this._export_settings.DSP_status = err;
+        console.log(err);
+      }
     }).catch((err) => {
       console.log(err);
 
