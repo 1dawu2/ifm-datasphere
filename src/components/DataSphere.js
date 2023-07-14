@@ -138,7 +138,7 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   async executeChain(that) {
-    that_ = that;
+    var that_ = that;
     const token = that_._export_settings.DSP_token;
     const taskChain = that_._export_settings.DSP_taskChain;
 
