@@ -191,8 +191,7 @@ export default class IFMDataSphere extends HTMLElement {
         var runChain = this.executeChain(this);
         console.log(runChain);
       } catch (err) {
-        this._export_settings.DSP_status = err;
-        sap.m.MessageBox.error(that_._export_settings.DSP_status);
+        console.log("error on execute chain:");
         console.log(err);
       }
     }).catch((err) => {
@@ -259,12 +258,7 @@ export default class IFMDataSphere extends HTMLElement {
               afterClose: function () {
                 console.log("Status:")
                 console.log(that_._export_settings.DSP_status);
-                // if (!that_._export_settings.DSP_status) {
-                //   sap.m.MessageBox.success(that_._export_settings.DSP_status);
-                // } else {
-                //   sap.m.MessageBox.error(that_._export_settings.DSP_status);
-                // }
-                //ui5Dialog.destroyContent();
+                ui5Dialog.destroyContent();
               }
             });
 
