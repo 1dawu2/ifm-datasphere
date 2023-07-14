@@ -147,7 +147,7 @@ export default class IFMDataSphere extends HTMLElement {
 
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        this._export_settings.DSP_status = JSON.parse(this.responseText);
+        that_._export_settings.DSP_status = JSON.parse(this.responseText);
         switch (this.status) {
           case 200: // success
             sap.m.MessageBox.success(that_._export_settings.DSP_status);
@@ -158,11 +158,6 @@ export default class IFMDataSphere extends HTMLElement {
           default:
             sap.m.MessageBox.error(that_._export_settings.DSP_status);
         };
-
-      } else {
-        console.log("error");
-        that_._export_settings.DSP_status = "error"
-        sap.m.MessageBox.error(that_._export_settings.DSP_status);
       }
     });
 
