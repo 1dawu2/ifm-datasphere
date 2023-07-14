@@ -191,11 +191,19 @@ export default class IFMDataSphere extends HTMLElement {
     ).then((response) => {
       this._export_settings.DSP_token = response.data.access_token;
       try {
-        var responseText = this.executeChain();
-        this._export_settings.DSP_status = responseText;
-        console.log(responseText);
+        var stats = this.executeChain();
+        stats.then(function (result) {
+          this._export_settings.DSP_status = responseText;
+          console.log(responseText);
+          if (!that_._export_settings.DSP_status) {
+            sap.m.MessageBox.success(that_._export_settings.DSP_status);
+          } else {
+            sap.m.MessageBox.error(that_._export_settings.DSP_status);
+          }
+        });
       } catch (err) {
         this._export_settings.DSP_status = err;
+        sap.m.MessageBox.error(that_._export_settings.DSP_status);
         console.log(err);
       }
     }).catch((err) => {
