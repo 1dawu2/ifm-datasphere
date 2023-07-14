@@ -137,40 +137,32 @@ export default class IFMDataSphere extends HTMLElement {
     ];
   }
 
-  async executeChain() {
-    const token = this._export_settings.DSP_token;
-    const taskChain = this._export_settings.DSP_taskChain;
+  async executeChain(that) {
+    that_ = that;
+    const token = that_._export_settings.DSP_token;
+    const taskChain = that_._export_settings.DSP_taskChain;
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
-    // xhr.onreadystatechange = function () {
-    //   if (xhr.readyState === XMLHttpRequest.DONE) {
-    //     if (xhr.status === 200) {
-    //       resolve(xhr.responseText);
-    //     } else {
-    //       reject(new Error('Request faild with status: ' + xhr.status));
-    //     }
-    //   }
-    // }
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         this._export_settings.DSP_status = JSON.parse(this.responseText);
         switch (this.status) {
           case 200: // success
-            sap.m.MessageBox.success(this._export_settings.DSP_status);
+            sap.m.MessageBox.success(that_._export_settings.DSP_status);
           case 202: // success
-            sap.m.MessageBox.information(this._export_settings.DSP_status);
+            sap.m.MessageBox.information(that_._export_settings.DSP_status);
           case 409: // already running
-            sap.m.MessageBox.warning(this._export_settings.DSP_status);
+            sap.m.MessageBox.warning(that_._export_settings.DSP_status);
           default:
-            sap.m.MessageBox.error(this._export_settings.DSP_status);
+            sap.m.MessageBox.error(that_._export_settings.DSP_status);
         };
 
       } else {
         console.log("error");
-        this._export_settings.DSP_status = "error"
-        sap.m.MessageBox.error(this._export_settings.DSP_status);
+        that_._export_settings.DSP_status = "error"
+        sap.m.MessageBox.error(that_._export_settings.DSP_status);
       }
     });
 
@@ -201,7 +193,7 @@ export default class IFMDataSphere extends HTMLElement {
     ).then((response) => {
       this._export_settings.DSP_token = response.data.access_token;
       try {
-        var runChain = this.executeChain();
+        var runChain = this.executeChain(this);
         console.log(runChain);
       } catch (err) {
         this._export_settings.DSP_status = err;
