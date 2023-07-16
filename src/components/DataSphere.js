@@ -148,16 +148,11 @@ export default class IFMDataSphere extends HTMLElement {
     xhr.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
         that_._export_settings.DSP_status = JSON.parse(this.responseText);
-        switch (this.status) {
-          case 200: // success
-            sap.m.MessageBox.success(that_._export_settings.DSP_status);
-          case 202: // success
-            sap.m.MessageBox.information(that_._export_settings.DSP_status);
-          case 409: // already running
-            sap.m.MessageBox.warning(that_._export_settings.DSP_status);
-          default:
-            sap.m.MessageBox.error(that_._export_settings.DSP_status);
-        };
+        if (this.status === 200 || this.status === 202) {
+          sap.m.MessageBox.success("Log ID: " + that_._export_settings.DSP_status.logId);
+        } else {
+          sap.m.MessageBox.error("Log ID: " + that_._export_settings.DSP_status.logId);
+        }
       }
     });
 
