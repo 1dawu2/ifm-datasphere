@@ -154,26 +154,8 @@ export default class IFMDataSphere extends HTMLElement {
         };
         if (this.status === 200 || this.status === 202) {
           sap.m.MessageBox.success("Log ID: " + that_._export_settings.DSP_status.logId);
-          that_.addEventListener("click", event => {
-            var event = new Event("onSuccess");
-            that_.dispatchEvent(event);
-          });
-          // that_.dispatchEvent(new CustomEvent("onSuccess", {
-          //   detail: {
-          //     status: that_._export_settings.DSP_status.logId
-          //   }
-          // }));
         } else {
           sap.m.MessageBox.error("Error: " + this.status + " Code: " + that_._export_settings.DSP_status.code);
-          that_.addEventListener("click", event => {
-            var event = new Event("onError");
-            that_.dispatchEvent(event);
-          });
-          // that_.dispatchEvent(new CustomEvent("onError", {
-          //   detail: {
-          //     status: this.status,
-          //   }
-          // }));
         }
       }
     });
@@ -207,7 +189,7 @@ export default class IFMDataSphere extends HTMLElement {
       try {
         var runChain = this.executeChain(this);
       } catch (err) {
-        console.log("error on execute chain:");
+        console.log("error during executing chain:");
         console.log(err);
       }
     }).catch((err) => {
@@ -287,7 +269,12 @@ export default class IFMDataSphere extends HTMLElement {
                   clearInterval(checkAuthorizationCode);
                   var urlParams = new URLSearchParams(frameDocument.location.search);
                   that_._export_settings.DSP_authorizationCode = urlParams.get("code");
-                  that_.getAccessToken();
+                  that_.getAccessToken().then(function () {
+                    that_.addEventListener("click", event => {
+                      var event = new Event("onSuccess");
+                      that_.dispatchEvent(event);
+                    });
+                  });
                   ui5Dialog.close();
                 }
               } catch (error) {
