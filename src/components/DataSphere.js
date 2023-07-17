@@ -150,14 +150,14 @@ export default class IFMDataSphere extends HTMLElement {
         that_._export_settings.DSP_status = JSON.parse(this.responseText);
         if (this.status === 200 || this.status === 202) {
           sap.m.MessageBox.success("Log ID: " + that_._export_settings.DSP_status.logId);
-          this.dispatchEvent(new CustomEvent("onSuccess", {
+          that_.dispatchEvent(new CustomEvent("onSuccess", {
             detail: {
               status: that_._export_settings.DSP_status.logId
             }
           }));
         } else {
           sap.m.MessageBox.error("Error: " + this.status) + " Code: " + that_._export_settings.DSP_status.code;
-          this.dispatchEvent(new CustomEvent("onError", {
+          that_.dispatchEvent(new CustomEvent("onError", {
             detail: {
               error: this.status,
             }
