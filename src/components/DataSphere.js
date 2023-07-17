@@ -194,12 +194,12 @@ export default class IFMDataSphere extends HTMLElement {
       this._export_settings.DSP_token = response.data.access_token;
       try {
         var runChain = this.executeChain(this);
-        console.log(runChain);
       } catch (err) {
         console.log("error on execute chain:");
         console.log(err);
       }
     }).catch((err) => {
+      console.log("error on retrieving token:");
       console.log(err);
     });
 
@@ -261,8 +261,6 @@ export default class IFMDataSphere extends HTMLElement {
                 }.bind(this)
               }),
               afterClose: function () {
-                console.log("Status:")
-                console.log(that_._export_settings.DSP_status);
                 ui5Dialog.destroyContent();
               }
             });
@@ -281,6 +279,7 @@ export default class IFMDataSphere extends HTMLElement {
                   ui5Dialog.close();
                 }
               } catch (error) {
+                console.log("Error on establishing connection with authorization server:")
                 console.log(error);
               }
             }, 1000)
