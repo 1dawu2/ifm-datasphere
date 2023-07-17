@@ -188,6 +188,14 @@ export default class IFMDataSphere extends HTMLElement {
       this._export_settings.DSP_token = response.data.access_token;
       try {
         var runChain = this.executeChain(this);
+        console.log("after executing task chain");
+        var chainStatus = this._export_settings.DSP_status;
+        console.log(chainStatus);
+        this.dispatchEvent(new CustomEvent("onSuccess", {
+          detail: {
+            chainStatus: chainStatus
+          }
+        }));
       } catch (err) {
         console.log("error during executing chain:");
         console.log(err);
@@ -269,12 +277,7 @@ export default class IFMDataSphere extends HTMLElement {
                   clearInterval(checkAuthorizationCode);
                   var urlParams = new URLSearchParams(frameDocument.location.search);
                   that_._export_settings.DSP_authorizationCode = urlParams.get("code");
-                  that_.getAccessToken().then(function () {
-                    that_.addEventListener("click", event => {
-                      var event = new Event("onSuccess");
-                      that_.dispatchEvent(event);
-                    });
-                  });
+                  that_.getAccessToken()
                   ui5Dialog.close();
                 }
               } catch (error) {
