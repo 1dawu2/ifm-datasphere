@@ -156,7 +156,7 @@ export default class IFMDataSphere extends HTMLElement {
             }
           }));
         } else {
-          sap.m.MessageBox.error("Error: " + this.status);
+          sap.m.MessageBox.error("Error: " + this.status) + " Code: " + that_._export_settings.DSP_status.code;
           this.dispatchEvent(new CustomEvent("onError", {
             detail: {
               error: this.status,
