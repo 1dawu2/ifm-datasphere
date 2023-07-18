@@ -37,6 +37,8 @@ export default class IFMDataSphere extends HTMLElement {
 
     _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
+    this._serviceMessage = "";
+
     this._export_settings = {};
     this._export_settings.DSP_status = "";
     this._export_settings.DSP_serverURL = "";
@@ -68,6 +70,10 @@ export default class IFMDataSphere extends HTMLElement {
   }
 
   // SETTINGS
+  getServiceMessage() {
+    return this._serviceMessage;
+  }
+
   get DSP_status() {
     return this._export_settings.DSP_status;
   }
@@ -153,8 +159,24 @@ export default class IFMDataSphere extends HTMLElement {
           that_._export_settings.DSP_status = JSON.parse(this.responseText);
         };
         if (this.status === 200 || this.status === 202) {
+          var chainStatus = that_._export_settings.DSP_status;
+          that_._serviceMessage = chainStatus;
+          console.log(chainStatus);
+          this.dispatchEvent(new CustomEvent("onSuccess", {
+            detail: {
+              chainStatus: chainStatus
+            }
+          }));
           sap.m.MessageBox.success("Log ID: " + that_._export_settings.DSP_status.logId);
         } else {
+          var chainStatus = that_._export_settings.DSP_status;
+          that_._serviceMessage = chainStatus;
+          console.log(chainStatus);
+          this.dispatchEvent(new CustomEvent("onError", {
+            detail: {
+              chainStatus: chainStatus
+            }
+          }));
           sap.m.MessageBox.error("Error: " + this.status + " Code: " + that_._export_settings.DSP_status.code);
         }
       }
@@ -189,13 +211,7 @@ export default class IFMDataSphere extends HTMLElement {
       try {
         var runChain = this.executeChain(this);
         console.log("after executing task chain");
-        var chainStatus = this._export_settings.DSP_status;
-        console.log(chainStatus);
-        this.dispatchEvent(new CustomEvent("onSuccess", {
-          detail: {
-            chainStatus: chainStatus
-          }
-        }));
+        console.log(runChain);
       } catch (err) {
         console.log("error during executing chain:");
         console.log(err);
