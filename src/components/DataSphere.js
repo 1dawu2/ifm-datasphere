@@ -162,7 +162,7 @@ export default class IFMDataSphere extends HTMLElement {
           var chainStatus = that_._export_settings.DSP_status;
           that_._serviceMessage = chainStatus;
           console.log(chainStatus);
-          this.dispatchEvent(new CustomEvent("onSuccess", {
+          that_.dispatchEvent(new CustomEvent("onSuccess", {
             detail: {
               chainStatus: chainStatus
             }
@@ -172,7 +172,7 @@ export default class IFMDataSphere extends HTMLElement {
           var chainStatus = that_._export_settings.DSP_status;
           that_._serviceMessage = chainStatus;
           console.log(chainStatus);
-          this.dispatchEvent(new CustomEvent("onError", {
+          that_.dispatchEvent(new CustomEvent("onError", {
             detail: {
               chainStatus: chainStatus
             }
