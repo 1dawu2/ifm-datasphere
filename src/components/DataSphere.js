@@ -160,7 +160,7 @@ export default class IFMDataSphere extends HTMLElement {
         };
         if (this.status === 200 || this.status === 202) {
           var chainStatus = that_._export_settings.DSP_status;
-          that_._serviceMessage = chainStatus;
+          that_._serviceMessage = chainStatus.logId;
           console.log(chainStatus);
           that_.dispatchEvent(new CustomEvent("onSuccess", {
             detail: {
